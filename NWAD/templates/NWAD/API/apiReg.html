@@ -1,0 +1,127 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NaverWorks API Demo</title>
+    <link href="{% static 'css/custom.css' %}" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="{% static 'images/tripod.ico' %}">
+</head>
+
+<body>
+    <div class="login-div">
+        <form class="login-form" id="Form1" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input class="login-input" type="text" id="api_name" name="api_name" placeholder="api 이름을 입력하세요" oninput="fn_checkValue();">
+            <input class="login-input" type="text" id="client_id" name="client_id" placeholder="client id를 입력하세요" oninput="fn_checkValue();">
+            <input class="login-input" type="text" id="client_secret" name="client_secret" placeholder="client secret을 입력하세요" oninput="fn_checkValue();">
+            <input class="login-input" type="text" id="service_account" name="service_account" placeholder="service account를 입력하세요" oninput="fn_checkValue();">
+            <textarea class="login-input" type="text" id="private_key" name="private_key" placeholder="private key를 입력하세요" oninput="fn_checkValue();"></textarea>
+            <input class="login-input" type="text" id="scope" name="scope" placeholder="scope를 입력하세요" oninput="fn_checkValue();">
+            <input class="login-button" type="button" id="submit" value="API 등록" onclick="fn_reg();">
+        </form>
+    </div>
+    <script>
+        window.onload = function(){
+            fn_testSet();
+        }
+
+        var fn_checkValue = function () {
+            let ae = document.activeElement;
+            if(ae.id == 'name') ae.value = ae.value.replace(/[^ㄱ-ㅎㅏ-ㅣ가-힣0-9a-zA-Z]/g, '');
+            if(ae.id == 'client_id') ae.value = ae.value.replace(/[^0-9a-zA-Z]/g, '');
+            if(ae.id == 'client_secret') ae.value = ae.value.replace(/[^0-9a-zA-Z]/g, '');
+            if(ae.id == 'service_account') ae.value = ae.value.replace(/[^0-9a-zA-Z@.]/g, '');
+
+            if (ae.value.length > 0) {
+                ae.classList.add("isVal");
+            } else {
+                ae.classList.remove("isVal");
+            }
+
+            if (document.getElementById("api_name").classList.contains("isVal")
+                && document.getElementById("client_id").classList.contains("isVal")
+                && document.getElementById("client_secret").classList.contains("isVal")
+                && document.getElementById("service_account").classList.contains("isVal")
+                && document.getElementById("private_key").classList.contains("isVal")
+                && document.getElementById("scope").classList.contains("isVal")) {
+                document.getElementById("submit").classList.add("success");
+            } else {
+                document.getElementById("submit").classList.remove("success");
+            }
+        }
+        
+        var fn_reg = function () {
+            if (document.getElementById("submit").classList.contains("success")) {
+                let url = "./apiReg";
+                let form = document.getElementById("Form1")
+                let formData = new FormData(form);
+
+                fetch(url, {
+                    method: "POST",
+                    cache: 'no-cache',
+                    body: formData,
+                }).then((response) => {
+                    if (!response.ok || response.status != '200') {
+                        throw new Error('연결 실패. 다시 요청하세요.\n' + response.statusText + "(" + response.status + ")");
+                    }
+                    return response.json();
+                }).then((res) => {
+                    if(res.flag == '0'){
+                        alert("api 등록 성공하였습니다.");
+                        location.href = "../apiList";
+                    }else{
+                        throw new Error(res.result_msg);
+                    }
+                }).catch((err) => {
+                    console.log(err);
+                });
+            }
+        }
+
+        var fn_testSet = function(){
+            document.getElementById("api_name").value = "테스트봇";
+            document.getElementById("client_id").value = "eoX5oR3RZhC8ugplLQHc";
+            document.getElementById("client_secret").value = "rB3ReCyk06";
+            document.getElementById("service_account").value = "bj3s8.serviceaccount@didim365.kr";
+            document.getElementById("private_key").value = `-----BEGIN PRIVATE KEY-----
+MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCE/JBedlqLYULi
+aUWyqmhoPmuejWppu8UPjO0iPqYZIwEqWJy6xpj4ylMiusmegdH4Ml+Sy7ZvNnKy
+828GtMWiIpAD8e/jUr+S9a62yP/++lUzA9CITshupIkCaVhGrSV4ox24BGOOt+9O
+2urZyuPGA6xTN6bhN2fem+CHowecEWBCUZtrK4AvOHrh1APOG2kwgl65uNi3DDc4
+SY1ku8LbtCiaCYyVuAUj8iTMxPQGjNUmWeNZmdoIfDfBnJ4eXQi8v4Cg8WI7a7gD
+HrAkxlNt49/+KQVnWba/VyZTjyn4KUzvcRTzuZMDUUqfCDjHDw+LuIrkc0kFhhpL
+D0ITzbk/AgMBAAECggEALTjtpxG8LJWAdxmxV9ZW9svzMNGKFDaEBou3v+Np/DZJ
+GStU8LbEIiY7Kx41na8rxajrkzGu8haj3nKlmLQ0WLREIPNOzhC/kKv3I7UqSHy8
+KELt0MxpoCZXaPiFylLq4SEm5AKqEEhAGqKbJkC2QAnTueC84O1EZxC+w6EO32UT
+BIO5nnd8szpxhJ88NjYPKUQl64IJ6Hg6JLF9JraElebrs+LB1xw5SbIs382JHA4i
+XF8agElJwAghpILOmjN+Ow43dx5jMf3D+e9mrwXgsfo8brgkx75ySOdJn89h1+NW
+Vaf/LoQ6V0FfpiLEJ7G3foLscHOC5DHNa/El6dVpAQKBgQDN/gEMwA8gTrK6DLi3
+Kb919mKgSZ2orqC15BTHhZh1EZLfJ1MVw5/1KbNXe9e/22AvIElNxiA9ipUcMzme
+dbVq7jsp4gryvyC3vV5ng0pHVBFu/GlwfJmLe1qGRTWJwRYS65lUBeOVgVY1cN/E
+ehRE0F5Dc+36PVXNOG/fYJsMQQKBgQClRWittEPI3Dx1GQJiy55l9588gCR/s3u3
+xFLkytsJF6CRWP/ekrUzUAN/2QsPQQgLywEuf5ratqCI+WrvVeyOf+rjm3nPfWJ7
+HkQOS3aVKnHOzIioDkElI5NId2A/EPKT8nKW1ayJAx8Mu0KMq7/H50Y2N1a/Moz1
+unEMa81lfwKBgArkGBgde29A2fA+RfHhMi9BdJt26PAHM5YKVhLqfFIMONC1mo33
+BtkGeGXytUh+h8pWEaocBI5cal/QUYaQQKRDrjsbqWqGMmukhn5AkcfNqRJOJCD/
+ZXrbbcDVnewHmmwrqrKnkQ3RhcZTjnEr5zBwN9unIHjvjz7HchrEV85BAoGABC5f
+WZWn6Vr5BJVfZBR2q2m6U5OCWOC3joye9D7Vj8NTQpoXzw+zGds6W2+oQfiJNZMr
+Mnvz9PiN0ylMNUXdODWwQZXbXQ51AVxgqGPsWhW6z1qJUocZytC9lyW9/5p0KJ4H
+nB1HwiecD3xlUJ2/ulT1h8WaojerLURMO942Ug0CgYEAwZ+ETkKEBJXrikYFhcZc
+YcysvGuXpRSA9fH7d67qLCDr89DzS8Hcrqgqx+GCYLPJn2wHKJgC0AmVZpFIN6Wt
+nABUNKaFNS4xxsEnAizO6T+qOnou2TpjLeAHgSwyg5H5TYqU6jeFcq60HFqg5NMM
+Oon4/f7x5le3rp7qL/H4HN4=
+-----END PRIVATE KEY-----
+`;
+            document.getElementById("scope").value = "bot";
+
+            document.getElementById("submit").classList.add("success");
+
+        }
+    </script>
+</body>
+
+</html>

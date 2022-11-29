@@ -1,0 +1,90 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NaverWorks API Demo</title>
+    <link href="{% static 'css/custom.css' %}" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="{% static 'images/tripod.ico' %}">
+</head>
+
+<body>
+    <div class="login-div">
+        <form class="login-form" id="Form1" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input class="login-input" type="text" id="id" name="id" placeholder="아이디를 입력하세요. (영문, 숫자)" oninput="fn_checkValue();">
+            <input class="login-input" type="password" id="password" name="password" placeholder="비밀번호를 입력하세요." oninput="fn_checkValue();">
+            <input class="login-input" type="password" id="passwordre" placeholder="비밀번호를 다시 입력하세요." oninput="fn_checkValue();">
+            <input class="login-input" type="text" id="name" name="name" placeholder="이름을 입력하세요" oninput="fn_checkValue();">
+            <input class="login-input" type="text" id="email" name="email" placeholder="이메일을 입력하세요" oninput="fn_checkValue();">
+            <input class="login-button" type="button" id="submit" value="회원가입" onclick="fn_join();">
+        </form>
+    </div>
+    <script>
+        var fn_checkValue = function () {
+            let ae = document.activeElement;
+            if(ae.id == 'id') ae.value = ae.value.replace(/[^0-9a-zA-Z]/g, '');
+            if(ae.id == 'name') ae.value = ae.value.replace(/[^ㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
+            if(ae.id == 'email') ae.value = ae.value.replace(/[^0-9a-zA-Z@.]/g, '');
+
+            if (ae.value.length > 0) {
+                if(ae.id == 'passwordre'||ae.id == 'password'){
+                    if(document.getElementById('passwordre').value == document.getElementById('password').value){
+                        document.getElementById('passwordre').classList.add("isVal");
+                        document.getElementById('password').classList.add("isVal");
+                    }
+                    else{
+                        document.getElementById('passwordre').classList.remove("isVal");
+                        document.getElementById('password').classList.remove("isVal");
+                    }
+                }else
+                    ae.classList.add("isVal");
+            } else {
+                ae.classList.remove("isVal");
+            }
+
+            if (document.getElementById("id").classList.contains("isVal")
+                && document.getElementById("password").classList.contains("isVal")
+                && document.getElementById("passwordre").classList.contains("isVal")
+                && document.getElementById("name").classList.contains("isVal")
+                && document.getElementById("email").classList.contains("isVal")) {
+                document.getElementById("submit").classList.add("success");
+            } else {
+                document.getElementById("submit").classList.remove("success");
+            }
+        }
+        
+        var fn_join = function () {
+            if (document.getElementById("submit").classList.contains("success")) {
+                let url = "/join";
+                let form = document.getElementById("Form1")
+                let formData = new FormData(form);
+
+                fetch(url, {
+                    method: "POST",
+                    cache: 'no-cache',
+                    body: formData,
+                }).then((response) => {
+                    if (!response.ok || response.status != '200') {
+                        throw new Error('연결 실패. 다시 요청하세요.\n' + response.statusText + "(" + response.status + ")");
+                    }
+                    return response.json();
+                }).then((res) => {
+                    if(res.flag == '0'){
+                        alert("회원가입에 성공하였습니다. 로그인 해주세요.");
+                        location.href = "/";
+                    }else{
+                        alert(res.result_msg);
+                    }
+                }).catch((err) => {
+                    alert(err);
+                });
+            }
+        }
+    </script>
+</body>
+
+</html>
