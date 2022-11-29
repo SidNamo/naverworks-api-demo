@@ -15,18 +15,21 @@ string 인코딩
 '''
 def base64encode(jsonString):
     jsonString = json.dumps(jsonString, separators=(",", ":"))
-    jsonString = base64.b64encode(jsonString.encode('ascii'))
+    jsonString = base64.b64encode(jsonString.encode('utf-8'))
     result = jsonString.decode('utf-8')
-    
     return result
 
 def sha256encode(jsonString):
     jsonString = json.dumps(jsonString, separators=(",", ":"))
-    jsonString = base64.b64encode(jsonString.encode('ascii'))
+    jsonString = base64.b64encode(jsonString.encode('utf-8'))
     result = jsonString.decode('utf-8')
-
     return result
 
+def strToJson(str):
+    return json.loads(str.encode('utf-8'))
+
+def jsonTostr(obj):
+    return json.dumps(obj, separators=(",", ":"))
 
 '''
 시간 / 날짜 관련
@@ -38,14 +41,19 @@ def convert_datetime(unixtime):
 
 def convert_unixtime(date_time):
     """Convert datetime to unixtime"""
-    unixtime = datetime.datetime.strptime(date_time, '%Y-%m-%d %H:%M:%S').timestamp()
+    try:
+        unixtime = date_time.timestamp()
+    except:
+        unixtime = datetime.datetime.strptime(date_time, '%Y-%m-%d %H:%M:%S').timestamp()
     return unixtime
 
 def add_datetime(date_time, seconds):
     """
     :return: add 1 minute datetime
     """
-    import datetime
-    date_time = datetime.datetime.strptime(date_time, "%Y-%m-%d %H:%M:%S")
-    date_time += datetime.timedelta(seconds=seconds)
+    try:
+        date_time += datetime.timedelta(seconds=seconds)
+    except:
+        date_time = datetime.datetime.strptime(date_time, "%Y-%m-%d %H:%M:%S")
+        date_time += datetime.timedelta(seconds=seconds)
     return date_time

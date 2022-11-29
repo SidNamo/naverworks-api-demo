@@ -156,7 +156,10 @@ def apiReg(request):
                 csrftoken = client.get(request._current_scheme_host + "/login").cookies['csrftoken']
                 headers = {'X-CSRFToken':csrftoken}
                 res = client.post(request._current_scheme_host + "/auth/jwt", headers=headers, data=apidata)
-                if res.status_code != 200:
+                if res.status_code == 200:
+                    # JWT 인증 성공 
+                    a=1
+                else :
                     context["flag"] = "2"
                     context["result_msg"] = "JWT 인증 API 호출 실패"
             except Exception as err:
