@@ -1,10 +1,6 @@
-import base64
-import json
-import time
-import datetime
-import hashlib
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from urllib import parse
+from common.utils import util
 
 def authJwt(request):
     result = {}
@@ -13,7 +9,7 @@ def authJwt(request):
         header = {}
         header["alg"] = "RS256"
         header["typ"] = "JWT"
-        headerStr = base64.b64encode(json.dumps(header).encode('ascii')).decode('utf-8')
+        headerStr = util.base64encode(header)
 
 
         jsonClaim = {}
@@ -26,34 +22,13 @@ def authJwt(request):
         jsonClaim["sub"] = "46c4f281f81148c9b846c59262ae5888@example.com"
         jsonClaim["iat"] = 1634711358
         jsonClaim["exp"] = 1634714958
-        jsonClaimStr = base64.b64encode(json.dumps(jsonClaim).encode('ascii')).decode('utf-8')
+        jsonClaimStr = util.base64encode(jsonClaim)
         
         signature = "{" + headerStr + "}.{" + jsonClaimStr + "}"
-        signatureStr = hashlib.sha256()
+        signatureStr = util.sha256encode(signature)
 
         
     except Exception as err:
         status = 500
 
     return JsonResponse(result, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=status)
-
-
-
-def convert_datetime(unixtime):
-    """Convert unixtime to datetime"""
-    date = datetime.datetime.fromtimestamp(unixtime).strftime('%Y-%m-%d %H:%M:%S')
-    return date # format : str
-
-def convert_unixtime(date_time):
-    """Convert datetime to unixtime"""
-    unixtime = datetime.datetime.strptime(date_time, '%Y-%m-%d %H:%M:%S').timestamp()
-    return unixtime
-
-def add_datetime(date_time, seconds):
-    """
-    :return: add 1 minute datetime
-    """
-    import datetime
-    date_time = datetime.datetime.strptime(date_time, "%Y-%m-%d %H:%M:%S")
-    date_time += datetime.timedelta(seconds=seconds)
-    return date_time
