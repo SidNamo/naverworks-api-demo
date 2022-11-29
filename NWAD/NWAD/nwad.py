@@ -140,8 +140,8 @@ def apiReg(request):
         context = {}
         context["flag"] = "0"
         context["result_msg"] = "success"
-        checkList = ['api_name','client_id','client_secret','service_account','private_key','scope']
-        replaceList = ['api 이름을','client id를','client secret을','service account를','private_key를','scope를',]
+        checkList = ['api_name','client_id','client_secret','service_account','scope']
+        replaceList = ['api 이름을','client id를','client secret을','service account를','scope를',]
         apidata = {}
         for idx, val in enumerate(checkList):
             if (request.POST[val] == None or request.POST[val] == ""):
