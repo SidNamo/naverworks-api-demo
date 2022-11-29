@@ -1,16 +1,16 @@
-
+from common.utils import util
 import requests
 import json
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.urls import reverse
-from hashlib import sha256
 from urllib import parse
+
 
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import log, member
+from .models import member
 
 def index(request):
     if 'memberInfo' in request.session:
@@ -39,7 +39,7 @@ def login(request):
 
         if(context["flag"] == "0"):
             context["id"] = request.POST["id"]
-            context["pw"] = sha256encode(request.POST["password"])
+            context["pw"] = util.sha256encode(request.POST["password"])
             memberSearchData = member.objects.filter(id=context["id"], password=context["pw"], status="1").first()
             if memberSearchData is None:
                 memberSearchData = member.objects.filter(id=context["id"], password=context["pw"]).first()
@@ -57,7 +57,7 @@ def login(request):
                 request.session["memberInfo"] = memberInfo
                 msg = ""
                 msg += "유저 로그인(" + request.POST["id"] + ")"
-                insertLog(request, msg)
+                util.insertLog(request, msg)
         return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
 
 
@@ -81,7 +81,7 @@ def testLogin(request):
         request.session["id"] = "test"
         msg = ""
         msg += "테스트 사이트 로그인(" + request.POST["id"] + ")"
-        insertLog(request, msg)
+        util.insertLog(request, msg)
     return redirect('/')
 
 
@@ -106,14 +106,14 @@ def join(request):
             try:
                 member.objects.create(
                     id=request.POST["id"],
-                    password=sha256encode(request.POST["password"]),
+                    password=util.sha256encode(request.POST["password"]),
                     name=request.POST["name"],
                     email=request.POST["email"],
                 )
             except Exception as err:
                 context["flag"] = "9"
                 context["result_msg"] = err
-        insertLog(request, context["result_msg"])
+        util.insertLog(request, context["result_msg"])
         return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
         
     
@@ -162,35 +162,5 @@ def apiReg(request):
             except Exception as err:
                 context["flag"] = "2"
                 context["result_msg"] = err
-        insertLog(request, context["result_msg"])
+        util.insertLog(request, context["result_msg"])
         return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
-
-
-
-
-
-
-
-
-
-
-
-def getClientIp(request):
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-    if x_forwarded_for:
-        ip = x_forwarded_for.split(',')[0]
-    else:
-        ip = request.META.get('REMOTE_ADDR')
-    return ip
-
-
-def insertLog(request, msg):
-    msg = request.path + "    " + msg
-    msg += "    IP(" + getClientIp(request) + ")"
-    log.objects.create(
-        msg=msg,
-        reg_user="system"
-    )
-
-def sha256encode(text):
-    return sha256(text.encode()).hexdigest()

@@ -10,9 +10,9 @@ import datetime
 공용으로 사용되는 Util 함수 모음
 """
 
-'''
-string 인코딩
-'''
+"""
+각종 string 인코딩
+"""
 def base64encode(jsonString):
     jsonString = json.dumps(jsonString, separators=(",", ":"))
     jsonString = base64.b64encode(jsonString.encode('ascii'))
@@ -21,9 +21,7 @@ def base64encode(jsonString):
     return result
 
 def sha256encode(jsonString):
-    jsonString = json.dumps(jsonString, separators=(",", ":"))
-    jsonString = base64.b64encode(jsonString.encode('ascii'))
-    result = jsonString.decode('utf-8')
+    result = hashlib.sha256(jsonString.encode()).hexdigest()
 
     return result
 
@@ -49,3 +47,29 @@ def add_datetime(date_time, seconds):
     date_time = datetime.datetime.strptime(date_time, "%Y-%m-%d %H:%M:%S")
     date_time += datetime.timedelta(seconds=seconds)
     return date_time
+
+
+
+
+"""
+Client Ip 획득
+"""
+def getClientIp(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
+
+"""
+로그 기능
+"""
+def insertLog(request, msg):
+    msg = request.path + "    " + msg
+    msg += "    IP(" + getClientIp(request) + ")"
+    log.objects.create(
+        msg=msg,
+        reg_user="system"
+    )
