@@ -41,7 +41,7 @@ class member(models.Model):
     
 class api(models.Model):
     api_no = models.AutoField(db_column='api_no', primary_key=True)
-    member_no = models.ForeignKey("member", related_name="member", on_delete=models.CASCADE, db_column="member_no")
+    member_no = models.ForeignKey(member, related_name="member", on_delete=models.CASCADE, db_column="member_no")
     api_name = models.CharField(db_column="api_name", null=False, max_length=20)
     client_id = models.CharField(db_column="client_id", null=False, max_length=20)
     client_secret = models.CharField(db_column="client_secret", null=False, max_length=10)

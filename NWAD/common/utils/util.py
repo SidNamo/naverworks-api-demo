@@ -1,9 +1,9 @@
 import base64
 import json
 import hashlib
-
 import time
 import datetime
+from NWAD.models import log
 
 
 """

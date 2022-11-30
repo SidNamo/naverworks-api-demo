@@ -1,16 +1,15 @@
-from common.utils import util
 import requests
 import json
+from common.utils import util
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.urls import reverse
 from urllib import parse
 
-
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import member
+from .models import member, api
 
 def index(request):
     if 'memberInfo' in request.session:
@@ -57,7 +56,7 @@ def login(request):
                 request.session["memberInfo"] = memberInfo
                 msg = ""
                 msg += "유저 로그인(" + request.POST["id"] + ")"
-                util.insertLog(request, msg)
+                util.insertLog(request, msg + "    " + util.jsonTostr(request.POST.dict()))
         return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
 
 
@@ -81,7 +80,7 @@ def testLogin(request):
         request.session["id"] = "test"
         msg = ""
         msg += "테스트 사이트 로그인(" + request.POST["id"] + ")"
-        util.insertLog(request, msg)
+        util.insertLog(request, msg + "    " + util.jsonTostr(request.POST.dict()))
     return redirect('/')
 
 
@@ -97,11 +96,22 @@ def join(request):
         context["result_msg"] = "success"
         checkList = ['id','password','name','email']
         replaceList = ['아이디를','비밀번호를','이름을','이메일을']
+
+        # 파라미터 검사
         for idx, val in enumerate(checkList):
             if (request.POST[val] == None or request.POST[val] == ""):
                 context["flag"] = "2"
                 context["result_msg"] = replaceList[idx] + " 입력하세요"
                 break
+            
+        # 중복 검사    
+        if(context["flag"] == "0"):
+            memberData = member.objects.filter(id=request.POST["id"]).first()
+            if memberData is not None:
+                context["flag"] = "3"
+                context["result_msg"] = "이미 등록된 id 입니다."
+
+        # 등록
         if(context["flag"] == "0"):
             try:
                 member.objects.create(
@@ -113,7 +123,7 @@ def join(request):
             except Exception as err:
                 context["flag"] = "9"
                 context["result_msg"] = err
-        util.insertLog(request, context["result_msg"])
+        util.insertLog(request, context["result_msg"] + "    " + util.jsonTostr(request.POST.dict()))
         return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
         
     
@@ -143,6 +153,8 @@ def apiReg(request):
         checkList = ['api_name','client_id','client_secret','service_account','private_key','scope']
         replaceList = ['api 이름을','client id를','client secret을','service account를','private_key를','scope를',]
         apidata = {}
+
+        # 파라미터 검사
         for idx, val in enumerate(checkList):
             if (request.POST[val] == None or request.POST[val] == ""):
                 context["flag"] = "2"
@@ -150,17 +162,39 @@ def apiReg(request):
                 break
             else: 
                 apidata[val] = parse.quote(request.POST[val])
+                
+        # 중복 검사    
+        if(context["flag"] == "0"):
+            apiData = api.objects.filter(client_id=request.POST["client_id"]).first()
+            if apiData is not None:
+                context["flag"] = "3"
+                context["result_msg"] = "이미 등록된 client_id 입니다."
+
         if(context["flag"] == "0"):
             try:
+                # JWT Auth Api 호출
                 client = requests.session()
                 csrftoken = client.get(request._current_scheme_host + "/login").cookies['csrftoken']
                 headers = {'X-CSRFToken':csrftoken}
                 res = client.post(request._current_scheme_host + "/auth/jwt", headers=headers, data=apidata)
-                if res.status_code != 200:
+                if res.status_code == 200:
+                    result = util.strToJson(res.text)
+                    api.objects.create(
+                        api_name=request.POST["api_name"],
+                        client_id=request.POST["client_id"],
+                        client_secret=request.POST["client_secret"],
+                        service_account=request.POST["service_account"],
+                        private_key=request.POST["private_key"],
+                        scope=request.POST["scope"],
+                        rmk="",
+                        member_no=member.objects.get(member_no=request.session["memberInfo"]["member_no"])
+                    )
+
+                else:
                     context["flag"] = "2"
                     context["result_msg"] = "JWT 인증 API 호출 실패"
             except Exception as err:
                 context["flag"] = "2"
                 context["result_msg"] = err
-        util.insertLog(request, context["result_msg"])
+        util.insertLog(request, context["result_msg"] + "    " + util.jsonTostr(request.POST.dict()))
         return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
