@@ -46,3 +46,5 @@ def authJwt(request):
         status = 500
 
     return JsonResponse(result, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=status) 
+
+

@@ -10,28 +10,28 @@
     <link rel="shortcut icon" href="{% static 'images/tripod.ico' %}">
 </head>
 <body>
-    <h1>api List</h1>
+    <h1>bot List</h1>
     <button onclick="fn_logout()">logout</button>&emsp;
     <button onclick="location.href='./'">메인페이지</button>&emsp;
-    <button onclick="location.href='./api/apiReg'">api 등록</button>&emsp;
+    <button onclick="location.href='./bot/botReg'">bot 등록</button>&emsp;
     <div>
-        <p>API 리스트</p>
-        <div id="apiList"></div>
+        <p>BOT 리스트</p>
+        <div id="botList"></div>
     </div>
     <form class="" id="Form1" enctype="multipart/form-data" style="display:none">
         {% csrf_token %}
     </form>
     <script>
         window.onload = function() {
-            fn_getApiList();
+            //fn_getBotList();
         }
 
         var fn_logout = function() {
             location.href = "/logout";
         }
         
-        var fn_getApiList = function() {
-            let url = "api/getApiList";
+        var fn_getBotList = function() {
+            let url = "bot/getBotList";
             let form = document.getElementById("Form1")
             let formData = new FormData(form);
 
@@ -52,8 +52,8 @@
         }
 
         var fn_drowTable = function(data) {
-            let list = document.getElementById("apiList");
-            let th = ["apiNo", "api_name", "삭제"]
+            let list = document.getElementById("botList");
+            let th = ["bot_no", "bot_name"]
             table = "<table>";
             table+="<tr>";
             for(let i=0; i<th.length; i++) {
@@ -62,34 +62,12 @@
             table+="</tr>";
             for(let i=0; i<data.data.length; i++) {
                 table += "<tr>";
-                table += "<td>" + data.data[i].api_no + "</td>";
-                table += "<td>" + data.data[i].api_name + "</td>";
-                table += "<td><button type=button onclick='fn_removeApi(" + data.data[i].api_no + ");'>삭제<button></td>";
+                table += "<td>" + data.data[i].bot_no + "</td>";
+                table += "<td>" + data.data[i].bot_name + "</td>";
                 table += "</tr>";
             }
             list.innerHTML = table;
-        }
 
-        var fn_removeApi = function(api_no) {
-            let url = "api/apiRm";
-            let form = document.getElementById("Form1")
-            let formData = new FormData(form);
-            formData.append("api_no", api_no);
-
-            fetch(url, {
-                method: "POST",
-                cache: 'no-cache',
-                body: formData,
-            }).then((response) => {
-                if (!response.ok || response.status != '200') {
-                    throw new Error('연결 실패. 다시 요청하세요.\n' + response.statusText + "(" + response.status + ")");
-                }
-                return response.json();
-            }).then((res) => {
-                fn_getApiList();
-            }).catch((err) => {
-                alert(err);
-            });
         }
 
     </script>

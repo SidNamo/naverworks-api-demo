@@ -12,5 +12,8 @@ urlpatterns = [
     path('join', nwad.join, name="join"),
     path('apiList', nwad.apiList, name="apiList"),
     path('api/apiReg', nwad.apiReg, name="api/apiReg"),
+    path('api/apiRm', nwad.apiRm, name="api/apiRm"),
     path('api/getApiList', nwad.getApiList, name="api/getApiList"),
+    path('botList', nwad.botList, name="botList"),
+    path('bot/botReg', nwad.botReg, name="bot/botReg"),
 ]

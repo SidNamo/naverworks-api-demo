@@ -41,7 +41,7 @@ class member(models.Model):
     
 class api(models.Model):
     api_no = models.AutoField(db_column='api_no', primary_key=True)
-    member_no = models.ForeignKey(member, related_name="member", on_delete=models.CASCADE, db_column="member_no")
+    member_no = models.ForeignKey(member, related_name="fk_member_no_api", on_delete=models.CASCADE, db_column="member_no")
     api_name = models.CharField(db_column="api_name", null=False, max_length=20)
     client_id = models.CharField(db_column="client_id", null=False, max_length=20)
     client_secret = models.CharField(db_column="client_secret", null=False, max_length=10)
@@ -56,3 +56,36 @@ class api(models.Model):
 
     def __str__(self):
         return self.api_no
+    
+class bot(models.Model):
+    bot_no = models.AutoField(db_column='bot_no', primary_key=True)
+    member_no = models.ForeignKey(member, related_name="fk_member_no_bot", on_delete=models.CASCADE, db_column="member_no")
+    bot_id = models.CharField(db_column="bot_id", null=False, max_length=10)
+    bot_secret = models.CharField(db_column="bot_secret", null=False, max_length=30)
+    bot_name = models.CharField(db_column="bot_name", null=False, max_length=10)
+    rmk = models.TextField(db_column='rmk', null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'bot'
+
+    def __str__(self):
+        return self.bot_no
+
+    
+class token(models.Model):
+    token_no = models.AutoField(db_column='token_no', primary_key=True)
+    member_no = models.ForeignKey(member, related_name="fk_member_no_token", on_delete=models.CASCADE, db_column="member_no")
+    api_no = models.ForeignKey(api, related_name="fk_api_token", on_delete=models.CASCADE, db_column="api_no")
+    type = models.CharField(db_column="type", null=False, max_length=20)
+    token = models.TextField(db_column="token", null=False)
+    scope = models.TextField(db_column="scope", null=False)
+    reg_date = models.DateTimeField(db_column='reg_date', auto_now=True)
+    rmk = models.TextField(db_column='rmk', null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'token'
+
+    def __str__(self):
+        return self.token
