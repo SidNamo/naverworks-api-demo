@@ -136,8 +136,11 @@ def apiList(request):
     elif request.method == "":
         return 
 
-# def getApiList(request):
-#     if request.method == "POST":
+def getApiList(request):
+    if request.method == "POST":
+        apiData = api.objects.filter(member_no=request.session["memberInfo"]["member_no"]).all()
+        res = util.objectToPaging(apiData)
+        return JsonResponse(res, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
 
 
 def apiReg(request):
@@ -178,7 +181,9 @@ def apiReg(request):
                 headers = {'X-CSRFToken':csrftoken}
                 res = client.post(request._current_scheme_host + "/auth/jwt", headers=headers, data=apidata)
                 if res.status_code == 200:
-                    result = util.strToJson(res.text)
+                    result = util.strToJson(res.text) # 인증 완료 후 응답 값
+
+                    # API 테이블에 값 저장
                     api.objects.create(
                         api_name=request.POST["api_name"],
                         client_id=request.POST["client_id"],

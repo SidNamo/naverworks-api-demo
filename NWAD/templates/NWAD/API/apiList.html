@@ -17,6 +17,9 @@
         <p>API 리스트</p>
         <div id="apiList"></div>
     </div>
+    <form class="" id="Form1" enctype="multipart/form-data" style="display:none">
+        {% csrf_token %}
+    </form>
     <script>
         window.onload = function() {
             fn_getApiList();
@@ -27,8 +30,43 @@
         }
         
         var fn_getApiList = function() {
-            list = document.getElementById("apiList");
-            //list.innerHTML();
+            let url = "api/getApiList";
+            let form = document.getElementById("Form1")
+            let formData = new FormData(form);
+
+            fetch(url, {
+                method: "POST",
+                cache: 'no-cache',
+                body: formData,
+            }).then((response) => {
+                if (!response.ok || response.status != '200') {
+                    throw new Error('연결 실패. 다시 요청하세요.\n' + response.statusText + "(" + response.status + ")");
+                }
+                return response.json();
+            }).then((res) => {
+                fn_drowTable(res);
+            }).catch((err) => {
+                alert(err);
+            });
+        }
+
+        var fn_drowTable = function(data) {
+            let list = document.getElementById("apiList");
+            let th = ["apiNo", "api_name"]
+            table = "<table>";
+            table+="<tr>";
+            for(let i=0; i<th.length; i++) {
+                table+="<th>" + th[i] + "</th>";
+            }
+            table+="</tr>";
+            for(let i=0; i<data.data.length; i++) {
+                table += "<tr>";
+                table += "<td>" + data.data[i].api_no + "</td>";
+                table += "<td>" + data.data[i].api_name + "</td>";
+                table += "</tr>";
+            }
+            list.innerHTML = table;
+
         }
 
     </script>

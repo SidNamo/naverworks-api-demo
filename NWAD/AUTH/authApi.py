@@ -25,7 +25,7 @@ def authJwt(request):
         payload["sub"] = service_account
         now = util.datetime.datetime.now()
         payload["iat"] = util.convert_unixtime(now)
-        payload["exp"] = util.convert_unixtime(util.add_datetime(now,3600)) #1시간 = 3600초
+        payload["exp"] = util.convert_unixtime(util.add_datetime(now,600)) #1시간 = 3600초 , 10분 = 600초
         
         signature = encode(payload=payload, key=private_key, algorithm="RS256", headers=header)
 

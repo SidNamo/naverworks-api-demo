@@ -83,3 +83,26 @@ def insertLog(request, msg):
         msg=msg,
         reg_user="system"
     )
+
+"""
+db objects 를 페이징 처리하여 object 형태로 변경
+{
+    now : 현재 페이지
+    max : 최대 페이지
+    count : 한 페이지에 노출되는 수
+    data : 자료
+}
+"""
+def objectToPaging(data, now=1, count=10):
+    res = {}
+    res["now"] = now
+    res["max"] = data.count() // count + 1
+    res["count"] = count
+    dataList = []
+    for idx, val in enumerate(data):
+        if idx >= count*(now-1) and idx < count*now :
+            val.__dict__.pop('_state')
+            val.__dict__['idx'] = idx
+            dataList.append(val.__dict__)
+    res["data"] = dataList
+    return res
