@@ -168,7 +168,7 @@ def apiReg(request):
                 
         # 중복 검사    
         if(context["flag"] == "0"):
-            apiData = api.objects.filter(client_id=request.POST["client_id"]).first()
+            apiData = api.objects.filter(client_id=request.POST["client_id"],member_no=request.session["memberInfo"]["member_no"]).first()
             if apiData is not None:
                 context["flag"] = "3"
                 context["result_msg"] = "이미 등록된 client_id 입니다."
@@ -270,7 +270,7 @@ def botReg(request):
                 
         # 중복 검사    
         if(context["flag"] == "0"):
-            botData = bot.objects.filter(bot_id=request.POST["bot_id"]).first()
+            botData = bot.objects.filter(bot_id=request.POST["bot_id"],member_no=request.session["memberInfo"]["member_no"]).first()
             if botData is not None:
                 context["flag"] = "3"
                 context["result_msg"] = "이미 등록된 bot id 입니다."
