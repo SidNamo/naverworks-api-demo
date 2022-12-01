@@ -9,7 +9,7 @@ from urllib import parse
 
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import member, api
+from .models import member, api, bot, token
 
 def index(request):
     if 'memberInfo' in request.session:
@@ -180,8 +180,8 @@ def apiReg(request):
                 csrftoken = client.get(request._current_scheme_host + "/login").cookies['csrftoken']
                 headers = {'X-CSRFToken':csrftoken}
                 res = client.post(request._current_scheme_host + "/auth/jwt", headers=headers, data=apidata)
+                result = util.strToJson(res.text) # 인증 완료 후 응답 값
                 if res.status_code == 200:
-                    result = util.strToJson(res.text) # 인증 완료 후 응답 값
 
                     # API 테이블에 값 저장
                     result["api"] = api.objects.create(
@@ -198,7 +198,7 @@ def apiReg(request):
 
                 else:
                     context["flag"] = "2"
-                    context["result_msg"] = "JWT 인증 API 호출 실패"
+                    context["result_msg"] = result["error_description"]
             except Exception as err:
                 context["flag"] = "2"
                 context["result_msg"] = err
@@ -232,6 +232,12 @@ def botList(request):
     elif request.method == "":
         return 
 
+def getBotList(request):
+    if request.method == "POST":
+        apiData = bot.objects.filter(member_no=request.session["memberInfo"]["member_no"]).all()
+        res = util.objectToPaging(apiData, 1, 0)
+        return JsonResponse(res, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
+
 def botReg(request):
     if 'memberInfo' not in request.session:
         return redirect('login')
@@ -255,6 +261,8 @@ def botReg(request):
                 break
             else: 
                 apidata[val] = parse.quote(request.POST[val])
+
+        # API NO 유효성 검사
         apiData = api.objects.filter(api_no=request.POST["api_no"], member_no=request.session["memberInfo"]["member_no"]).first()
         if apiData is None:
             context["flag"] = "4"
@@ -262,11 +270,18 @@ def botReg(request):
                 
         # 중복 검사    
         if(context["flag"] == "0"):
-            a=1
-            # botData = api.objects.filter(bot_id=request.POST["bot_id"]).first()
-            # if apiData is not None:
-            #     context["flag"] = "3"
-            #     context["result_msg"] = "이미 등록된 client_id 입니다."
+            botData = bot.objects.filter(bot_id=request.POST["bot_id"]).first()
+            if botData is not None:
+                context["flag"] = "3"
+                context["result_msg"] = "이미 등록된 bot id 입니다."
+
+        if(context["flag"] == "0"):
+            # AccessToken 조회
+            apidata["access_token"] = util.getAccessToken(request, request.POST["api_no"])
+            if apidata["access_token"] == "":
+                context["flag"] = "5"
+                context["result_msg"] = "access_token을 조회 할 수 없습니다."
+
 
         if(context["flag"] == "0"):
             try:
@@ -274,27 +289,40 @@ def botReg(request):
                 client = requests.session()
                 csrftoken = client.get(request._current_scheme_host + "/login").cookies['csrftoken']
                 headers = {'X-CSRFToken':csrftoken}
-                res = client.post(request._current_scheme_host + "/auth/jwt", headers=headers, data=apidata)
+                res = client.post(request._current_scheme_host + "/api/getBotInfo", headers=headers, data=apidata)
+                result = util.strToJson(res.text) # 인증 완료 후 응답 값
                 if res.status_code == 200:
-                    result = util.strToJson(res.text) # 인증 완료 후 응답 값
-
-                    # API 테이블에 값 저장
-                    api.objects.create(
-                        api_name=request.POST["api_name"],
-                        client_id=request.POST["client_id"],
-                        client_secret=request.POST["client_secret"],
-                        service_account=request.POST["service_account"],
-                        private_key=request.POST["private_key"],
-                        scope=request.POST["scope"],
+                    # BOT 테이블에 값 저장
+                    bot.objects.create(
+                        bot_id=request.POST["bot_id"],
+                        bot_secret=request.POST["bot_secret"],
+                        bot_name=result["botName"],
                         rmk="",
                         member_no=member.objects.get(member_no=request.session["memberInfo"]["member_no"])
                     )
 
                 else:
                     context["flag"] = "2"
-                    context["result_msg"] = "JWT 인증 API 호출 실패"
+                    context["result_msg"] = result["error_description"]
             except Exception as err:
                 context["flag"] = "2"
                 context["result_msg"] = err
         util.insertLog(request, context["result_msg"] + "    " + util.jsonTostr(request.POST.dict()))
         return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
+
+def botRm(request):
+    if 'memberInfo' not in request.session:
+        return redirect('login')
+
+    if request.method == "POST":
+        context = {}
+        context["flag"] = "0"
+        context["result_msg"] = "success"
+        try:
+            bot.objects.filter(bot_no=request.POST["bot_no"], member_no=request.session["memberInfo"]["member_no"]).delete()
+        except Exception as err:
+            context["flag"] = "2"
+            context["result_msg"] = err
+        util.insertLog(request, context["result_msg"] + "    " + util.jsonTostr(request.POST.dict()))
+        return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
+        

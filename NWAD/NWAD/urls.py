@@ -5,6 +5,7 @@ from . import nwad
 urlpatterns = [
     # path('admin/', admin.site.urls),
     path('auth/', include('AUTH.urls')),
+    path('api/', include('API.urls')),
     path('', nwad.index, name="main"),
     path('login', nwad.login, name="login"),
     path('logout', nwad.logout, name="logout"),
@@ -16,4 +17,6 @@ urlpatterns = [
     path('api/getApiList', nwad.getApiList, name="api/getApiList"),
     path('botList', nwad.botList, name="botList"),
     path('bot/botReg', nwad.botReg, name="bot/botReg"),
+    path('bot/botRm', nwad.botRm, name="api/botRm"),
+    path('bot/getBotList', nwad.getBotList, name="api/getBotList"),
 ]

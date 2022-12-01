@@ -33,7 +33,6 @@
         var fn_checkValue = function () {
             let ae = document.activeElement;
             if(ae.id == 'name') ae.value = ae.value.replace(/[^ㄱ-ㅎㅏ-ㅣ가-힣0-9a-zA-Z]/g, '');
-            if(ae.id == 'client_id') ae.value = ae.value.replace(/[^0-9a-zA-Z]/g, '');
             if(ae.id == 'client_secret') ae.value = ae.value.replace(/[^0-9a-zA-Z]/g, '');
             if(ae.id == 'service_account') ae.value = ae.value.replace(/[^0-9a-zA-Z@.]/g, '');
 
@@ -84,7 +83,7 @@
         }
 
         var fn_testSet = function(){
-            document.getElementById("api_name").value = "테스트봇";
+            document.getElementById("api_name").value = "테스트 API";
             document.getElementById("client_id").value = "eoX5oR3RZhC8ugplLQHc";
             document.getElementById("client_secret").value = "rB3ReCyk06";
             document.getElementById("service_account").value = "bj3s8.serviceaccount@didim365.kr";

@@ -23,7 +23,7 @@
     </form>
     <script>
         window.onload = function() {
-            //fn_getBotList();
+            fn_getBotList();
         }
 
         var fn_logout = function() {
@@ -53,7 +53,7 @@
 
         var fn_drowTable = function(data) {
             let list = document.getElementById("botList");
-            let th = ["bot_no", "bot_name"]
+            let th = ["bot_no", "bot_name", "삭제"]
             table = "<table>";
             table+="<tr>";
             for(let i=0; i<th.length; i++) {
@@ -64,10 +64,32 @@
                 table += "<tr>";
                 table += "<td>" + data.data[i].bot_no + "</td>";
                 table += "<td>" + data.data[i].bot_name + "</td>";
+                table += "<td><button type=button onclick='fn_removeBot(" + data.data[i].bot_no + ");'>삭제<button></td>";
                 table += "</tr>";
             }
             list.innerHTML = table;
+        }
 
+        var fn_removeBot = function(bot_no) {
+            let url = "bot/botRm";
+            let form = document.getElementById("Form1")
+            let formData = new FormData(form);
+            formData.append("bot_no", bot_no);
+
+            fetch(url, {
+                method: "POST",
+                cache: 'no-cache',
+                body: formData,
+            }).then((response) => {
+                if (!response.ok || response.status != '200') {
+                    throw new Error('연결 실패. 다시 요청하세요.\n' + response.statusText + "(" + response.status + ")");
+                }
+                return response.json();
+            }).then((res) => {
+                fn_getBotList();
+            }).catch((err) => {
+                alert(err);
+            });
         }
 
     </script>

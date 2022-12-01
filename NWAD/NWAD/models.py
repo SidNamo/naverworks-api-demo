@@ -48,6 +48,7 @@ class api(models.Model):
     service_account = models.CharField(db_column="service_account", null=False, max_length=50)
     private_key = models.TextField(db_column="private_key", null=False)
     scope = models.TextField(db_column="scope", null=False)
+    reg_date = models.DateTimeField(db_column='reg_date', auto_now=True)
     rmk = models.TextField(db_column='rmk', null=True)
 
     class Meta:
@@ -63,6 +64,7 @@ class bot(models.Model):
     bot_id = models.CharField(db_column="bot_id", null=False, max_length=10)
     bot_secret = models.CharField(db_column="bot_secret", null=False, max_length=30)
     bot_name = models.CharField(db_column="bot_name", null=False, max_length=10)
+    reg_date = models.DateTimeField(db_column='reg_date', auto_now=True)
     rmk = models.TextField(db_column='rmk', null=True)
 
     class Meta:

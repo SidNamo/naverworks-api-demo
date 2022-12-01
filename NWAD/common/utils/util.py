@@ -1,8 +1,10 @@
+import requests
 import base64
 import json
-import hashlib
-import time
+# import hashlib
+# import time
 import datetime
+from urllib import parse
 from NWAD.models import api, log, token, member
 
 
@@ -58,7 +60,9 @@ def add_datetime(date_time, seconds):
         date_time += datetime.timedelta(seconds=seconds)
     return date_time
 
-
+def getTime(seconds=0):
+    now = datetime.datetime.now()
+    return add_datetime(now, seconds)
 
 
 """
@@ -107,36 +111,115 @@ def objectToPaging(data, now=1, count=10):
     res["data"] = dataList
     return res
 
+"""
+db objects 를 dict 형태로 변경
+"""
+def objectToDict(data):
+    res = data.__dict__
+    res.pop('_state')
+    return res
 
 
     
 """
 Token 정보 저장
+이전 기록이 있으면 UPDATE
 """
 def tokenReg(request, tokenData):
-    tokenType=["access_token","refresh_token"]
-    for type in tokenType:
-        if tokenData.keys().__contains__(type):
-            token.objects.create(
+    tokenInfo = []
+    # tokenInfo.append({'type':'authorization_code','exp':'600'})
+    tokenInfo.append({'type':'access_token','exp':86400}) # 1일 = 86,400초
+    tokenInfo.append({'type':'refresh_token','exp':7776000}) # 90일 = 7,776,000초
+    for type in tokenInfo:
+        if tokenData.keys().__contains__(type["type"]):
+            # 유효기간이 지난 토큰 제거
+            token.objects.filter(
                 member_no=member.objects.filter(member_no=request.session["memberInfo"]["member_no"]).first(),
                 api_no=tokenData["api"],
                 type=type,
-                token=tokenData[type],
-                scope=tokenData["scope"]
+                scope=tokenData["scope"],
+                reg_date__lt=getTime(-1*type["exp"])
+            ).all().delete()
+            # 토큰정보 저장 (없으면 Insert 있으면 Update)
+            token.objects.update_or_create(
+                member_no=member.objects.filter(member_no=request.session["memberInfo"]["member_no"]).first(),
+                api_no=tokenData["api"],
+                type=type["type"],
+                scope=tokenData["scope"],
+                defaults={'token': tokenData[type["type"]]}
             )
     
 
+    
 """
-Token 오래된 토큰 제거
-호출시간 기준 저장된 시간보다 오래된 토큰 제거
+AccessToken 조회
+1. DB에 AccessToken 있는지 조회
+2. DB에 RefreshToken 있는지 조회
+3. JWT 인증
 """
-# def tokenRm():
-#     tokenInfo = []
-#     # tokenInfo.append({'type':'authorization_code','exp':'600'})
-#     tokenInfo.append({'type':'access_token','exp':86400})
-#     tokenInfo.append({'type':'refresh_token','exp':7776000})
-#     now = datetime.datetime.now()
+def getAccessToken(request, apiNo):
+    tokenInfo = []
+    # tokenInfo.append({'type':'authorization_code','exp':'600'})
+    tokenInfo.append({'type':'access_token','exp':86400}) # 1일 = 86,400초
+    tokenInfo.append({'type':'refresh_token','exp':7776000}) # 90일 = 7,776,000초
+    accessToken = ""
+    # AccessToken 조회
+    type = "access_token"
+    tokenData = token.objects.filter(
+        member_no=member.objects.filter(member_no=request.session["memberInfo"]["member_no"]).first(),
+        api_no=apiNo,
+        type=type,
+        reg_date__lt=getTime(-1 * next((item for item in tokenInfo if item["type"] == type), None)["exp"])
+    ).first()
+    if tokenData is not None:
+        accessToken = tokenData["access_token"]
+    else:
+        type = "refresh_token"
+        tokenData = token.objects.filter(
+            member_no=member.objects.filter(member_no=request.session["memberInfo"]["member_no"]).first(),
+            api_no=apiNo,
+            type=type,
+            reg_date__range=(getTime(-1 * next((item for item in tokenInfo if item["type"] == type), None)["exp"]), getTime())
+        ).first()
 
-#     for ti in tokenInfo:
-#         last = add_datetime(now, -1*ti["exp"])
-#         token.objects.filter().all()
+        apidata=api.objects.filter(
+            member_no=member.objects.filter(member_no=request.session["memberInfo"]["member_no"]).first(),
+            api_no=apiNo
+        ).first()
+        apidata = objectToDict(apidata)
+
+        if tokenData is not None:
+            apidata["refresh_token"] = tokenData.token
+            # JWT Auth Api 호출
+            client = requests.session()
+            csrftoken = client.get(request._current_scheme_host + "/login").cookies['csrftoken']
+            headers = {'X-CSRFToken':csrftoken}
+            res = client.post(request._current_scheme_host + "/auth/authRefreshToken", headers=headers, data=apidata)
+            result = strToJson(res.text) # 인증 완료 후 응답 값
+            if res.status_code == 200:
+                result["api"] = api.objects.filter(
+                    member_no=member.objects.filter(member_no=request.session["memberInfo"]["member_no"]).first(),
+                    api_no=apiNo
+                ).first()
+                tokenReg(request, result)
+                accessToken = result["access_token"]
+        else:
+            # JWT Auth Api 호출
+            client = requests.session()
+            csrftoken = client.get(request._current_scheme_host + "/login").cookies['csrftoken']
+            headers = {'X-CSRFToken':csrftoken}
+            res = client.post(request._current_scheme_host + "/auth/jwt", headers=headers, data=apidata)
+            result = strToJson(res.text) # 인증 완료 후 응답 값
+            if res.status_code == 200:
+                result["api"] = api.objects.filter(
+                    member_no=member.objects.filter(member_no=request.session["memberInfo"]["member_no"]).first(),
+                    api_no=apiNo
+                ).first()
+                tokenReg(request, result)
+                accessToken = result["access_token"]
+
+    return accessToken
+
+            
+
+    
