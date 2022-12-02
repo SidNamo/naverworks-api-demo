@@ -82,6 +82,7 @@ class token(models.Model):
     type = models.CharField(db_column="type", null=False, max_length=20)
     token = models.TextField(db_column="token", null=False)
     scope = models.TextField(db_column="scope", null=False)
+    exp_date = models.DateTimeField(db_column='exp_date', null=False)
     reg_date = models.DateTimeField(db_column='reg_date', auto_now=True)
     rmk = models.TextField(db_column='rmk', null=True)
 

@@ -132,22 +132,28 @@ def tokenReg(request, tokenData):
     tokenInfo.append({'type':'refresh_token','exp':7776000}) # 90일 = 7,776,000초
     for type in tokenInfo:
         if tokenData.keys().__contains__(type["type"]):
-            # 유효기간이 지난 토큰 제거
-            token.objects.filter(
-                member_no=member.objects.filter(member_no=request.session["memberInfo"]["member_no"]).first(),
-                api_no=tokenData["api"],
-                type=type,
-                scope=tokenData["scope"],
-                reg_date__lt=getTime(-1*type["exp"])
-            ).all().delete()
             # 토큰정보 저장 (없으면 Insert 있으면 Update)
-            token.objects.update_or_create(
+            item = token.objects.filter(
                 member_no=member.objects.filter(member_no=request.session["memberInfo"]["member_no"]).first(),
                 api_no=tokenData["api"],
                 type=type["type"],
-                scope=tokenData["scope"],
-                defaults={'token': tokenData[type["type"]]}
+                scope=tokenData["scope"]
             )
+            if item.first() is not None:
+                item.update(
+                    token=tokenData[type["type"]],
+                    exp_date=getTime(type["exp"])
+                )
+            else:
+                token.objects.create(
+                    member_no=member.objects.filter(member_no=request.session["memberInfo"]["member_no"]).first(),
+                    api_no=tokenData["api"],
+                    type=type["type"],
+                    scope=tokenData["scope"],
+                    reg_date=getTime(),
+                    token=tokenData[type["type"]],
+                    exp_date=getTime(type["exp"])
+                )
     
 
     
@@ -169,17 +175,17 @@ def getAccessToken(request, apiNo):
         member_no=member.objects.filter(member_no=request.session["memberInfo"]["member_no"]).first(),
         api_no=apiNo,
         type=type,
-        reg_date__lt=getTime(-1 * next((item for item in tokenInfo if item["type"] == type), None)["exp"])
+        exp_date__gt=getTime()
     ).first()
     if tokenData is not None:
-        accessToken = tokenData["access_token"]
+        accessToken = tokenData.token
     else:
         type = "refresh_token"
         tokenData = token.objects.filter(
             member_no=member.objects.filter(member_no=request.session["memberInfo"]["member_no"]).first(),
             api_no=apiNo,
             type=type,
-            reg_date__range=(getTime(-1 * next((item for item in tokenInfo if item["type"] == type), None)["exp"]), getTime())
+        exp_date__gt=getTime()
         ).first()
 
         apidata=api.objects.filter(
