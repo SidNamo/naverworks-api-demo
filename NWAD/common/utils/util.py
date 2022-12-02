@@ -30,7 +30,7 @@ def sha256encode(jsonString):
 def strToJson(str):
     return json.loads(str.encode('utf-8'))
 
-def jsonTostr(obj):
+def jsonToStr(obj):
     return json.dumps(obj, separators=(",", ":"))
 
 '''
