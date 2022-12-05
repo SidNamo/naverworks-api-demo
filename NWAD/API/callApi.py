@@ -1,4 +1,5 @@
 import requests
+import json
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from urllib import parse
 from common.utils import util
@@ -45,17 +46,16 @@ def sendMessage(request):
         nwa_url = 'https://www.worksapis.com/v1.0/bots/' + bot_id + "/users/" + user_id + "/messages"
         nwa_header = {'content-Type':'application/json', 'Authorization':Authorization}
         nwa_data = {}
-        nwa_data["content"] = request.POST["content"]
+        nwa_data["content"] = util.strToJson(request.POST["content"])
         res = requests.post(url=nwa_url, headers=nwa_header, json=nwa_data)
         status = res.status_code
-        result = util.strToJson(res.text)
+        if status != 201:
+            result = util.strToJson(res.text)
 
     except Exception as err:
         status = 500
 
     return JsonResponse(result, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=status) 
-
-
 
 
 def authrization(accessToken):

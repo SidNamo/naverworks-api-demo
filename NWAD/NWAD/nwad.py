@@ -424,18 +424,7 @@ def textMessage(request):
                 res = client.post(request._current_scheme_host +
                                   "/api/sendMessage", headers=headers, data=reqData)
                 result = util.strToJson(res.text)  # 인증 완료 후 응답 값
-                if res.status_code == 200:
-                    # BOT 테이블에 값 저장
-                    bot.objects.create(
-                        bot_id=request.POST["bot_id"],
-                        bot_secret=request.POST["bot_secret"],
-                        bot_name=result["botName"],
-                        rmk="",
-                        member_no=member.objects.get(
-                            member_no=request.session["memberInfo"]["member_no"])
-                    )
-
-                else:
+                if res.status_code != 200 and res.status_code != 201:
                     context["flag"] = "2"
                     context["result_msg"] = result["description"]
             except Exception as err:
