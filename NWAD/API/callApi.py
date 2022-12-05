@@ -46,7 +46,7 @@ def sendMessage(request):
         nwa_header = {'content-Type':'application/json', 'Authorization':Authorization}
         nwa_data = {}
         nwa_data["content"] = request.POST["content"]
-        res = requests.post(url=nwa_url, headers=nwa_header, data=util.jsonToStr(nwa_data))
+        res = requests.post(url=nwa_url, headers=nwa_header, json=nwa_data)
         status = res.status_code
         result = util.strToJson(res.text)
 
