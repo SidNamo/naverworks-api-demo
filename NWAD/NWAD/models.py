@@ -77,7 +77,6 @@ class bot(models.Model):
     
 class token(models.Model):
     token_no = models.AutoField(db_column='token_no', primary_key=True)
-    member_no = models.ForeignKey(member, related_name="fk_member_token", on_delete=models.CASCADE, db_column="member_no")
     api_no = models.ForeignKey(api, related_name="fk_api_token", on_delete=models.CASCADE, db_column="api_no")
     type = models.CharField(db_column="type", null=False, max_length=20)
     token = models.TextField(db_column="token", null=False)

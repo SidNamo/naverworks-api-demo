@@ -10,7 +10,8 @@ from urllib import parse
 
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import member, api, bot, token, log, scen_type, scen, scen_conn
+from .models import *
+from API.callApi import *
 
 # region Main 관련
 
@@ -214,7 +215,7 @@ def apiReg(request):
                         member_no=member.objects.get(
                             member_no=request.session["memberInfo"]["member_no"])
                     )
-                    util.tokenReg(request, result)
+                    util.tokenReg(result)
 
                 else:
                     context["flag"] = "2"
@@ -242,7 +243,7 @@ def apiRm(request):
             context["flag"] = "2"
             context["result_msg"] = err
         util.insertLog(
-            request, context["result_msg"] + "    " + util.jsonTStr(request.POST.dict()))
+            request, context["result_msg"] + "    " + util.jsonToStr(request.POST.dict()))
         return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
 
 # endregion
@@ -403,18 +404,10 @@ def textMessage(request):
                 context["result_msg"] = "잘못된 BOT NO 입니다."
 
         if (context["flag"] == "0"):
-            # AccessToken 조회
-            reqData["access_token"] = util.getAccessToken(
-                request, request.POST["api_no"])
-            if reqData["access_token"] == "":
-                context["flag"] = "5"
-                context["result_msg"] = "access_token을 조회 할 수 없습니다."
-
-
-        if (context["flag"] == "0"):
             try:
                 reqData["user_id"] = "didim365@didim365.kr"
-                reqData["bot_id"] = botData.bot_id
+                reqData["api_no"] = apiData.api_no
+                reqData["bot_no"] = botData.bot_no
                 reqData["content"] = util.jsonToStr({"type":"text", "text":request.POST["text"]})
 
                 # JWT Auth Api 호출
@@ -471,14 +464,6 @@ def scenarioReg(request):
             if botData is None:
                 context["flag"] = "4"
                 context["result_msg"] = "잘못된 BOT NO 입니다."
-
-        if (context["flag"] == "0"):
-            # AccessToken 조회
-            reqData["access_token"] = util.getAccessToken(
-                request, request.POST["api_no"])
-            if reqData["access_token"] == "":
-                context["flag"] = "5"
-                context["result_msg"] = "access_token을 조회 할 수 없습니다."
         
         # 중복 데이터 조회
         if context["flag"] == "0":
@@ -493,7 +478,8 @@ def scenarioReg(request):
 
         if (context["flag"] == "0"):
             try:
-                reqData["bot_id"] = botData.bot_id
+                reqData["api_no"] = apiData.api_no
+                reqData["bot_no"] = botData.bot_no
                 reqData["members"] = re.sub(r"\s", "", request.POST["members"])
                 reqData["title"] = "익명 보고 시나리오 결재자"
 
@@ -542,11 +528,50 @@ def callback(request):
     jsonString = log.objects.filter(reg_user='callback').last().msg
     jsonObj = util.strToJson(jsonString)
     requests.post(request._current_scheme_host +
-        "/botResponse", headers={"Content-Type":"application/json"}, data=jsonObj)
+        "/botResponse", headers={"Content-Type":"application/json"}, json=jsonObj)
+    return ""
 
 @csrf_exempt
 def botResponse(request):
     if request.method == "POST":
-        body =  json.loads(request.body.decode('utf-8'))
-        a = 1
+        req = util.strToJson(request.body.decode('utf-8'))
+        
+        if req["type"] == "message":
+            scenData = scen.objects.filter(domain=req["source"]["domainId"]).first()
+            if scenData is not None:
+                reqData={}
+                try:
+                    # 보낸 사람의 정보 조회
+                    reqData["api_no"] = scenData.api_no.api_no
+                    reqData["bot_no"] = scenData.bot_no.bot_no
+                    reqData["user_id"] = req["source"]["userId"]
+
+                    # JWT Auth Api 호출
+                    client = requests.session()
+                    csrftoken = client.get(
+                        request._current_scheme_host + "/login").cookies['csrftoken']
+                    headers = {'X-CSRFToken': csrftoken}
+                    res = client.post(request._current_scheme_host +
+                                    "/api/getUserInfo", headers=headers, data=reqData)
+                    result = util.strToJson(res.text)  # 인증 완료 후 응답 값
+                    if res.status_code != 200 and res.status_code != 201:
+                        raise result["description"]
+                    else:
+
+                        a=1
+                except Exception as err:
+                    # 전송 실패 메시지 전달
+                    reqData["user_id"] = req["source"]["userId"]
+                    reqData["api_no"] = scenData.api_no.api_no
+                    reqData["bot_no"] = scenData.bot_no.bot_no
+                    reqData["content"] = util.jsonToStr({"type":"text", "text":err.args[0]})
+
+                    # JWT Auth Api 호출
+                    client = requests.session()
+                    csrftoken = client.get(
+                        request._current_scheme_host + "/login").cookies['csrftoken']
+                    headers = {'X-CSRFToken': csrftoken}
+                    res = client.post(request._current_scheme_host +
+                                    "/api/sendMessage", headers=headers, data=reqData)
+    return
 

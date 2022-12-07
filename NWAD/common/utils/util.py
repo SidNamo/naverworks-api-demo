@@ -5,7 +5,10 @@ import json
 # import time
 import datetime
 from urllib import parse
-from NWAD.models import api, log, token, member
+from NWAD.models import *
+from django.conf import settings
+
+host = settings.DEFAULT_DOMAIN
 
 
 """
@@ -28,7 +31,10 @@ def sha256encode(jsonString):
     return result
 
 def strToJson(str):
-    return json.loads(str.encode('utf-8'))
+    if str != "":   
+        return json.loads(str.encode('utf-8'))
+    else: 
+        return {}
 
 def jsonToStr(obj):
     return json.dumps(obj, separators=(",", ":"))
@@ -125,7 +131,7 @@ def objectToDict(data):
 Token 정보 저장
 이전 기록이 있으면 UPDATE
 """
-def tokenReg(request, tokenData):
+def tokenReg(tokenData):
     tokenInfo = []
     # tokenInfo.append({'type':'authorization_code','exp':'600'})
     tokenInfo.append({'type':'access_token','exp':86400}) # 1일 = 86,400초
@@ -134,7 +140,6 @@ def tokenReg(request, tokenData):
         if tokenData.keys().__contains__(type["type"]):
             # 토큰정보 저장 (없으면 Insert 있으면 Update)
             item = token.objects.filter(
-                member_no=member.objects.filter(member_no=request.session["memberInfo"]["member_no"]).first(),
                 api_no=tokenData["api"],
                 type=type["type"],
                 scope=tokenData["scope"]
@@ -146,7 +151,6 @@ def tokenReg(request, tokenData):
                 )
             else:
                 token.objects.create(
-                    member_no=member.objects.filter(member_no=request.session["memberInfo"]["member_no"]).first(),
                     api_no=tokenData["api"],
                     type=type["type"],
                     scope=tokenData["scope"],
@@ -229,3 +233,71 @@ def getAccessToken(request, apiNo):
             
 
     
+
+    
+"""
+AccessToken 조회
+1. DB에 AccessToken 있는지 조회
+2. DB에 RefreshToken 있는지 조회
+3. JWT 인증
+"""
+def getAccessTokenForApi(request, apiNo, type="access_token"):
+    host = request._current_scheme_host
+    tokenInfo = []
+    # tokenInfo.append({'type':'authorization_code','exp':'600'})
+    tokenInfo.append({'type':'access_token','exp':86400}) # 1일 = 86,400초
+    tokenInfo.append({'type':'refresh_token','exp':7776000}) # 90일 = 7,776,000초
+    accessToken = ""
+    if type == "access_token":
+        # AccessToken 조회
+        tokenData = token.objects.filter(
+            api_no=apiNo,
+            type=type,
+            exp_date__gt=getTime()
+        ).first()
+        if tokenData is not None:
+            accessToken = tokenData.token
+    elif type == "refresh_token":
+        # RefreshToken 조회
+        tokenData = token.objects.filter(
+            api_no=apiNo,
+            type=type,
+        exp_date__gt=getTime()
+        ).first()
+        apidata=api.objects.filter(
+            api_no=apiNo
+        ).first()
+        apidata = objectToDict(apidata)
+        if tokenData is not None:
+            apidata["refresh_token"] = tokenData.token
+            # JWT Auth Api 호출
+            client = requests.session()
+            csrftoken = client.get(host + "/login").cookies['csrftoken']
+            headers = {'X-CSRFToken':csrftoken}
+            res = client.post(host + "/auth/authRefreshToken", headers=headers, data=apidata)
+            result = strToJson(res.text) # 인증 완료 후 응답 값
+            if res.status_code == 200:
+                result["api"] = api.objects.filter(
+                    api_no=apiNo
+                ).first()
+                tokenReg(result)
+                accessToken = result["access_token"]
+    elif type == "jwt":
+        # JWT Auth Api 호출
+        apidata=api.objects.filter(
+            api_no=apiNo
+        ).first()
+        apidata = objectToDict(apidata)
+        client = requests.session()
+        csrftoken = client.get(host + "/login").cookies['csrftoken']
+        headers = {'X-CSRFToken':csrftoken}
+        res = client.post(host + "/auth/jwt", headers=headers, data=apidata)
+        result = strToJson(res.text) # 인증 완료 후 응답 값
+        if res.status_code == 200:
+            result["api"] = api.objects.filter(
+                api_no=apiNo
+            ).first()
+            tokenReg(result)
+            accessToken = result["access_token"]
+
+    return accessToken
