@@ -24,4 +24,8 @@ urlpatterns = [
     path('bot/getBotList', nwad.getBotList, name="api/getBotList"),
 
     path('Message/textMessage', nwad.textMessage, name="Message/textMessage"),
+
+    path('Scenario/scenarioReg', nwad.scenarioReg, name="Scenario/scenarioReg"),
+    path('botResponse', nwad.botResponse, name="botResponse"),
+    path('callback', nwad.callback, name="callback"),
 ]

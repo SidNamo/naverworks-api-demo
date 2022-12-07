@@ -1,0 +1,111 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NaverWorks API Demo</title>
+    <link href="{% static 'css/custom.css' %}" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="{% static 'images/tripod.ico' %}">
+</head>
+
+<body>
+    <div class="login-div">
+        <form class="login-form" id="Form1" enctype="multipart/form-data">
+            {% csrf_token %}
+            <select class="login-input" id="api_no" name="api_no" onchange="fn_checkValue();">
+                <option value="">== 선택 ==</option>
+                {% for api in apiData %}
+                    <option value="{{api.api_no}}">{{api.api_name}}</option>
+                {% endfor %}
+            </select>
+            <select class="login-input" id="bot_no" name="bot_no" onchange="fn_checkValue();">
+                <option value="">== 선택 ==</option>
+                {% for bot in botData %}
+                    <option value="{{bot.bot_no}}">{{bot.bot_name}}</option>
+                {% endfor %}
+            </select>
+            <select class="login-input" id="scen_type" name="scen_type" onchange="fn_checkValue();">
+                <option value="">== 선택 ==</option>
+                {% for type in scenTypeData %}
+                    <option value="{{type.scen_type}}">{{type.title}}</option>
+                {% endfor %}
+            </select>
+            <input type="text" class="login-input" id="domain_id" name="domain_id" placeholder="domain id를 입력하세요" onchange="fn_checkValue();">
+            <textarea class="login-input" type="members" id="members" name="members" placeholder="결재자 Naver Works ID를 입력하세요( 2명이상일 경우 ,로 구분 )" oninput="fn_checkValue();"></textarea>
+            <input class="login-button" type="button" id="submit" value="메세지 전송" onclick="fn_reg();">
+            <input class="login-button" type="button" value="취소" onclick="location.href='../'">
+        </form>
+    </div>
+    <script>
+        window.onload = function(){
+            fn_testSet();
+        }
+
+        var fn_checkValue = function () {
+            let ae = document.activeElement;
+            console.log(ae.value.length)
+            if (ae.value.length > 0) {
+                ae.classList.add("isVal");
+            } else {
+                ae.classList.remove("isVal");
+            }
+
+            if (document.getElementById("api_no").classList.contains("isVal")
+                && document.getElementById("bot_no").classList.contains("isVal")
+                && document.getElementById("domain_id").classList.contains("isVal")
+                && document.getElementById("members").classList.contains("isVal")) {
+                document.getElementById("submit").classList.add("success");
+            } else {
+                document.getElementById("submit").classList.remove("success");
+            }
+        }
+        
+        var fn_reg = function () {
+            if (document.getElementById("submit").classList.contains("success")) {
+                let url = "./scenarioReg";
+                let form = document.getElementById("Form1")
+                let formData = new FormData(form);
+
+                fetch(url, {
+                    method: "POST",
+                    cache: 'no-cache',
+                    body: formData,
+                }).then((response) => {
+                    if (!response.ok || response.status != '200') {
+                        throw new Error('연결 실패. 다시 요청하세요.\n' + response.statusText + "(" + response.status + ")");
+                    }
+                    return response.json();
+                }).then((res) => {
+                    if(res.flag == '0'){
+                        alert("등록 성공");
+                    }else{
+                        throw new Error(res.result_msg);
+                    }
+                }).catch((err) => {
+                    alert(err);
+                });
+            }
+        }
+
+        var fn_testSet = function(){
+            document.getElementById("api_no").getElementsByTagName("option")[1].selected = 'selected'
+            document.getElementById("api_no").classList.add("isVal");
+            document.getElementById("bot_no").getElementsByTagName("option")[1].selected = 'selected'
+            document.getElementById("bot_no").classList.add("isVal");
+            document.getElementById("scen_type").getElementsByTagName("option")[1].selected = 'selected'
+            document.getElementById("scen_type").classList.add("isVal");
+            document.getElementById("domain_id").value = "219818";
+            document.getElementById("domain_id").classList.add("isVal");
+            document.getElementById("members").value = "didim365@didim365.kr";
+            document.getElementById("members").classList.add("isVal");
+
+            document.getElementById("submit").classList.add("success");
+
+        }
+    </script>
+</body>
+
+</html>

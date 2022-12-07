@@ -1,5 +1,6 @@
 import requests
 import json
+import re
 from common.utils import util
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
@@ -9,7 +10,7 @@ from urllib import parse
 
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import member, api, bot, token
+from .models import member, api, bot, token, log, scen_type, scen, scen_conn
 
 # region Main 관련
 
@@ -435,4 +436,117 @@ def textMessage(request):
         return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
         
 
+
+def scenarioReg(request):
+    if 'memberInfo' not in request.session:
+        return redirect('login')
+
+    if request.method == "GET":
+        apiData = api.objects.filter(
+            member_no=request.session["memberInfo"]["member_no"]).all()
+        botData = bot.objects.filter(
+            member_no=request.session["memberInfo"]["member_no"]).all()
+        scenTypeData = scen_type.objects.all()
+        return render(request, 'NWAD/Scenario/scenarioReg.html', {'apiData': apiData, 'botData': botData, 'scenTypeData': scenTypeData})
+    elif request.method == "POST":
+        context = {}
+        context["flag"] = "0"
+        context["result_msg"] = "success"
+        reqData = {}
+
+        # 파라미터 유효성 검사
+        apiData = api.objects.filter(
+            member_no=request.session["memberInfo"]["member_no"],
+            api_no=request.POST["api_no"]
+        ).first()
+        if apiData is None:
+            context["flag"] = "4"
+            context["result_msg"] = "잘못된 API NO 입니다."
+        
+        if context["flag"] == "0":
+            botData = bot.objects.filter(
+                member_no=request.session["memberInfo"]["member_no"],
+                bot_no=request.POST["bot_no"]
+            ).first()
+            if botData is None:
+                context["flag"] = "4"
+                context["result_msg"] = "잘못된 BOT NO 입니다."
+
+        if (context["flag"] == "0"):
+            # AccessToken 조회
+            reqData["access_token"] = util.getAccessToken(
+                request, request.POST["api_no"])
+            if reqData["access_token"] == "":
+                context["flag"] = "5"
+                context["result_msg"] = "access_token을 조회 할 수 없습니다."
+        
+        # 중복 데이터 조회
+        if context["flag"] == "0":
+            scenData = scen.objects.filter(
+                member_no=request.session["memberInfo"]["member_no"],
+                domain=request.POST["domain_id"]
+            ).first()
+            if scenData is not None:
+                context["flag"] = "3"
+                context["result_msg"] = "중복된 Domain Id 입니다."
+
+
+        if (context["flag"] == "0"):
+            try:
+                reqData["bot_id"] = botData.bot_id
+                reqData["members"] = re.sub(r"\s", "", request.POST["members"])
+                reqData["title"] = "익명 보고 시나리오 결재자"
+
+                # JWT Auth Api 호출
+                client = requests.session()
+                csrftoken = client.get(
+                    request._current_scheme_host + "/login").cookies['csrftoken']
+                headers = {'X-CSRFToken': csrftoken}
+                res = client.post(request._current_scheme_host +
+                                  "/api/createChannel", headers=headers, data=reqData)
+                result = util.strToJson(res.text)  # 인증 완료 후 응답 값
+                if res.status_code != 200 and res.status_code != 201:
+                    context["flag"] = "2"
+                    context["result_msg"] = result["description"]
+                else:
+                    # DB 저장
+                    scen.objects.create(
+                        scen_type = scen_type.objects.filter(scen_type=request.POST["scen_type"]).first(),
+                        api_no = apiData,
+                        bot_no = botData,
+                        domain = request.POST["domain_id"],
+                        channel = result["channelId"],
+                        members = reqData["members"],
+                        member_no = member.objects.filter(member_no=request.session["memberInfo"]["member_no"]).first()
+                    )
+                    reqData["channel_id"] = result["channelId"]
+                    reqData["content"] = util.jsonToStr({"type":"text", "text":"[테스트] 익명 보고 시나리오 결재자 단톡방입니다."})
+                    res = client.post(request._current_scheme_host +
+                                    "/api/sendMessage", headers=headers, data=reqData)
+                    result = util.strToJson(res.text)  # 인증 완료 후 응답 값
+
+                
+            except Exception as err:
+                context["flag"] = "2"
+                context["result_msg"] = err
+        util.insertLog(
+            request, context["result_msg"] + "    " + util.jsonToStr(request.POST.dict()))
+        return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
+
+
+
+
+
+@csrf_exempt
+def callback(request):
+    jsonString = log.objects.filter(reg_user='callback').last().msg
+    jsonObj = util.strToJson(jsonString)
+    requests.post(request._current_scheme_host +
+        "/botResponse", headers={"Content-Type":"application/json"}, data=jsonObj)
+
+@csrf_exempt
+def botResponse(request):
+    if request.method == "POST":
+        body =  json.loads(request.body.decode('utf-8'))
+        a = 1
 
