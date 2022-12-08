@@ -41,7 +41,7 @@ def jsonToStr(obj):
     return json.dumps(obj, separators=(",", ":"))
 
 def unicodeAddSlash(str):
-    return re.sub('(u[0-9A-E]{4})',r'\\'+r'\1',str).encode('utf-8').decode('unicode_escape')
+    return re.sub('(u[0-9A-F]{4})',r'\\'+r'\1',str).encode('utf-8').decode('unicode_escape')
 
 '''
 시간 / 날짜 관련
@@ -303,3 +303,69 @@ def getAccessTokenForApi(request, apiNo, type="access_token"):
             accessToken = result["access_token"]
 
     return accessToken
+
+
+
+
+def makeButtonCallBack(text, button=[]):
+    """
+        text: ~ 
+        button: [
+            {
+                "name":~,
+                "data":~,
+            },
+            {
+                "name":~,
+                "data":~,
+            }
+        ]
+    """
+    content={
+        "type": "flex",
+        "altText": text,
+        "contents": {
+            "type": "bubble",
+            "body": {
+                "type": "box",
+                "layout": "vertical",
+                "paddingAll": "0px",
+                "contents": [
+                    {
+                        "type": "box",
+                        "layout": "vertical",
+                        "paddingAll": "10px",
+                        "contents": [
+                            {
+                                "type": "text",
+                                "text": text,
+                                "color": "#000000",
+                                "size": "sm",
+                                "align": "start",
+                                "wrap": True
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    }
+
+    for btn in button:
+        content["contents"]["body"]["contents"].append({
+            "type": "separator",
+            "color": "#c9c9c9"
+        })
+        content["contents"]["body"]["contents"].append({
+            "type": "button",
+            "style": "link",
+            "color": "#157efb",
+            "height": "sm",
+            "action": {
+                "type": "postback",
+                "label": btn["name"],
+                "data": btn["data"]
+            }
+        })
+
+    return jsonToStr(content)
