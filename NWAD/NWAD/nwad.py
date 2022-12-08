@@ -807,7 +807,7 @@ def botResponse(request):
                                 del(reqData["channel_id"])
 
                                 # 보고자에게 메시지 전송
-                                reqData["user_id"] = sender["id"]
+                                reqData["user_id"] = scenConnData.reporter
                                 if sender["id"] == scenConnData.reporter:
                                     text = "대화 요청이 취소되었습니다."
                                 else:
