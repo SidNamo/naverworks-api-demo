@@ -1,6 +1,7 @@
 import requests
 import base64
 import json
+import re
 # import hashlib
 # import time
 import datetime
@@ -38,6 +39,9 @@ def strToJson(str):
 
 def jsonToStr(obj):
     return json.dumps(obj, separators=(",", ":"))
+
+def unicodeAddSlash(str):
+    return re.sub('(u[0-9A-E]{4})',r'\\'+r'\1',str).encode('utf-8').decode('unicode_escape')
 
 '''
 시간 / 날짜 관련
@@ -248,10 +252,15 @@ def getAccessTokenForApi(request, apiNo, type="access_token"):
     tokenInfo.append({'type':'access_token','exp':86400}) # 1일 = 86,400초
     tokenInfo.append({'type':'refresh_token','exp':7776000}) # 90일 = 7,776,000초
     accessToken = ""
+    apiData=api.objects.filter(
+        api_no=apiNo
+    ).first()
+    apidata = objectToDict(apiData)
     if type == "access_token":
         # AccessToken 조회
         tokenData = token.objects.filter(
             api_no=apiNo,
+            scope=apiData.scope,
             type=type,
             exp_date__gt=getTime()
         ).first()
@@ -261,13 +270,10 @@ def getAccessTokenForApi(request, apiNo, type="access_token"):
         # RefreshToken 조회
         tokenData = token.objects.filter(
             api_no=apiNo,
+            scope=apiData.scope,
             type=type,
         exp_date__gt=getTime()
         ).first()
-        apidata=api.objects.filter(
-            api_no=apiNo
-        ).first()
-        apidata = objectToDict(apidata)
         if tokenData is not None:
             apidata["refresh_token"] = tokenData.token
             # JWT Auth Api 호출
@@ -284,10 +290,6 @@ def getAccessTokenForApi(request, apiNo, type="access_token"):
                 accessToken = result["access_token"]
     elif type == "jwt":
         # JWT Auth Api 호출
-        apidata=api.objects.filter(
-            api_no=apiNo
-        ).first()
-        apidata = objectToDict(apidata)
         client = requests.session()
         csrftoken = client.get(host + "/login").cookies['csrftoken']
         headers = {'X-CSRFToken':csrftoken}

@@ -131,7 +131,8 @@ class scen_conn(models.Model):
     scen_no = models.ForeignKey(scen, related_name="fk_scen_scen_conn", on_delete=models.CASCADE, db_column="scen_no")
     reporter = models.CharField(db_column="reporter", null=True, max_length=40)
     approver = models.CharField(db_column="approver", null=True, max_length=40)
-    status = models.CharField(db_column='status', max_length=1, default='2') # 1:대화중 ,2:대화 요청중, 3:대화 취소, 9:대화 종료
+    status = models.CharField(db_column='status', max_length=1, default='2') # 1:대화중 ,2:대화 요청중, 3:대화 대기중, 9:대화 종료
+    message = models.TextField(db_column='message', null=True)
     reg_date = models.DateTimeField(db_column='reg_date', auto_now=True)
     rmk = models.TextField(db_column='rmk', null=True)
 
