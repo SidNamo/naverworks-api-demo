@@ -93,7 +93,6 @@ def sendMessageProc(request, api_no, bot_no, type, channel, content, token_type=
 
 
 
-
 def createChannel(request):
     """
         {
@@ -151,7 +150,6 @@ def createChannelProc(request, api_no, bot_no, members, title, token_type="acces
 
 
 
-
 def getUserInfo(request):
     """
         {
@@ -164,7 +162,7 @@ def getUserInfo(request):
         api_no = parse.unquote(request.POST["api_no"])
         bot_no = parse.unquote(request.POST["bot_no"])
         user_id = parse.unquote(request.POST["user_id"])
-        res = getUserInfoProc(request,api_no, bot_no, user_id, "access_token")
+        res = getUserInfoProc(request,api_no, bot_no, user_id)
         response = util.strToJson(res.text)
         status = res.status_code
     except Exception as err:
@@ -202,6 +200,68 @@ def getUserInfoProc(request, api_no, bot_no, user_id, token_type="access_token")
     else:
         return res
 
+
+
+
+def getChannelMembers(request):
+    """
+        {
+            api_no: ~
+            bot_no: ~
+            channel_id: ~
+        }
+    """
+    try:
+        api_no = parse.unquote(request.POST["api_no"])
+        bot_no = parse.unquote(request.POST["bot_no"])
+        channel_id = parse.unquote(request.POST["channel_id"])
+        res = getChannelMembersProc(request,api_no, bot_no, channel_id)
+        response = util.strToJson(res.text)
+        status = res.status_code
+    except Exception as err:
+        status = 500
+    return JsonResponse(response, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=status) 
+
+def getChannelMembersProc(request, api_no, bot_no, channel_id, token_type="access_token", cursor=""):
+    apiData = api.objects.filter(api_no=api_no).first()
+    botData = bot.objects.filter(bot_no=bot_no).first()
+    accessToken = util.getAccessTokenForApi(request, apiData.api_no, token_type)
+    if accessToken != "":
+        Authorization = authorization(accessToken)
+
+        # NaverWorks API 호출
+        nwa_url = 'https://www.worksapis.com/v1.0/bots/' + botData.bot_id + "/channels/" + channel_id +"/members"
+        nwa_header = {'Authorization':Authorization}
+        nwa_data = {}
+        nwa_data["count"] = 100
+        if cursor != "":
+            nwa_data["cursor"] = cursor
+        # nwa_url += "?" + nwa_data
+        res = requests.get(url=nwa_url, headers=nwa_header, params=nwa_data)
+        status = res.status_code
+        if status != 201 and status != 200 and util.strToJson(res.text)["code"] == "UNAUTHORIZED":
+            re = True
+        else:
+            re = False
+            response = util.strToJson(res.text)
+            if response["responseMetaData"]["nextCursor"] is not None:
+                resp = getChannelMembersProc(request, api_no, bot_no, channel_id, cursor=response["responseMetaData"]["nextCursor"])
+                response["members"].extend(util.strToJson(resp.text)["members"])
+                response["responseMetaData"]["nextCursor"] = None
+                type(res).text = util.jsonToStr(response)
+    else:       
+        re = True
+    if re:
+        if token_type != "jwt":
+            if token_type == "access_token":
+                token.objects.filter(api_no=apiData.api_no, type="access_token").delete()
+                token_type="refresh_token"
+            elif token_type == "refresh_token":
+                token.objects.filter(api_no=apiData.api_no).delete()
+                token_type = "jwt"
+            res = getChannelMembersProc(request, api_no, bot_no, channel_id, token_type, cursor)
+    else:
+        return res
 
 
 
