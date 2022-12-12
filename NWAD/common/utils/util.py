@@ -304,68 +304,177 @@ def getAccessTokenForApi(request, apiNo, type="access_token"):
 
     return accessToken
 
-
-
-
-def makeButtonCallBack(text, button=[]):
-    """
-        text: ~ 
-        button: [
-            {
-                "name":~,
-                "data":~,
-            },
-            {
-                "name":~,
-                "data":~,
-            }
-        ]
-    """
-    content={
-        "type": "flex",
-        "altText": text,
-        "contents": {
-            "type": "bubble",
-            "body": {
-                "type": "box",
-                "layout": "vertical",
-                "paddingAll": "0px",
-                "contents": [
-                    {
-                        "type": "box",
-                        "layout": "vertical",
-                        "paddingAll": "10px",
-                        "contents": [
-                            {
-                                "type": "text",
-                                "text": text,
-                                "color": "#000000",
-                                "size": "sm",
-                                "align": "start",
-                                "wrap": True
-                            }
-                        ]
-                    }
-                ]
-            }
+def messageObjToJson(type, content="", contents=[], text="", data="", header="", body="", footer=""):
+    if type == "flex":
+        res = {
+            "type": "flex",
+            "altText": text,
+            "contents": content
         }
-    }
-
-    for btn in button:
-        content["contents"]["body"]["contents"].append({
-            "type": "separator",
-            "color": "#c9c9c9"
-        })
-        content["contents"]["body"]["contents"].append({
+    elif type =="carousel":
+        res = {
+            "type": "carousel",
+            "contents": contents
+        }
+    elif type =="bubble":
+        res = {
+            "type": "bubble",
+        }
+        if header != "":
+            res["header"] = header
+        if header != "":
+            res["body"] = body
+        if header != "":
+            res["footer"] = footer
+    elif type == "box":
+        res = {
+            "type": "box",
+            "layout": "vertical",
+            "contents": contents,
+            "paddingAll": "0px",
+        }
+    elif type == "text":
+        res = {
+            "type": "text",
+            "text": text,
+            "wrap": True
+        }
+    elif type == "button":
+        res = {
             "type": "button",
             "style": "link",
             "color": "#157efb",
             "height": "sm",
             "action": {
                 "type": "postback",
-                "label": btn["name"],
-                "data": btn["data"]
+                "label": text,
+                "data": data
             }
-        })
+        }
+    elif type == "separator":
+        res = {
+            "type": "separator",
+            "color": "#c9c9c9"
+        } 
+    return res
 
-    return jsonToStr(content)
+
+def makeMessageBtnTemplate(contents):
+    """
+        {
+            altText: ~,
+            contents: [
+                {
+                    header: [
+                        {
+                            text: ~,
+                        },
+                    ],
+                    body: [
+                        {
+                            text: ~,
+                        },
+                    ],
+                    footer: [
+                        {
+                            text: ~,
+                            data: ~
+                        },
+                    ]
+                },
+            ]
+        }
+    """
+    flex = messageObjToJson(type="flex")
+    flex["altText"] = contents["altText"]
+    carousel = messageObjToJson(type="carousel")
+    bubbles = []
+    for content in contents["contents"]:
+        bubble = messageObjToJson(type="bubble")
+
+        if len(content["header"]) > 0:
+            header = messageObjToJson(type="box")
+            header["paddingAll"] = "10px"
+            header["paddingStart"] = "15px"
+            headerContent = []
+            for hc in content["header"]:
+                headerText = messageObjToJson(type="text", text=hc["text"])
+                headerText["color"] = "#000000"
+                headerText["size"] = "sm"
+                headerText["weight"] = "bold"
+                headerContent.append(headerText)
+            header["contents"] = headerContent
+            bubble["header"] = header
+
+        if len(content["body"]) > 0:
+            body = messageObjToJson(type="box")
+            body["paddingAll"] = "10px"
+            body["paddingStart"] = "15px"
+            if len(content["header"]) > 0:
+                body["paddingTop"] = "0px"
+            bodyContent = []
+            for bc in content["body"]:
+                if bc["text"] == "":
+                    continue
+                bodyText = messageObjToJson(type="text", text=bc["text"])
+                bodyText["size"] = "sm"
+                if len(content["header"]) != "":
+                    bodyText["color"] = "#000000"
+                bodyContent.append(bodyText)
+            body["contents"] = bodyContent
+            bubble["body"] = body
+
+        footer = messageObjToJson(type="box")
+        footerContent = []
+        for fc in content["footer"]:
+            footerContent.append(messageObjToJson(type="separator"))
+            footerContent.append(messageObjToJson(type="button", text=fc["text"], data=fc["data"]))
+        footer["contents"] = footerContent
+        bubble["footer"] = footer
+
+        bubbles.append(bubble)
+    carousel["contents"] = bubbles
+    flex["contents"] = carousel
+
+    return jsonToStr(flex)
+
+def messageTemplateSample():
+    return {
+        "altText": "",
+        "contents": [
+            {
+                "header": [
+                ],
+                "body": [
+                ],
+                "footerBtn": [
+                ]
+            },
+        ]
+    }
+
+def simpleTemplate(text, header="", button=[]):
+    body = text
+    if header != "":
+        text = header
+    content = {
+        "altText": (text if len(text) < 30 else text[0:30]),
+        "contents": [
+            {
+                "header": [
+                ],
+                "body": [
+                ],
+                "footer": [
+                ]
+            },
+        ]
+    }
+    if header != "":
+        content["contents"][0]["header"].append({"text":header, "data":""})
+    if body != "":
+        content["contents"][0]["body"].append({"text":body, "data":""})
+    for btn in button:
+        content["contents"][0]["footer"].append(btn)
+    
+    return makeMessageBtnTemplate(content)
