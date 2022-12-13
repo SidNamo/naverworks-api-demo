@@ -405,18 +405,12 @@ def textMessage(request):
 
         if (context["flag"] == "0"):
             try:
-                reqData["user_id"] = "didim365@didim365.kr"
+                reqData["user_id"] = "didim365@didimnow.net"
                 reqData["api_no"] = apiData.api_no
                 reqData["bot_no"] = botData.bot_no
-                reqData["content"] = util.jsonToStr({"type":"text", "text":request.POST["text"]})
-
-                # JWT Auth Api 호출
-                client = requests.session()
-                csrftoken = client.get(
-                    request._current_scheme_host + "/login").cookies['csrftoken']
-                headers = {'X-CSRFToken': csrftoken}
-                res = client.post(request._current_scheme_host +
-                                  "/api/sendMessage", headers=headers, data=reqData)
+                reqData["content"] = util.simpleTemplate(request.POST["text"])
+                # 메시지 전송
+                res = sendMessage(request, reqData)
                 result = util.strToJson(res.text)  # 인증 완료 후 응답 값
                 if res.status_code != 200 and res.status_code != 201:
                     context["flag"] = "2"

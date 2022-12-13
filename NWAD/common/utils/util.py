@@ -234,9 +234,6 @@ def getAccessToken(request, apiNo):
 
     return accessToken
 
-            
-
-    
 
     
 """
@@ -357,7 +354,6 @@ def messageObjToJson(type, content="", contents=[], text="", data="", header="",
             "color": "#c9c9c9"
         } 
     return res
-
 
 def makeMessageBtnTemplate(contents):
     """
