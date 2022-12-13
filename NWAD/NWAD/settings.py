@@ -142,3 +142,4 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 DEFAULT_DOMAIN = ''
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
