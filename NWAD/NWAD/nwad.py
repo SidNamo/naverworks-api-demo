@@ -515,7 +515,7 @@ def scenarioReg(request):
                         member_no = member.objects.filter(member_no=request.session["memberInfo"]["member_no"]).first()
                     )
                     text = "[테스트] 익명 보고 시나리오 결재자 단톡방입니다."
-                    reqData["content"] = util.makeButtonCallBack(text)
+                    reqData["content"] = util.simpleTemplate(text)
                     res = client.post(request._current_scheme_host +
                                     "/api/sendMessage", headers=headers, data=reqData)
                     result = util.strToJson(res.text)  # 인증 완료 후 응답 값
@@ -588,8 +588,8 @@ def botResponse(request):
                                     text = sender["name"]+"님으로부터 전달된 메시지 \n\n"
                                     text += "\"" + sender["message"] + "\""
                                     btn = []
-                                    btn.append({"name":"대화 종료","data":"{'action':'finishChat','conn':'"+str(scenConnData.conn_no)+"','scen':'"+str(scenConnData.scen_no.scen_no)+"'}"})
-                                    reqData["content"] = util.makeButtonCallBack(text, btn)
+                                    btn.append({"text":"대화 종료","data":"{'action':'finishChat','conn':'"+str(scenConnData.conn_no)+"','scen':'"+str(scenConnData.scen_no.scen_no)+"'}"})
+                                    reqData["content"] = util.simpleTemplate(text, button=btn)
                                     reqData["user_id"] = scenConnData.approver
                                     # 메시지 전송
                                     sendMessage(request, reqData)
@@ -598,8 +598,9 @@ def botResponse(request):
                                     reqData["user_id"] = sender["id"]
                                     text = "요청중인 대화가 있습니다.\n취소 후 진행해주세요."
                                     btn = []
-                                    btn.append({"name":"대화 취소","data":"{'action':'cancleChat','conn':'"+str(scenConnData.conn_no)+"','scen':'"+str(scenConnData.scen_no.scen_no)+"'}"})
-                                    reqData["content"] = util.makeButtonCallBack(text, btn)
+                                    btn.append({"text":"대화 취소","data":"{'action':'cancleChat','conn':'"+str(scenConnData.conn_no)+"','scen':'"+str(scenConnData.scen_no.scen_no)+"'}"})
+                                                                       
+                                    reqData["content"] = util.simpleTemplate(text, button=btn)
                                     # 메시지 전송
                                     sendMessage(request, reqData)
                             else:
@@ -609,8 +610,8 @@ def botResponse(request):
                                     text = "담당자로부터 전달된 메시지 \n\n"
                                     text += "\"" + sender["message"] + "\""
                                     btn = []
-                                    btn.append({"name":"대화 종료","data":"{'action':'finishChat','conn':'"+str(scenConnData.conn_no)+"','scen':'"+str(scenConnData.scen_no.scen_no)+"'}"})
-                                    reqData["content"] = util.makeButtonCallBack(text, btn)
+                                    btn.append({"text":"대화 종료","data":"{'action':'finishChat','conn':'"+str(scenConnData.conn_no)+"','scen':'"+str(scenConnData.scen_no.scen_no)+"'}"})
+                                    reqData["content"] = util.simpleTemplate(text, button=btn)
                                     reqData["user_id"] = scenConnData.reporter
                                     # 메시지 전송
                                     sendMessage(request, reqData)
@@ -622,15 +623,37 @@ def botResponse(request):
                                         scen_no=scenData,
                                         message=sender["message"]
                                     )
+
                                     # 결재자에게 메시지 전송
-                                    reqData["channel_id"] = scenData.channel
-                                    text = sender["name"] + "님으로부터 메시지가 도착하였습니다.\n선택해주세요."
-                                    btn = []
-                                    btn.append({"name":"대화 시작", "data":"{'action':'startChat','conn':'"+str(scenConnData.conn_no)+"','scen':'"+str(scenConnData.scen_no.scen_no)+"'}"})
-                                    btn.append({"name":"전달된 메시지 보기", "data":"{'action':'showMessage','conn':'"+str(scenConnData.conn_no)+"','scen':'"+str(scenConnData.scen_no.scen_no)+"'}"})
-                                    btn.append({"name":"대기 메시지 전송", "data":"{'action':'sendWait','conn':'"+str(scenConnData.conn_no)+"','scen':'"+str(scenConnData.scen_no.scen_no)+"'}"})
-                                    btn.append({"name":"대화 취소", "data":"{'action':'cancleChat','conn':'"+str(scenConnData.conn_no)+"','scen':'"+str(scenConnData.scen_no.scen_no)+"'}"})
-                                    reqData["content"] = util.makeButtonCallBack(text, btn)
+                                    connDatas = scen_conn.objects.exclude(status=1).exclude(status=9).order_by('-conn_no')[:5]
+
+                                    reqData["content"] = util.strToJson(util.simpleTemplate(""))
+                                    reqData["content"]["contents"]["contents"].pop()
+
+                                    for connData in connDatas:
+                                        reqData["channel_id"] = scenData.channel
+                                        text = sender["name"] + "님으로부터 메시지가 도착하였습니다.\n선택해주세요.\n요청일자: "+str(connData.reg_date.strftime("%Y-%m-%d %H:%M:%S"))
+                                        btn = []
+                                        btn.append({"text":"대화 시작", "data":"{'action':'startChat','conn':'"+str(connData.conn_no)+"','scen':'"+str(connData.scen_no.scen_no)+"'}"})
+                                        btn.append({"text":"전달된 메시지 보기", "data":"{'action':'showMessage','conn':'"+str(connData.conn_no)+"','scen':'"+str(connData.scen_no.scen_no)+"'}"})
+                                        btn.append({"text":"대기 메시지 전송", "data":"{'action':'sendWait','conn':'"+str(connData.conn_no)+"','scen':'"+str(connData.scen_no.scen_no)+"'}"})
+                                        btn.append({"text":"대화 취소", "data":"{'action':'cancleChat','conn':'"+str(connData.conn_no)+"','scen':'"+str(connData.scen_no.scen_no)+"'}"})
+                                        content = util.strToJson(util.simpleTemplate(text, button=btn))
+                                        reqData["content"]["contents"]["contents"].append(content["contents"]["contents"][0])
+                                        if reqData["content"]["altText"] == "":
+                                            reqData["content"]["altText"] = content["altText"]
+
+                                    reqData["content"] = util.jsonToStr(reqData["content"])
+
+
+                                    # reqData["channel_id"] = scenData.channel
+                                    # text = sender["name"] + "님으로부터 메시지가 도착하였습니다.\n선택해주세요."
+                                    # btn = []
+                                    # btn.append({"text":"대화 시작", "data":"{'action':'startChat','conn':'"+str(scenConnData.conn_no)+"','scen':'"+str(scenConnData.scen_no.scen_no)+"'}"})
+                                    # btn.append({"text":"전달된 메시지 보기", "data":"{'action':'showMessage','conn':'"+str(scenConnData.conn_no)+"','scen':'"+str(scenConnData.scen_no.scen_no)+"'}"})
+                                    # btn.append({"text":"대기 메시지 전송", "data":"{'action':'sendWait','conn':'"+str(scenConnData.conn_no)+"','scen':'"+str(scenConnData.scen_no.scen_no)+"'}"})
+                                    # btn.append({"text":"대화 취소", "data":"{'action':'cancleChat','conn':'"+str(scenConnData.conn_no)+"','scen':'"+str(scenConnData.scen_no.scen_no)+"'}"})
+                                    # reqData["content"] = util.simpleTemplate(text, button=btn)
                                     # 메시지 전송
                                     sendMessage(request, reqData)
 
@@ -641,11 +664,10 @@ def botResponse(request):
                                     reqData["user_id"] = sender["id"]
                                     text = "담당자에게 메시지 전달 하였습니다.\n수락 할 때까지 기다려 주세요."
                                     btn = []
-                                    btn.append({"name":"대화 취소", "data":"{'action':'cancleChat','conn':'"+str(scenConnData.conn_no)+"','scen':'"+str(scenConnData.scen_no.scen_no)+"'}"})
-                                    reqData["content"] = util.makeButtonCallBack(text, btn)
+                                    btn.append({"text":"대화 취소", "data":"{'action':'cancleChat','conn':'"+str(scenConnData.conn_no)+"','scen':'"+str(scenConnData.scen_no.scen_no)+"'}"})
+                                    reqData["content"] = util.simpleTemplate(text, button=btn)
                                     # 메시지 전송
                                     sendMessage(request, reqData)
-                                        
                     elif req["type"] == "postback":
                         postbackData = util.strToJson(util.unicodeAddSlash(req["data"]).replace('\'','\"'))
                         reqData = {}
@@ -677,8 +699,8 @@ def botResponse(request):
                                 reqData["user_id"] = scenConnData.reporter
                                 text = "담당자와 대화를 시작합니다.\n전달할 메시지를 입력해주세요."
                                 btn = []
-                                btn.append({"name":"대화 종료","data":"{'action':'finishChat','conn':'"+str(scenConnData.conn_no)+"','scen':'"+str(scenConnData.scen_no.scen_no)+"'}"})
-                                reqData["content"] = util.makeButtonCallBack(text, btn)
+                                btn.append({"text":"대화 종료","data":"{'action':'finishChat','conn':'"+str(scenConnData.conn_no)+"','scen':'"+str(scenConnData.scen_no.scen_no)+"'}"})
+                                reqData["content"] = util.simpleTemplate(text, button=btn)
                                 # 메시지 전송
                                 sendMessage(request, reqData)
 
@@ -686,8 +708,8 @@ def botResponse(request):
                                 reqData["user_id"] = sender["id"]
                                 text = reporter["name"] + "님과 대화를 시작합니다.\n전달할 메시지를 입력해주세요."
                                 btn = []
-                                btn.append({"name":"대화 종료","data":"{'action':'finishChat','conn':'"+str(scenConnData.conn_no)+"','scen':'"+str(scenConnData.scen_no.scen_no)+"'}"})
-                                reqData["content"] = util.makeButtonCallBack(text, btn)
+                                btn.append({"text":"대화 종료","data":"{'action':'finishChat','conn':'"+str(scenConnData.conn_no)+"','scen':'"+str(scenConnData.scen_no.scen_no)+"'}"})
+                                reqData["content"] = util.simpleTemplate(text, button=btn)
                                 # 메시지 전송
                                 sendMessage(request, reqData)
                             else:
@@ -699,16 +721,16 @@ def botResponse(request):
                                         text = "대화가 종료된 메시지 입니다."
                                     else:
                                         text = "해당 메시지 조회에 실패하였습니다."
-                                    reqData["content"] = util.makeButtonCallBack(text)
+                                    reqData["content"] = util.simpleTemplate(text)
                                     # 메시지 전송
                                     sendMessage(request, reqData)
-
                         elif postbackData["action"] == "showMessage":
+                            scenConnData = scen_conn.objects.filter(conn_no=postbackData["conn"]).first()
                             if scenConnData is not None:
                                 reqData["channel_id"] = scenData.channel
                                 text = sender["name"] + "님으로부터 전달된 메시지\n\n"
                                 text += "\"" + scenConnData.message + "\""
-                                reqData["content"] = util.makeButtonCallBack(text)
+                                reqData["content"] = util.simpleTemplate(text)
                                 # 메시지 전송
                                 sendMessage(request, reqData)
                             else:
@@ -720,7 +742,7 @@ def botResponse(request):
                                         text = "대화가 종료된 메시지 입니다."
                                     else:
                                         text = "해당 메시지 조회에 실패하였습니다."
-                                    reqData["content"] = util.makeButtonCallBack(text)
+                                    reqData["content"] = util.simpleTemplate(text)
                                     # 메시지 전송
                                     sendMessage(request, reqData)
                         elif postbackData["action"] == "sendWait":
@@ -731,7 +753,7 @@ def botResponse(request):
                                 reqData["user_id"] = sender["id"]
                                 text = "담당자로부터 전달된 메시지 \n\n"
                                 text += "\"잠시만 기다려 주세요.\""
-                                reqData["content"] = util.makeButtonCallBack(text)
+                                reqData["content"] = util.simpleTemplate(text)
                                 # 메시지 전송
                                 sendMessage(request, reqData)
                             else:
@@ -743,7 +765,7 @@ def botResponse(request):
                                         text = "대화가 종료된 메시지 입니다."
                                     else:
                                         text = "해당 메시지 조회에 실패하였습니다."
-                                    reqData["content"] = util.makeButtonCallBack(text)
+                                    reqData["content"] = util.simpleTemplate(text)
                                     # 메시지 전송
                                     sendMessage(request, reqData)
                         elif postbackData["action"] == "finishChat":
@@ -768,14 +790,14 @@ def botResponse(request):
                                 # 결재자에게 메시지 전송
                                 reqData["user_id"] = scenConnData.approver
                                 text = reporter["name"] + "님과의 대화가 종료되었습니다."
-                                reqData["content"] = util.makeButtonCallBack(text)
+                                reqData["content"] = util.simpleTemplate(text)
                                 # 메시지 전송
                                 sendMessage(request, reqData)
 
                                 # 보고자에게 메시지 전송
                                 reqData["user_id"] = scenConnData.reporter
                                 text = "담당자와의 대화가 종료되었습니다."
-                                reqData["content"] = util.makeButtonCallBack(text)
+                                reqData["content"] = util.simpleTemplate(text)
                                 # 메시지 전송
                                 sendMessage(request, reqData)
                             else:
@@ -786,7 +808,7 @@ def botResponse(request):
                                     text = "대화가 종료된 메시지 입니다."
                                 else:
                                     text = "해당 메시지 조회에 실패하였습니다."
-                                reqData["content"] = util.makeButtonCallBack(text)
+                                reqData["content"] = util.simpleTemplate(text)
                                 # 메시지 전송
                                 sendMessage(request, reqData)
                         elif postbackData["action"] == "cancleChat":
@@ -800,7 +822,7 @@ def botResponse(request):
                                     text = sender["name"] + "님의 대화 요청이 취소되었습니다."
                                 else:
                                     text = sender["name"] + " 담당자가 대화 요청을 취소하였습니다."
-                                reqData["content"] = util.makeButtonCallBack(text)
+                                reqData["content"] = util.simpleTemplate(text)
                                 # 메시지 전송
                                 sendMessage(request, reqData)
 
@@ -812,7 +834,7 @@ def botResponse(request):
                                     text = "대화 요청이 취소되었습니다."
                                 else:
                                     text = "담당자가 대화 요청을 취소하였습니다."
-                                reqData["content"] = util.makeButtonCallBack(text)
+                                reqData["content"] = util.simpleTemplate(text)
                                 # 메시지 전송
                                 sendMessage(request, reqData)
                             else:
@@ -824,14 +846,14 @@ def botResponse(request):
                                     else:
                                         reqData["channel_id"] = scenData.channel
                                     text = "대화가 종료된 메시지 입니다."
-                                    reqData["content"] = util.makeButtonCallBack(text)
+                                    reqData["content"] = util.simpleTemplate(text, header="에러 발생")
                                 else:
                                     if sender["id"] in scenData.members:
                                         reqData["channel_id"] = scenData.channel
                                     else:
                                         reqData["user_id"] = sender["id"]
                                     text = "해당 메시지 조회에 실패하였습니다."
-                                    reqData["content"] = util.makeButtonCallBack(text)
+                                    reqData["content"] = util.simpleTemplate(text, header="에러 발생")
                                 # 메시지 전송
                                 sendMessage(request, reqData)
                 except Exception as err:
@@ -840,9 +862,10 @@ def botResponse(request):
                     reqData["user_id"] = sender["id"]
                     reqData["api_no"] = scenData.api_no.api_no
                     reqData["bot_no"] = scenData.bot_no.bot_no
-                    reqData["content"] = util.makeButtonCallBack(err.args[0])
+                    reqData["content"] = util.simpleTemplate(err.args[0], "에러발생")
                     # 메시지 전송
                     sendMessage(request, reqData)
+    util.insertLog(request, util.jsonToStr(req))
     return
 
 def sendMessage(request, reqData):
@@ -856,6 +879,7 @@ def sendMessage(request, reqData):
     if res.status_code != 200 and res.status_code != 201:
         result = util.strToJson(res.text)  # 인증 완료 후 응답 값
         raise Exception(result["description"])
+    util.insertLog(request, "sendMessage    " + util.jsonToStr(reqData))
     return res
 
 
@@ -886,3 +910,21 @@ def callback(request):
     # if res.status_code != 200 and res.status_code != 201:
     #     raise Exception(response["description"])
     # return JsonResponse(response, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=res.status_code) 
+
+    # connData = scen_conn.objects.order_by('-conn_no').all()
+
+    # # for conn in connData:
+    # contents = util.templateText(text="테스트")
+    # apiData = api.objects.filter(api_no = 18).first()
+    # botData = bot.objects.filter(bot_no = 20).first()
+    # reqData = {}
+    # reqData["user_id"] = "821c4e72-f022-44f3-1767-039a66c98a20"
+    # reqData["api_no"] = apiData.api_no
+    # reqData["bot_no"] = botData.bot_no
+    # reqData["content"] = util.jsonToStr(contents)
+    # res = sendMessage(request, reqData)
+    # response = util.strToJson(res.text)
+    # if res.status_code != 200 and res.status_code != 201:
+    #     raise Exception(response["description"])
+    # return JsonResponse(response, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=res.status_code) 
+
