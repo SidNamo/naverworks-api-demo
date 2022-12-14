@@ -871,13 +871,14 @@ def sendMessage(request, reqData):
         headers = {'X-CSRFToken': csrftoken}
         res = client.post(request._current_scheme_host +
                         "/api/sendMessage", headers=headers, data=reqData)
+        util.insertLog(request, "sendMessage    " + str(res.status_code) + "/" + res.reason + "/" + res.text)
         if res.status_code != 200 and res.status_code != 201:
             result = util.strToJson(res.text)  # 인증 완료 후 응답 값
             raise Exception(result["description"])
         util.insertLog(request, "sendMessage    " + util.jsonToStr(reqData))
         return res
     except Exception as err:
-        util.insertLog(request, util.jsonToStr(reqData) + "    " + err.args[0])
+        util.insertLog(request, "sendMessageErr    " + util.jsonToStr(reqData) + "    " + err.args[0])
 
         user_id = ""
         channel_id = ""
