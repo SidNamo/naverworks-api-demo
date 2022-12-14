@@ -639,7 +639,12 @@ def botResponse(request):
 
                                         for connData in connDatas:
                                             reqData["channel_id"] = scenData.channel
-                                            text = sender["name"] + "님으로부터 메시지가 도착하였습니다.\n선택해주세요.\n요청일자: "+str(connData.reg_date.strftime("%Y-%m-%d %H:%M:%S"))
+                                            res = getUserInfo(request, api_no=scenData.api_no.api_no, bot_no=scenData.bot_no.bot_no, user_id=connData.reporter)
+                                            result = util.strToJson(res.text)  # 인증 완료 후 응답 값
+                                            if res.status_code != 200 and res.status_code != 201:
+                                                raise Exception(result["description"])
+                                            name = result["userName"]["lastName"] + result["userName"]["firstName"]
+                                            text = name + "님으로부터 메시지가 도착하였습니다.\n선택해주세요.\n요청일자: "+str(connData.reg_date.strftime("%Y-%m-%d %H:%M:%S"))
                                             btn = []
                                             btn.append({"text":"대화 시작", "data":"{'action':'startChat','conn':'"+str(connData.conn_no)+"','scen':'"+str(connData.scen_no.scen_no)+"'}"})
                                             btn.append({"text":"전달된 메시지 보기", "data":"{'action':'showMessage','conn':'"+str(connData.conn_no)+"','scen':'"+str(connData.scen_no.scen_no)+"'}"})
