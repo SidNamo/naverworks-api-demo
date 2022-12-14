@@ -554,7 +554,6 @@ def botResponse(request):
                     #                 "/api/getUserInfo", headers=headers, data=reqData)
 
                     result = util.strToJson(res.text)  # 인증 완료 후 응답 값
-                    util.insertLog(request, "중간2 / "+ result)
                     if res.status_code != 200 and res.status_code != 201:
                         raise Exception(result["description"])
 
