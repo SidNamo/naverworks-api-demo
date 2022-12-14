@@ -909,6 +909,7 @@ def sendMessage_api(request, reqData):
 def callback(request):
     jsonString = log.objects.filter(reg_user='callback').last().msg
     jsonObj = util.strToJson(jsonString)
+    util.insertLog(request, "sendMessage주소    " + request._current_scheme_host)
     requests.post(request._current_scheme_host +
         "/botResponse", headers={"Content-Type":"application/json"}, json=jsonObj)
     return ""
