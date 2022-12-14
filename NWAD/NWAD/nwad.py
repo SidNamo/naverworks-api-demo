@@ -760,7 +760,7 @@ def botResponse(request):
                                 scen_conn.objects.filter(conn_no=postbackData["conn"]).update(status='3')
                                 if scenConnData is not None:
                                     #보고자에게 메시지 전송
-                                    reqData["user_id"] = sender["id"]
+                                    reqData["user_id"] = scenConnData.reporter
                                     text = "담당자로부터 전달된 메시지 \n\n"
                                     text += "\"잠시만 기다려 주세요.\""
                                     reqData["content"] = util.simpleTemplate(text)
