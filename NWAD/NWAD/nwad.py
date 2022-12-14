@@ -543,7 +543,7 @@ def botResponse(request):
 
                     util.insertLog(request, "중간1 / "+ util.jsonToStr(reqData))
 
-                    res = getUserInfo(scenData.api_no.api_no, scenData.bot_no.bot_no, req["source"]["userId"])
+                    res = getUserInfo(request, api_no=scenData.api_no.api_no, bot_no=scenData.bot_no.bot_no, user_id=req["source"]["userId"])
 
                     # # 유저 정보 조회
                     # client = requests.session()
@@ -695,7 +695,7 @@ def botResponse(request):
                                     # res = client.post(request._current_scheme_host +
                                     #                 "/api/getUserInfo", headers=headers, data=reqData)
 
-                                    res = getUserInfo(scenData.api_no.api_no, scenData.bot_no.bot_no, scenConnData.reporter)
+                                    res = getUserInfo(request, scenData.api_no.api_no, scenData.bot_no.bot_no, scenConnData.reporter)
 
                                     result = util.strToJson(res.text)  # 인증 완료 후 응답 값
                                     if res.status_code != 200 and res.status_code != 201:
@@ -792,7 +792,7 @@ def botResponse(request):
                                     # res = client.post(request._current_scheme_host +
                                     #                 "/api/getUserInfo", headers=headers, data=reqData)
                                     
-                                    res = getUserInfo(scenData.api_no.api_no, scenData.bot_no.bot_no, scenConnData.reporter)
+                                    res = getUserInfo(request, scenData.api_no.api_no, scenData.bot_no.bot_no, scenConnData.reporter)
 
                                     result = util.strToJson(res.text)  # 인증 완료 후 응답 값
                                     if res.status_code != 200 and res.status_code != 201:
