@@ -840,7 +840,7 @@ def botResponse(request):
                                     else:
                                         reqData["channel_id"] = scenData.channel
                                     text = "대화가 종료된 메시지 입니다."
-                                    reqData["content"] = util.simpleTemplate(text, header="에러 발생")
+                                    reqData["content"] = util.simpleTemplate(text)
                                 else:
                                     if sender["id"] in scenData.members:
                                         reqData["channel_id"] = scenData.channel
