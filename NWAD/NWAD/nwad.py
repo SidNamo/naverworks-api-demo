@@ -871,7 +871,7 @@ def sendMessage(request, reqData):
         headers = {'X-CSRFToken': csrftoken}
         res = client.post(request._current_scheme_host +
                         "/api/sendMessage", headers=headers, data=reqData)
-        util.insertLog(request, "sendMessage    " + request._current_scheme_host)
+        util.insertLog(request, "sendMessage주소    " + request._current_scheme_host)
         util.insertLog(request, "sendMessage    " + str(res.status_code) + "/" + res.reason + "/" + res.text)
         if res.status_code != 200 and res.status_code != 201:
             result = util.strToJson(res.text)  # 인증 완료 후 응답 값
