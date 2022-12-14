@@ -539,13 +539,16 @@ def botResponse(request):
                 reqData["bot_no"] = scenData.bot_no.bot_no
                 reqData["user_id"] = req["source"]["userId"]
 
-                # JWT Auth Api 호출
-                client = requests.session()
-                csrftoken = client.get(
-                    request._current_scheme_host + "/login").cookies['csrftoken']
-                headers = {'X-CSRFToken': csrftoken}
-                res = client.post(request._current_scheme_host +
-                                "/api/getUserInfo", headers=headers, data=reqData)
+                res = getUserInfo(scenData.api_no.api_no, scenData.bot_no.bot_no, req["source"]["userId"])
+
+                # # 유저 정보 조회
+                # client = requests.session()
+                # csrftoken = client.get(
+                #     request._current_scheme_host + "/login").cookies['csrftoken']
+                # headers = {'X-CSRFToken': csrftoken}
+                # res = client.post(request._current_scheme_host +
+                #                 "/api/getUserInfo", headers=headers, data=reqData)
+
                 result = util.strToJson(res.text)  # 인증 완료 후 응답 값
                 if res.status_code != 200 and res.status_code != 201:
                     raise Exception(result["description"])
@@ -675,14 +678,17 @@ def botResponse(request):
                                 # 상태 변경
                                 scen_conn.objects.filter(conn_no=postbackData["conn"]).update(status='1',approver=sender["id"])
 
-                                # 보고자 정보 조회
-                                reqData["user_id"] = scenConnData.reporter
-                                client = requests.session()
-                                csrftoken = client.get(
-                                    request._current_scheme_host + "/login").cookies['csrftoken']
-                                headers = {'X-CSRFToken': csrftoken}
-                                res = client.post(request._current_scheme_host +
-                                                "/api/getUserInfo", headers=headers, data=reqData)
+                                # # 보고자 정보 조회
+                                # reqData["user_id"] = scenConnData.reporter
+                                # client = requests.session()
+                                # csrftoken = client.get(
+                                #     request._current_scheme_host + "/login").cookies['csrftoken']
+                                # headers = {'X-CSRFToken': csrftoken}
+                                # res = client.post(request._current_scheme_host +
+                                #                 "/api/getUserInfo", headers=headers, data=reqData)
+
+                                res = getUserInfo(scenData.api_no.api_no, scenData.bot_no.bot_no, scenConnData.reporter)
+
                                 result = util.strToJson(res.text)  # 인증 완료 후 응답 값
                                 if res.status_code != 200 and res.status_code != 201:
                                     raise Exception(result["description"])
@@ -768,14 +774,18 @@ def botResponse(request):
                             if scenConnData is not None:
                                 # 상태 변경
                                 scen_conn.objects.filter(conn_no=postbackData["conn"]).update(status='9')
-                                # 보고자 정보 조회
-                                reqData["user_id"] = scenConnData.reporter
-                                client = requests.session()
-                                csrftoken = client.get(
-                                    request._current_scheme_host + "/login").cookies['csrftoken']
-                                headers = {'X-CSRFToken': csrftoken}
-                                res = client.post(request._current_scheme_host +
-                                                "/api/getUserInfo", headers=headers, data=reqData)
+
+                                # # 보고자 정보 조회
+                                # reqData["user_id"] = scenConnData.reporter
+                                # client = requests.session()
+                                # csrftoken = client.get(
+                                #     request._current_scheme_host + "/login").cookies['csrftoken']
+                                # headers = {'X-CSRFToken': csrftoken}
+                                # res = client.post(request._current_scheme_host +
+                                #                 "/api/getUserInfo", headers=headers, data=reqData)
+                                
+                                res = getUserInfo(scenData.api_no.api_no, scenData.bot_no.bot_no, scenConnData.reporter)
+
                                 result = util.strToJson(res.text)  # 인증 완료 후 응답 값
                                 if res.status_code != 200 and res.status_code != 201:
                                     raise Exception(result["description"])

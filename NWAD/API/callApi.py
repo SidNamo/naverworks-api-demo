@@ -196,6 +196,18 @@ def getUserInfo(request):
         status = 500
     return JsonResponse(response, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=status) 
 
+
+def getUserInfo(request, api_no, bot_no, user_id):
+    """
+        {
+            api_no: ~
+            bot_no: ~
+            user_id: ~
+        }
+    """
+    res = getUserInfoProc(request,api_no, bot_no, user_id)
+    return res
+
 def getUserInfoProc(request, api_no, bot_no, user_id, token_type="access_token"):
     apiData = api.objects.filter(api_no=api_no).first()
     botData = bot.objects.filter(bot_no=bot_no).first()
