@@ -878,9 +878,9 @@ def sendMessage_api(request, reqData):
         csrftoken = client.get(
             request._current_scheme_host + "/login").cookies['csrftoken']
         headers = {'X-CSRFToken': csrftoken}
+        util.insertLog(request, "sendMessage주소2    " + request._current_scheme_host)
         res = client.post(request._current_scheme_host +
                         "/api/sendMessage", headers=headers, data=reqData)
-        util.insertLog(request, "sendMessage주소    " + request._current_scheme_host)
         util.insertLog(request, "sendMessage    " + str(res.status_code) + "/" + res.reason + "/" + res.text)
         if res.status_code != 200 and res.status_code != 201:
             result = util.strToJson(res.text)  # 인증 완료 후 응답 값
@@ -909,7 +909,7 @@ def sendMessage_api(request, reqData):
 def callback(request):
     jsonString = log.objects.filter(reg_user='callback').last().msg
     jsonObj = util.strToJson(jsonString)
-    util.insertLog(request, "sendMessage주소    " + request._current_scheme_host)
+    util.insertLog(request, "sendMessage주소1    " + request._current_scheme_host)
     requests.post(request._current_scheme_host +
         "/botResponse", headers={"Content-Type":"application/json"}, json=jsonObj)
     return ""
