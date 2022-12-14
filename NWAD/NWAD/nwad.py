@@ -526,10 +526,10 @@ def scenarioReg(request):
 
 @csrf_exempt
 def botResponse(request):
-    util.insertLog(request, "시작")
-    util.insertLog(request, util.jsonToStr(req))
+    util.insertLog(request, "시작/" + request.method)
     if request.method == "POST":
         req = util.strToJson(request.body.decode('utf-8'))
+        util.insertLog(request, util.jsonToStr(req))
         scenData = scen.objects.filter(domain=req["source"]["domainId"],status=1).first()
         if scenData is not None:
             # 익명 보고 시나리오
