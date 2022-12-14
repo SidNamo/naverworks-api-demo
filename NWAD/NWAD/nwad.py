@@ -632,7 +632,7 @@ def botResponse(request):
                                         )
 
                                         # 결재자에게 메시지 전송
-                                        connDatas = scen_conn.objects.exclude(status=1).exclude(status=9).order_by('-conn_no')[:5]
+                                        connDatas = scen_conn.objects.filter(scen_no=scenConnData.scen_no.scen_no).exclude(status=1).exclude(status=9).order_by('-conn_no')[:5]
 
                                         reqData["content"] = util.strToJson(util.simpleTemplate(""))
                                         reqData["content"]["contents"]["contents"].pop()
