@@ -7,6 +7,7 @@ import re
 import datetime
 from urllib import parse
 from NWAD.models import *
+from AUTH.authApi import *
 from django.conf import settings
 
 host = settings.DEFAULT_DOMAIN
@@ -273,11 +274,19 @@ def getAccessTokenForApi(request, apiNo, type="access_token"):
         ).first()
         if tokenData is not None:
             apidata["refresh_token"] = tokenData.token
-            # JWT Auth Api 호출
-            client = requests.session()
-            csrftoken = client.get(host + "/login").cookies['csrftoken']
-            headers = {'X-CSRFToken':csrftoken}
-            res = client.post(host + "/auth/authRefreshToken", headers=headers, data=apidata)
+
+            res = authRefreshToken(
+                client_id=apiData.client_id,
+                client_secret=apiData.client_secret,
+                refresh_token=tokenData.token
+            )
+
+            # # JWT Auth Api 호출
+            # client = requests.session()
+            # csrftoken = client.get(host + "/login").cookies['csrftoken']
+            # headers = {'X-CSRFToken':csrftoken}
+            # res = client.post(host + "/auth/authRefreshToken", headers=headers, data=apidata)
+
             result = strToJson(res.text) # 인증 완료 후 응답 값
             if res.status_code == 200:
                 result["api"] = api.objects.filter(
@@ -286,11 +295,21 @@ def getAccessTokenForApi(request, apiNo, type="access_token"):
                 tokenReg(result)
                 accessToken = result["access_token"]
     elif type == "jwt":
-        # JWT Auth Api 호출
-        client = requests.session()
-        csrftoken = client.get(host + "/login").cookies['csrftoken']
-        headers = {'X-CSRFToken':csrftoken}
-        res = client.post(host + "/auth/jwt", headers=headers, data=apidata)
+
+        res = authJwt(
+            client_id=apiData.client_id,
+            client_secret=apiData.client_secret,
+            service_account=apiData.service_account,
+            private_key=apiData.private_key,
+            scope=apiData.scope
+        )
+            
+        # # JWT Auth Api 호출
+        # client = requests.session()
+        # csrftoken = client.get(host + "/login").cookies['csrftoken']
+        # headers = {'X-CSRFToken':csrftoken}
+        # res = client.post(host + "/auth/jwt", headers=headers, data=apidata)
+
         result = strToJson(res.text) # 인증 완료 후 응답 값
         if res.status_code == 200:
             result["api"] = api.objects.filter(

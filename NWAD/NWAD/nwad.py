@@ -12,6 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .models import *
 from API.callApi import *
+from AUTH.authApi import *
 
 # region Main 관련
 
