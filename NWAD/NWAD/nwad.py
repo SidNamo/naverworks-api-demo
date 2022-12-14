@@ -540,6 +540,8 @@ def botResponse(request):
                 reqData["bot_no"] = scenData.bot_no.bot_no
                 reqData["user_id"] = req["source"]["userId"]
 
+                util.insertLog(request, "중간1 / "+ util.jsonToStr(reqData))
+
                 res = getUserInfo(scenData.api_no.api_no, scenData.bot_no.bot_no, req["source"]["userId"])
 
                 # # 유저 정보 조회
@@ -551,10 +553,11 @@ def botResponse(request):
                 #                 "/api/getUserInfo", headers=headers, data=reqData)
 
                 result = util.strToJson(res.text)  # 인증 완료 후 응답 값
+                util.insertLog(request, "중간2 / "+ result)
                 if res.status_code != 200 and res.status_code != 201:
                     raise Exception(result["description"])
 
-                util.insertLog(request, "중간1")
+                util.insertLog(request, "중간3")
 
                 sender = {}
                 sender["name"] = result["userName"]["lastName"] + result["userName"]["firstName"]
