@@ -244,6 +244,9 @@ AccessToken 조회
 3. JWT 인증
 """
 def getAccessTokenForApi(request, apiNo, type="access_token"):
+        
+    insertLog(request, "AccessToken 조회 시작")
+
     host = request._current_scheme_host
     tokenInfo = []
     # tokenInfo.append({'type':'authorization_code','exp':'600'})

@@ -552,6 +552,9 @@ def botResponse(request):
                 result = util.strToJson(res.text)  # 인증 완료 후 응답 값
                 if res.status_code != 200 and res.status_code != 201:
                     raise Exception(result["description"])
+                    
+                util.insertLog(request, "중간1")
+
                 sender = {}
                 sender["name"] = result["userName"]["lastName"] + result["userName"]["firstName"]
                 sender["id"] = result["userId"]
