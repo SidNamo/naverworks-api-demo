@@ -312,7 +312,7 @@ def botReg(request):
 
         if (context["flag"] == "0"):
             # AccessToken 조회
-            apidata["access_token"] = util.getAccessToken(
+            apidata["access_token"] = util.getAccessTokenForApi(
                 request, request.POST["api_no"])
             if apidata["access_token"] == "":
                 context["flag"] = "5"
