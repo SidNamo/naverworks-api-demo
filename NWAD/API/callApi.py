@@ -60,6 +60,9 @@ def sendMessage(request):
     return JsonResponse(response, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=status) 
 
 def sendMessage2(request, api_no, bot_no, content, user_id="", channel_id=""):
+        
+    util.insertLog(request, "메세지 전송 시작")
+
     """
         {
             api_no: ~
@@ -198,6 +201,9 @@ def getUserInfo(request):
 
 
 def getUserInfo(request, api_no, bot_no, user_id):
+        
+    util.insertLog(request, "사용자 정보 조회 시작")
+
     """
         {
             api_no: ~
