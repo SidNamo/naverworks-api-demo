@@ -873,40 +873,6 @@ def sendMessage(request, reqData):
         channel_id = reqData["channel_id"]
     return sendMessage2(request, reqData["api_no"], reqData["bot_no"], reqData["content"], user_id, channel_id)
 
-def sendMessage_api(request, reqData):
-    util.insertLog(request, "시작")
-    try:
-        # 메시지 전송
-        client = requests.session()
-        csrftoken = client.get(
-            request._current_scheme_host + "/login").cookies['csrftoken']
-        headers = {'X-CSRFToken': csrftoken}
-        util.insertLog(request, "sendMessage주소2    " + request._current_scheme_host)
-        res = client.post(request._current_scheme_host +
-                        "/api/sendMessage", headers=headers, data=reqData)
-        util.insertLog(request, "sendMessage    " + str(res.status_code) + "/" + res.reason + "/" + res.text)
-        if res.status_code != 200 and res.status_code != 201:
-            result = util.strToJson(res.text)  # 인증 완료 후 응답 값
-            raise Exception(result["description"])
-        util.insertLog(request, "sendMessage    " + util.jsonToStr(reqData))
-        return res
-    except Exception as err:
-        util.insertLog(request, "sendMessageErr    " + util.jsonToStr(reqData) + "    " + err.args[0])
-
-        user_id = ""
-        channel_id = ""
-        try:
-            user_id = reqData["user_id"]
-        except:
-            channel_id = reqData["channel_id"]
-
-
-        return sendMessage2(request, reqData["api_no"], reqData["bot_no"], reqData["content"], user_id, channel_id)
-
-
-
-
-
 
 @csrf_exempt
 def callback(request):
