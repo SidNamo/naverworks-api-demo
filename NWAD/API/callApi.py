@@ -59,6 +59,33 @@ def sendMessage(request):
         status = 500
     return JsonResponse(response, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=status) 
 
+def sendMessage2(request, api_no, bot_no, content, user_id="", channel_id=""):
+    """
+        {
+            api_no: ~
+            bot_no: ~
+            user_id: ~ # 받는 사람
+            channel_id: ~ # 받는 채널
+            content: ~
+        }
+    """
+    try:
+        type = "users"
+        channel = ""
+        if user_id != "":
+            channel = user_id
+        else:
+            type = "channels"
+            channel = channel_id
+
+        content = util.strToJson(content)
+        res = sendMessageProc(request, api_no, bot_no, type, channel, content)
+        response = util.strToJson(res.text)
+        status = res.status_code
+    except Exception as err:
+        status = 500
+    return res
+
 def sendMessageProc(request, api_no, bot_no, type, channel, content, token_type="access_token"):
     apiData = api.objects.filter(api_no=api_no).first()
     botData = bot.objects.filter(bot_no=bot_no).first()
