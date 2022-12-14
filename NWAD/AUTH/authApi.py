@@ -48,7 +48,7 @@ def authJwt(request):
     return JsonResponse(result, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=status) 
 
 
-def authJwt(client_id, client_secret, service_account, private_key, scope):
+def authJwt2(client_id, client_secret, service_account, private_key, scope):
     # 고정값
     header = {}
     header["alg"] = "RS256"
@@ -106,7 +106,7 @@ def authRefreshToken(request):
     return JsonResponse(result, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=status) 
 
 
-def authRefreshToken(client_id, client_secret, refresh_token):
+def authRefreshToken2(client_id, client_secret, refresh_token):
     # 고정값
     grant_type = "refresh_token"
 

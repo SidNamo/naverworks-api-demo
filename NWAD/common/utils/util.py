@@ -278,7 +278,7 @@ def getAccessTokenForApi(request, apiNo, type="access_token"):
         if tokenData is not None:
             apidata["refresh_token"] = tokenData.token
 
-            res = authRefreshToken(
+            res = authRefreshToken2(
                 client_id=apiData.client_id,
                 client_secret=apiData.client_secret,
                 refresh_token=tokenData.token
@@ -299,7 +299,7 @@ def getAccessTokenForApi(request, apiNo, type="access_token"):
                 accessToken = result["access_token"]
     elif type == "jwt":
 
-        res = authJwt(
+        res = authJwt2(
             client_id=apiData.client_id,
             client_secret=apiData.client_secret,
             service_account=apiData.service_account,
