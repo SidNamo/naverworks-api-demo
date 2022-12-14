@@ -410,7 +410,7 @@ def textMessage(request):
                 reqData["bot_no"] = botData.bot_no
                 reqData["content"] = util.simpleTemplate(request.POST["text"])
                 # 메시지 전송
-                res = sendMessage(request, reqData)
+                res = sendMessage_api(request, reqData)
                 result = util.strToJson(res.text)  # 인증 완료 후 응답 값
                 if res.status_code != 200 and res.status_code != 201:
                     context["flag"] = "2"
@@ -863,6 +863,15 @@ def botResponse(request):
     return
 
 def sendMessage(request, reqData):
+    user_id = ""
+    channel_id = ""
+    try:
+        user_id = reqData["user_id"]
+    except:
+        channel_id = reqData["channel_id"]
+    return sendMessage2(request, reqData["api_no"], reqData["bot_no"], reqData["content"], user_id, channel_id)
+
+def sendMessage_api(request, reqData):
     try:
         # 메시지 전송
         client = requests.session()
