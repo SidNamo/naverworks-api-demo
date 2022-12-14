@@ -527,6 +527,7 @@ def scenarioReg(request):
 @csrf_exempt
 def botResponse(request):
     util.insertLog(request, "시작")
+    util.insertLog(request, util.jsonToStr(req))
     if request.method == "POST":
         req = util.strToJson(request.body.decode('utf-8'))
         scenData = scen.objects.filter(domain=req["source"]["domainId"],status=1).first()
@@ -552,7 +553,7 @@ def botResponse(request):
                 result = util.strToJson(res.text)  # 인증 완료 후 응답 값
                 if res.status_code != 200 and res.status_code != 201:
                     raise Exception(result["description"])
-                    
+
                 util.insertLog(request, "중간1")
 
                 sender = {}
