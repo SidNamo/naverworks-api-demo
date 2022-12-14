@@ -582,6 +582,7 @@ def botResponse(request):
 
                             if channelId == "":
                                 sender["message"] = util.unicodeAddSlash(req["content"]["text"])
+                                util.insertLog(request, "받은 메시지: " + sender["message"])
                                 # 연결중 인지 체크
                                 scenConnData = scen_conn.objects.filter(reporter = sender["id"]).exclude(status = 9).first()
                                 reqData = {}
