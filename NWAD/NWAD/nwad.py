@@ -525,6 +525,7 @@ def scenarioReg(request):
 
 @csrf_exempt
 def botResponse(request):
+    util.insertLog(request, "시작")
     if request.method == "POST":
         req = util.strToJson(request.body.decode('utf-8'))
         scenData = scen.objects.filter(domain=req["source"]["domainId"],status=1).first()
@@ -863,6 +864,7 @@ def botResponse(request):
     return
 
 def sendMessage(request, reqData):
+    util.insertLog(request, "시작")
     user_id = ""
     channel_id = ""
     try:
@@ -872,6 +874,7 @@ def sendMessage(request, reqData):
     return sendMessage2(request, reqData["api_no"], reqData["bot_no"], reqData["content"], user_id, channel_id)
 
 def sendMessage_api(request, reqData):
+    util.insertLog(request, "시작")
     try:
         # 메시지 전송
         client = requests.session()
