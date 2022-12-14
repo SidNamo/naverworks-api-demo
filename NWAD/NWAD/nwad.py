@@ -410,7 +410,7 @@ def textMessage(request):
                 reqData["bot_no"] = botData.bot_no
                 reqData["content"] = util.simpleTemplate(request.POST["text"])
                 # 메시지 전송
-                res = sendMessage(request, reqData)
+                res = sendMessage_api(request, reqData)
                 result = util.strToJson(res.text)  # 인증 완료 후 응답 값
                 if res.status_code != 200 and res.status_code != 201:
                     context["flag"] = "2"
@@ -840,7 +840,7 @@ def botResponse(request):
                                     else:
                                         reqData["channel_id"] = scenData.channel
                                     text = "대화가 종료된 메시지 입니다."
-                                    reqData["content"] = util.simpleTemplate(text, header="에러 발생")
+                                    reqData["content"] = util.simpleTemplate(text)
                                 else:
                                     if sender["id"] in scenData.members:
                                         reqData["channel_id"] = scenData.channel
@@ -863,6 +863,15 @@ def botResponse(request):
     return
 
 def sendMessage(request, reqData):
+    user_id = ""
+    channel_id = ""
+    try:
+        user_id = reqData["user_id"]
+    except:
+        channel_id = reqData["channel_id"]
+    return sendMessage2(request, reqData["api_no"], reqData["bot_no"], reqData["content"], user_id, channel_id)
+
+def sendMessage_api(request, reqData):
     try:
         # 메시지 전송
         client = requests.session()
@@ -871,7 +880,7 @@ def sendMessage(request, reqData):
         headers = {'X-CSRFToken': csrftoken}
         res = client.post(request._current_scheme_host +
                         "/api/sendMessage", headers=headers, data=reqData)
-        util.insertLog(request, "sendMessage    " + request._current_scheme_host)
+        util.insertLog(request, "sendMessage주소    " + request._current_scheme_host)
         util.insertLog(request, "sendMessage    " + str(res.status_code) + "/" + res.reason + "/" + res.text)
         if res.status_code != 200 and res.status_code != 201:
             result = util.strToJson(res.text)  # 인증 완료 후 응답 값
@@ -900,6 +909,7 @@ def sendMessage(request, reqData):
 def callback(request):
     jsonString = log.objects.filter(reg_user='callback').last().msg
     jsonObj = util.strToJson(jsonString)
+    util.insertLog(request, "sendMessage주소    " + request._current_scheme_host)
     requests.post(request._current_scheme_host +
         "/botResponse", headers={"Content-Type":"application/json"}, json=jsonObj)
     return ""
