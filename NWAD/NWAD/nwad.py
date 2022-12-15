@@ -519,7 +519,6 @@ def scenarioReg(request):
 @csrf_exempt
 def botResponse(request):
     try:
-        util.insertLog(request, "시작/" + request.method)
         if request.method == "POST":
             req = util.strToJson(request.body.decode('utf-8'))
             log.objects.create(
