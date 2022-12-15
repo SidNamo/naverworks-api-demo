@@ -617,8 +617,8 @@ def botResponse(request):
                                         # 결재자에게 메시지 전송
                                         connDatas = scen_conn.objects.filter(scen_no=scenConnData.scen_no.scen_no).exclude(status=1).exclude(status=9).order_by('-conn_no')[:5]
 
-                                        content = util.strToJson(util.simpleTemplate(""))
-                                        content["contents"]["contents"].pop()
+                                        contents = util.strToJson(util.simpleTemplate(""))
+                                        contents["contents"]["contents"].pop()
 
                                         for connData in connDatas:
                                             res = getUserInfo(api_no=scenData.api_no.api_no, bot_no=scenData.bot_no.bot_no, user_id=connData.reporter)
@@ -633,17 +633,17 @@ def botResponse(request):
                                             btn.append({"text":"대기 메시지 전송", "data":"{'action':'sendWait','conn':'"+str(connData.conn_no)+"','scen':'"+str(connData.scen_no.scen_no)+"'}"})
                                             btn.append({"text":"대화 취소", "data":"{'action':'cancleChat','conn':'"+str(connData.conn_no)+"','scen':'"+str(connData.scen_no.scen_no)+"'}"})
                                             content = util.strToJson(util.simpleTemplate(text, button=btn))
-                                            content["contents"]["contents"].append(content["contents"]["contents"][0])
-                                            if content["altText"] == "":
-                                                content["altText"] = content["altText"]
+                                            contents["contents"]["contents"].append(content["contents"]["contents"][0])
+                                            if contents["altText"] == "":
+                                                contents["altText"] = content["altText"]
 
-                                        content = util.jsonToStr(content)
+                                        contents = util.jsonToStr(contents)
 
                                         # 메시지 전송
                                         res = sendMessage(
                                             api_no=scenData.api_no.api_no, 
                                             bot_no=scenData.bot_no.bot_no, 
-                                            content=util.simpleTemplate(text, button=btn), 
+                                            content=contents, 
                                             channel_id=scenData.channel
                                         )
 
