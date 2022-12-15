@@ -165,89 +165,14 @@ def tokenReg(tokenData):
                 )
     
 
-    
 """
 AccessToken 조회
 1. DB에 AccessToken 있는지 조회
 2. DB에 RefreshToken 있는지 조회
 3. JWT 인증
 """
-def getAccessToken(request, apiNo):
-    tokenInfo = []
-    # tokenInfo.append({'type':'authorization_code','exp':'600'})
-    tokenInfo.append({'type':'access_token','exp':86400}) # 1일 = 86,400초
-    tokenInfo.append({'type':'refresh_token','exp':7776000}) # 90일 = 7,776,000초
-    accessToken = ""
-    # AccessToken 조회
-    type = "access_token"
-    tokenData = token.objects.filter(
-        member_no=member.objects.filter(member_no=request.session["memberInfo"]["member_no"]).first(),
-        api_no=apiNo,
-        type=type,
-        exp_date__gt=getTime()
-    ).first()
-    if tokenData is not None:
-        accessToken = tokenData.token
-    else:
-        type = "refresh_token"
-        tokenData = token.objects.filter(
-            member_no=member.objects.filter(member_no=request.session["memberInfo"]["member_no"]).first(),
-            api_no=apiNo,
-            type=type,
-        exp_date__gt=getTime()
-        ).first()
-
-        apidata=api.objects.filter(
-            member_no=member.objects.filter(member_no=request.session["memberInfo"]["member_no"]).first(),
-            api_no=apiNo
-        ).first()
-        apidata = objectToDict(apidata)
-
-        if tokenData is not None:
-            apidata["refresh_token"] = tokenData.token
-            # JWT Auth Api 호출
-            client = requests.session()
-            csrftoken = client.get(request._current_scheme_host + "/login").cookies['csrftoken']
-            headers = {'X-CSRFToken':csrftoken}
-            res = client.post(request._current_scheme_host + "/auth/authRefreshToken", headers=headers, data=apidata)
-            result = strToJson(res.text) # 인증 완료 후 응답 값
-            if res.status_code == 200:
-                result["api"] = api.objects.filter(
-                    member_no=member.objects.filter(member_no=request.session["memberInfo"]["member_no"]).first(),
-                    api_no=apiNo
-                ).first()
-                tokenReg(request, result)
-                accessToken = result["access_token"]
-        else:
-            # JWT Auth Api 호출
-            client = requests.session()
-            csrftoken = client.get(request._current_scheme_host + "/login").cookies['csrftoken']
-            headers = {'X-CSRFToken':csrftoken}
-            res = client.post(request._current_scheme_host + "/auth/jwt", headers=headers, data=apidata)
-            result = strToJson(res.text) # 인증 완료 후 응답 값
-            if res.status_code == 200:
-                result["api"] = api.objects.filter(
-                    member_no=member.objects.filter(member_no=request.session["memberInfo"]["member_no"]).first(),
-                    api_no=apiNo
-                ).first()
-                tokenReg(request, result)
-                accessToken = result["access_token"]
-
-    return accessToken
-
-
-    
-"""
-AccessToken 조회
-1. DB에 AccessToken 있는지 조회
-2. DB에 RefreshToken 있는지 조회
-3. JWT 인증
-"""
-def getAccessTokenForApi(request, apiNo, type="access_token"):
+def getAccessToken(apiNo, type="access_token"):
         
-    insertLog(request, "AccessToken 조회 시작")
-
-    host = request._current_scheme_host
     tokenInfo = []
     # tokenInfo.append({'type':'authorization_code','exp':'600'})
     tokenInfo.append({'type':'access_token','exp':86400}) # 1일 = 86,400초
@@ -278,20 +203,13 @@ def getAccessTokenForApi(request, apiNo, type="access_token"):
         if tokenData is not None:
             apidata["refresh_token"] = tokenData.token
 
-            res = authRefreshToken2(
+            res = authRefreshToken(
                 client_id=apiData.client_id,
                 client_secret=apiData.client_secret,
                 refresh_token=tokenData.token
             )
-
-            # # JWT Auth Api 호출
-            # client = requests.session()
-            # csrftoken = client.get(host + "/login").cookies['csrftoken']
-            # headers = {'X-CSRFToken':csrftoken}
-            # res = client.post(host + "/auth/authRefreshToken", headers=headers, data=apidata)
-
             result = strToJson(res.text) # 인증 완료 후 응답 값
-            if res.status_code == 200:
+            if res.status_code == 200 or res.status_code == 201:
                 result["api"] = api.objects.filter(
                     api_no=apiNo
                 ).first()
@@ -299,22 +217,15 @@ def getAccessTokenForApi(request, apiNo, type="access_token"):
                 accessToken = result["access_token"]
     elif type == "jwt":
 
-        res = authJwt2(
+        res = authJwt(
             client_id=apiData.client_id,
             client_secret=apiData.client_secret,
             service_account=apiData.service_account,
             private_key=apiData.private_key,
             scope=apiData.scope
         )
-            
-        # # JWT Auth Api 호출
-        # client = requests.session()
-        # csrftoken = client.get(host + "/login").cookies['csrftoken']
-        # headers = {'X-CSRFToken':csrftoken}
-        # res = client.post(host + "/auth/jwt", headers=headers, data=apidata)
-
         result = strToJson(res.text) # 인증 완료 후 응답 값
-        if res.status_code == 200:
+        if res.status_code == 200 or res.status_code == 201:
             result["api"] = api.objects.filter(
                 api_no=apiNo
             ).first()
