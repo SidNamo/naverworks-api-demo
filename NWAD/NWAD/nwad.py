@@ -621,7 +621,7 @@ def botResponse(request):
                                         content["contents"]["contents"].pop()
 
                                         for connData in connDatas:
-                                            res = getUserInfo(request, api_no=scenData.api_no.api_no, bot_no=scenData.bot_no.bot_no, user_id=connData.reporter)
+                                            res = getUserInfo(api_no=scenData.api_no.api_no, bot_no=scenData.bot_no.bot_no, user_id=connData.reporter)
                                             result = util.strToJson(res.text)  # 인증 완료 후 응답 값
                                             if res.status_code != 200 and res.status_code != 201:
                                                 raise Exception(result["description"])
@@ -669,7 +669,7 @@ def botResponse(request):
                                     scen_conn.objects.filter(conn_no=postbackData["conn"]).update(status='1',approver=sender["id"])
 
                                     # # 보고자 정보 조회
-                                    res = getUserInfo(request, scenData.api_no.api_no, scenData.bot_no.bot_no, scenConnData.reporter)
+                                    res = getUserInfo(scenData.api_no.api_no, scenData.bot_no.bot_no, scenConnData.reporter)
 
                                     result = util.strToJson(res.text)  # 인증 완료 후 응답 값
                                     if res.status_code != 200 and res.status_code != 201:
@@ -779,7 +779,7 @@ def botResponse(request):
                                     scen_conn.objects.filter(conn_no=postbackData["conn"]).update(status='9')
 
                                     # # 보고자 정보 조회
-                                    res = getUserInfo(request, scenData.api_no.api_no, scenData.bot_no.bot_no, scenConnData.reporter)
+                                    res = getUserInfo(scenData.api_no.api_no, scenData.bot_no.bot_no, scenConnData.reporter)
 
                                     result = util.strToJson(res.text)  # 인증 완료 후 응답 값
                                     if res.status_code != 200 and res.status_code != 201:
