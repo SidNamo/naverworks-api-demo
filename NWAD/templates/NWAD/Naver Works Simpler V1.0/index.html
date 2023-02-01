@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<!--begin::Head-->
+	<head>
+		<meta charset="utf-8" />
+        <title>NAVER WORKS Simpler</title>
+        <meta name="description" content="NAVER WORKS Simpler by Didim365" />
+        <meta name="keywords" content="NAVER WORKS Simpler by Didim365" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta property="og:locale" content="ko_KR" />
+        <meta property="og:title" content="NAVER WORKS Simpler by Didim365" />
+        <meta property="og:site_name" content="NAVER WORKS Simpler by Didim365" />
+        <link rel="shortcut icon" href="assets/media/logos/simpler-favicon.png" />
+        <!--begin::Fonts(mandatory for all pages)-->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" />
+        <!--end::Fonts-->
+        <!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
+        <link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+        <link href="assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+        <!--end::Global Stylesheets Bundle-->
+        <link href="assets/css/custom.css" rel="stylesheet" type="text/css" />
+	</head>
+	<!--end::Head-->
+	<!--begin::Body-->
+	<body id="kt_body" class="bg-body">
+		<!--begin::Main-->
+		<div class="d-flex flex-column flex-lg-row flex-column-fluid">
+		
+			<!--begin::Body-->
+			<div class="d-flex flex-column flex-lg-row-fluid">
+				<!--begin::Content-->
+				<div class="d-flex flex-center flex-column flex-column-fluid bgi-size-cover bgi-position-top bgi-no-repeat" style="background-image: url('assets/media/auth/bg-01.jpg');">
+					<!--begin::Wrapper-->
+					<div class="w-lg-500px p-10 p-lg-15 mx-auto">
+						<!--begin::Form-->
+						<form class="form w-100" novalidate="novalidate">
+							<!--begin::Logo-->
+							<div class="mb-10">
+								<img alt="DidimAPI Simpler logo" src="assets/media/logos/DAS-logo-black.svg" class="w-300px" />
+							</div>
+							<!--end::Logo-->
+							<!--begin::Heading-->
+							<div class="mb-10 fs-noto">
+								<!--begin::Title-->
+								<h1 class="text-dark fw-bolder mb-3">Login</h1>
+								<!--end::Title-->
+								<!--begin::Link-->
+								<div class="text-gray-600 fw-normal fs-4">
+									서비스를 이용하려면 로그인 하세요!
+								</div>
+								<!--end::Link-->
+							</div>
+							<!--begin::Heading-->
+
+							<!--begin::Input group-->
+							<div class="fv-row mb-8">
+								<!--begin::Label-->
+								<label class="form-label fs-6 fw-bolder text-dark ms-1">User ID</label>
+								<!--end::Label-->
+								<!--begin::Input-->
+								<input class="form-control form-control-md form-control-solid" type="text" placeholder="아이디 입력" name="user id" autocomplete="off" />
+								<!--end::Input-->
+								<!--begin::Input Check
+								<span class="form-text text-danger px-2">아이디를 입력해주세요.</span>
+								end::Input Check-->
+							</div>
+							<!--end::Input group-->
+
+							<!--begin::Input group-->
+							<div class="fv-row mb-5">
+								<!--begin::Label-->
+								<label class="form-label fs-6 fw-bolder text-dark ms-1">Password</label>
+								<!--end::Label-->
+								<!--begin::Input-->
+								<input class="form-control form-control-md form-control-solid" type="password" placeholder="비밀번호 입력" name="password" autocomplete="off" />
+								<!--end::Input-->
+								<!--begin::Input Check
+								<span class="form-text text-danger px-2">비밀번호를 입력해주세요.</span>
+								end::Input Check-->
+							</div>
+							<!--end::Input group-->
+
+							<!--begin::Input option-->
+							<div class="fv-row mb-10">
+								<div class="d-flex flex-row flex-wrap justify-content-between align-items-center px-2">
+									<!--begin::Check-->
+									<div class="form-check form-check-sm form-check-custom form-check-solid">
+										<input class="form-check-input" type="checkbox" value="" id="idRemember"/>
+										<label class="form-check-label fs-6 fw-bolder text-gray-600" for="idRemember">
+											아이디 기억하기
+										</label>
+									</div>
+									<!--end::Check-->
+
+									<!--begin::Link-->
+									<a href="javascript:;" class="link-primary fs-6 fw-bolder text-gray-600 text-hover-primary" data-bs-toggle="modal" data-bs-target="#sm_login_forgot">아이디<span class="fw-bold">&#47;</span>비밀번호 찾기</a>
+									<!--end::Link-->
+								</div>
+							</div>
+							<!--end::Input option-->
+
+							<!--begin::Actions-->
+							<div class="text-center">
+								<!--begin::Submit button-->
+								<a href="api-bot-list.html" type="button" class="btn btn-lg btn-primary w-100 mb-8 fw-semibold">
+									<span class="indicator-label">로그인</span>
+								</a>
+								<!--end::Submit button-->
+								<!--begin::Separator-->
+								<div class="text-gray-500 fw-semibold fs-5">
+									아직 회원이 아니신가요? 
+									<a href="#" class="link-primary px-2" data-bs-toggle="modal" data-bs-target="#nws_register">회원 가입하기</a>
+								</div>
+							</div>
+							<!--end::Actions-->
+						</form>
+						<!--end::Form-->
+					</div>
+					<!--end::Wrapper-->
+				</div>
+				<!--end::Content-->
+			</div>
+			<!--end::Body-->
+		</div>
+		<!--end::Main-->
+
+		<!--begin::Modal (ID/PW Check)-->
+		<div class="modal fade" tabindex="-1" id="sm_login_forgot">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h3 class="modal-title fw-semibold">아이디<span class="fw-normal">&#47;</span>비밀번호 찾기</h3>
+						<!--begin::Close-->
+						<button type="button" class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+							<!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+							<span class="svg-icon svg-icon-2x">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+									<rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="currentColor" />
+									<rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="currentColor" />
+								</svg>
+							</span>
+							<!--end::Svg Icon-->
+						</button>
+						<!--end::Close-->
+					</div>
+					<div class="modal-body pb-0">
+						<ul class="nav nav-tabs mb-5 fs-8 fw-bolder">
+							<li class="nav-item me-1">
+								<a class="nav-link fs-5 text-gray-600 text-active-primary active" data-bs-toggle="tab" href="#kt_tab_id_check">
+									<i class="nav-icon bi bi-person-check-fill me-2 lh-base"></i>
+									아이디 찾기
+								</a>
+							</li>
+							<li class="nav-item me-1">
+								<a class="nav-link fs-5 text-gray-600 text-active-primary" data-bs-toggle="tab" href="#kt_tab_pw_check">
+									<i class="nav-icon bi bi-lock-fill me-2 lh-base"></i>
+									비밀번호 찾기
+								</a>
+							</li>
+						</ul>
+						<div class="tab-content" id="myTabContent">
+							<div class="tab-pane px-5 py-3 fade show active" id="kt_tab_id_check" role="tabpanel">
+								<div class="d-flex flex-column mb-3 fv-row">
+									<div class="fs-6 text-gray-700">
+										회원시 가입하신 이메일로 아이디 정보를 발송해드립니다.
+									</div>
+								
+									<!--begin::Input group-->
+									<div class="row mt-5">
+										<div class="col-12 fv-row">
+											<label for='pw-check-org-name' class="d-flex align-items-center fs-6 fw-bolder form-label text-gray-700 mb-2">관리자 이름</label>
+											<input type="text" class="form-control form-control-solid" id="pw-check-org-name" placeholder="관리자 이름" />
+											<!--begin::Input Check
+												<span class="form-text text-danger d-flex mt-2">관리자 이름을 입력해주세요.</span>
+											end::Input Check-->
+										</div>
+									</div>
+									<!--end::Input group-->
+									<!--begin::Input group-->
+									<div class="row mt-5">
+										<div class="col-12 fv-row">
+											<label for='check-email' class="d-flex align-items-center fs-6 fw-bolder form-label text-gray-700 mb-2">이메일 주소</label>
+											<input type="text" class="form-control form-control-solid" id="check-email" placeholder="example@exapmle.com" />
+											<!--begin::Input Check
+												<span class="form-text text-danger d-flex mt-2">관리자 이름을 입력해주세요.</span>
+											end::Input Check-->
+										</div>
+											<!--begin::Input Check
+												<span class="form-text text-danger d-flex mt-2">이메일을 입력해주세요.</span>
+											end::Input Check-->
+									</div>
+									<!--end::Input group-->
+								</div>
+							</div>
+							<div class="tab-pane px-5 py-3 fade" id="kt_tab_pw_check" role="tabpanel">
+								<div class="d-flex flex-column mb-3 fv-row">
+									<div class="fs-6 text-gray-700">
+										회원시 가입하신 이메일로 임시 비밀번호를 발송해드립니다.
+									</div>
+								
+									<!--begin::Input group-->
+									<div class="row mt-5">
+										<div class="col-12 fv-row">
+											<label for='check-org-name' class="d-flex align-items-center fs-6 fw-bolder form-label text-gray-700 mb-2">관리자 이름</label>
+											<input type="text" class="form-control form-control-solid" id="check-org-name" placeholder="관리자 이름" />
+											<!--begin::Input Check
+												<span class="form-text text-danger d-flex mt-2">관리자 이름을 입력해주세요.</span>
+											end::Input Check-->
+										</div>
+									</div>
+									<!--end::Input group-->
+									<!--begin::Input group-->
+									<div class="row mt-5">
+										<div class="col-12 fv-row">
+											<label for='pw-check-email' class="d-flex align-items-center fs-6 fw-bolder form-label text-gray-700 mb-2">이메일 주소</label>
+											<input type="text" class="form-control form-control-solid" id="pw-check-email" placeholder="example@exapmle.com" />
+										</div>
+											<!--begin::Input Check
+												<span class="form-text text-danger d-flex mt-2">이메일을 입력해주세요.</span>
+											end::Input Check-->
+									</div>
+									<!--end::Input group-->
+									<!--begin::Input group-->
+									<div class="row mt-5">
+										<div class="col-12 fv-row">
+											<label for='check-ID' class="d-flex align-items-center fs-6 fw-bolder form-label text-gray-700 mb-2">User ID</label>
+											<input type="text" class="form-control form-control-solid" id="check-ID" placeholder="User ID" />
+										</div>
+											<!--begin::Input Check
+												<span class="form-text text-danger d-flex mt-2">User ID를 입력해주세요.</span>
+											end::Input Check-->
+									</div>
+									<!--end::Input group-->
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary btn fw-bold" id="sm_idinfo_send">확인(아이디)</button>
+						<button type="button" class="btn btn-primary btn fw-bold" id="sm_pwinfo_send">확인(비번)</button>
+						<button type="button" class="btn btn-danger btn fw-bold" id="sm_info_none">체크(없음)</button>
+						<button type="button" class="btn btn-light btn fw-bold" data-bs-dismiss="modal">취소</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--end::Modal (ID/PW Check)-->
+
+		<!--begin::Modal (Register)-->
+		<div class="modal fade" tabindex="-1" id="nws_register">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h3 class="modal-title fw-bolder">회원가입하기</h3>
+						<!--begin::Close-->
+						<button type="button" class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+							<!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+							<span class="svg-icon svg-icon-2x">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+									<rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="currentColor" />
+									<rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="currentColor" />
+								</svg>
+							</span>
+							<!--end::Svg Icon-->
+						</button>
+						<!--end::Close-->
+					</div>
+					<form id="nws_register_form" class="form fv-plugins-bootstrap5 fv-plugins-framework" action="#">
+						<!--begin::Modal body-->
+						<div class="modal-body py-10 px-15">
+							<!--begin::Scroll-->
+							<div class="scroll-y me-n7 pe-7" id="nws_register_scroll" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#nws_register_header" data-kt-scroll-wrappers="#nws_register_scroll" data-kt-scroll-offset="300px" style="max-height: 651px;">
+								<!--begin::Input group-->
+								<div class="mb-5 fv-row">
+									<!--begin::Label-->
+									<label class="required fs-5 fw-semibold mb-2">관리자이름</label>
+									<!--end::Label-->
+									<!--begin::Input-->
+									<input type="text" class="form-control form-control-solid" placeholder="관리자 이름" name="name">
+									<!--end::Input-->
+								</div>
+								<!--end::Input group-->
+								<!--begin::Input group-->
+								<div class="mb-5 fv-row">
+									<!--begin::Label-->
+									<label class="required fs-5 fw-semibold mb-2">Email</label>
+									<!--end::Label-->
+									<!--begin::Input-->
+									<input type="text" class="form-control form-control-solid" placeholder="example@example.com" name="email">
+									<!--end::Input-->
+								</div>
+								<!--end::Input group-->
+								<!--begin::Input group-->
+								<div class="mb-5 fv-row">
+									<!--begin::Label-->
+									<label class="required fs-5 fw-semibold mb-2">업체명</label>
+									<!--end::Label-->
+									<!--begin::Input-->
+									<input type="text" class="form-control form-control-solid" placeholder="업체명" name="company">
+									<!--end::Input-->
+								</div>
+								<!--end::Input group-->
+								<!--begin::Input group-->
+								<div class="mb-5 fv-row">
+									<!--begin::Label-->
+									<label class="required fs-5 fw-semibold mb-2">User ID</label>
+									<!--end::Label-->
+									<!--begin::Input-->
+									<input type="text" class="form-control form-control-solid" placeholder="User ID" name="userid">
+									<!--end::Input-->
+									<!--begin::Check-->
+									<div class="text-success fw-normal fs-7 mt-2 ms-2">
+										사용할 수 있는 아이디 입니다.
+									</div>
+									<!--end::Check-->
+									<!--begin::Check-->
+									<div class="text-danger fw-normal fs-7 mt-2 ms-2">
+										이미 사용된 아이디 입니다.
+									</div>
+									<!--end::Check-->
+								</div>
+								<!--end::Input group-->
+								<!--begin::Input group-->
+								<div class="mb-5 fv-row" data-kt-password-meter="true">
+									<!--begin::Label-->
+									<label class="required fs-5 fw-semibold mb-2">Password</label>
+									<!--end::Label-->
+									<!--begin::Input-->
+									<div class="position-relative">
+										<input class="form-control form-control-lg form-control-solid" type="password" placeholder="" name="current_password" autocomplete="off">
+			
+										<span class="btn btn-sm btn-icon position-absolute translate-middle top-50 end-0 me-n2" data-kt-password-meter-control="visibility">
+											<i class="bi bi-eye-slash fs-2"></i>
+			
+											<i class="bi bi-eye fs-2 d-none"></i>
+										</span>
+									</div>
+									<!--end::Input-->
+								</div>
+								<!--end::Input group-->
+							</div>
+							<!--end::Scroll-->
+						</div>
+						<!--end::Modal body-->
+						<!--begin::Modal footer-->
+						<div class="modal-footer flex-center">
+							<!--begin::Button-->
+							<button type="reset" id="nws_register_cancel" class="btn btn-light me-3" data-bs-dismiss="modal">취소</button>
+							<!--end::Button-->
+							<!--begin::Button-->
+							<button type="submit" id="nws_register_submit" class="btn btn-primary">
+								<span class="indicator-label">회원가입</span>
+								<span class="indicator-progress">Please wait... 
+								<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+							</button>
+							<!--end::Button-->
+						</div>
+						<!--end::Modal footer-->
+					</form>
+				</div>
+			</div>
+		</div>
+		<!--end::Modal (Register)-->
+
+		<script>var hostUrl = "assets/";</script>
+		<!--begin::Javascript-->
+		<!--begin::Global Javascript Bundle(used by all pages)-->
+		<script src="assets/plugins/global/plugins.bundle.js"></script>
+		<script src="assets/js/scripts.bundle.js"></script>
+		<!--end::Global Javascript Bundle-->
+		<!--end::Javascript-->
+
+		<!--begin::Alert | Login Forget-->
+		<script type="text/javascript">
+			const BtnIDSend = document.getElementById('sm_idinfo_send');
+			BtnIDSend.addEventListener('click', e =>{
+				e.preventDefault();
+				Swal.fire({
+					html: `<strong class="fs-4">아이디 정보 발송 완료</strong><br />
+					<span class="fs-6">입력하신 이메일로 아이디 정보를 발송하였습니다.<br />
+					이메일에서 아이디를 확인해주세요.</span>`,
+					icon: "success",
+					buttonsStyling: false,
+					confirmButtonText: "확인",
+					customClass: {
+						confirmButton: "btn btn-primary px-5 py-2",
+					}
+				}).then((result) => {
+                            bootstrap.Modal.getInstance(modal).hide();
+                        });
+			});
+
+			const BtnPWSend = document.getElementById('sm_pwinfo_send');
+			BtnPWSend.addEventListener('click', e =>{
+				e.preventDefault();
+				Swal.fire({
+					html: `<strong class="fs-4">임시 비밀번호 발송 완료</strong><br />
+					<span class="fs-6">입력하신 이메일로 임시 비밀번호가 발송되었습니다. <br />수신된 이메일을 확인해주세요.</span>`,
+					icon: "success",
+					buttonsStyling: false,
+					confirmButtonText: "확인",
+					customClass: {
+						confirmButton: "btn btn-primary px-5 py-2",
+					}
+				});
+			});
+
+			const BtnInfoNone = document.getElementById('sm_info_none');
+			BtnInfoNone.addEventListener('click', e =>{
+				e.preventDefault();
+				Swal.fire({
+					html: `입력하신 정보와 일치하는 정보가 없습니다.<br />
+					다시 한번 확인해주시기 바랍니다.`,
+					icon: "warning",
+					buttonsStyling: false,
+					confirmButtonText: "확인",
+					customClass: {
+						confirmButton: "btn btn-danger px-5 py-2",
+					}
+				});
+			});
+		</script>
+		<!--end::Alert | SaaSMaker-->
+
+		<!--begin::Javascript-->
+        <script>var hostUrl = "assets/";</script>
+        <!--begin::Global Javascript Bundle(mandatory for all pages)-->
+        <script src="assets/plugins/global/plugins.bundle.js"></script>
+        <script src="assets/js/scripts.bundle.js"></script>
+        <!--end::Global Javascript Bundle-->
+        <!--begin::Custom Javascript(used for this page only)-->
+        <!--end::Custom Javascript-->
+        <!--end::Javascript-->
+	</body>
+	<!--end::Body-->
+</html>
