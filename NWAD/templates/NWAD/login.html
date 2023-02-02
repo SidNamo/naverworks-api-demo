@@ -373,12 +373,14 @@
 		<!--end::Javascript-->
 
 		<!--begin::Alert | Login Forget-->
+        <script src="{% static 'assets/js/common.js' %}"></script>
 		<script type="text/javascript">
 			window.onload = function(e) {
 				// 아이디 저장 체크
 				{
-					let id = window.localStorage.getItem("saveId")
+					let id = window.localStorage.getItem("saveId");
 					if(id != null) {
+						id = decodeByAES256(id);
 						document.getElementsByName("id")[0].value = id;
 						document.getElementById("idRemember").checked = true;
 					}
@@ -460,7 +462,8 @@
 				}).then((res) => {
 					if(res.flag == '0'){
 						if(document.getElementById("idRemember").checked){
-							window.localStorage.setItem("saveId", document.getElementsByName("id")[0].value);
+							let id = encodeByAES256(document.getElementsByName("id")[0].value);
+							window.localStorage.setItem("saveId", id);
 						}else{
 							window.localStorage.removeItem("saveId");
 						}
@@ -501,6 +504,7 @@
         <!-- <script src="{% static 'assets/js/indexed-db.js' %}"></script> -->
         <!--end::Global Javascript Bundle-->
         <!--begin::Custom Javascript(used for this page only)-->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
         <!--end::Custom Javascript-->
         <!--end::Javascript-->
 	</body>
