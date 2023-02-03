@@ -10,8 +10,9 @@ urlpatterns = [
     path('', nwad.index, name="main"),
     path('login', nwad.login, name="login"),
     path('logout', nwad.logout, name="logout"),
-    path('testLogin', nwad.testLogin, name="testLogin"),
+    path('loginFind', nwad.loginFind, name="loginFind"),
     path('join', nwad.join, name="join"),
+    path('joinIdCheck', nwad.joinIdCheck, name="joinIdCheck"),
 
     path('apiList', nwad.apiList, name="apiList"),
     path('api/apiReg', nwad.apiReg, name="api/apiReg"),

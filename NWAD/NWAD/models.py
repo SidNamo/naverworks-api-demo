@@ -31,6 +31,7 @@ class member(models.Model):
     reg_date = models.DateTimeField(db_column='reg_date', auto_now=True)
     status = models.CharField(db_column='status', max_length=1, default='2') # 1:정상 ,2:가입대기, 3:가입취소, 4:가입반려, 9:탈퇴
     rmk = models.TextField(db_column='rmk', null=True)
+    corp_name = models.TextField(db_column='corp_name', max_length=50)
 
     class Meta:
         managed = True

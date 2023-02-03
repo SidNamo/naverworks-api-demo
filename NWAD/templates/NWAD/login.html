@@ -94,7 +94,7 @@
 									<!--end::Check-->
 
 									<!--begin::Link-->
-									<a href="javascript:;" class="link-primary fs-6 fw-bolder text-gray-600 text-hover-primary" data-bs-toggle="modal" data-bs-target="#sm_login_forgot">아이디<span class="fw-bold">&#47;</span>비밀번호 찾기</a>
+									<a href="javascript:;" class="link-primary fs-6 fw-bolder text-gray-600 text-hover-primary" data-bs-toggle="modal" data-bs-target="#sm_login_forgot" onclick="fn_cleanFindData();">아이디<span class="fw-bold">&#47;</span>비밀번호 찾기</a>
 									<!--end::Link-->
 								</div>
 							</div>
@@ -111,7 +111,7 @@
 								<!--begin::Separator-->
 								<div class="text-gray-500 fw-semibold fs-5">
 									아직 회원이 아니신가요? 
-									<a href="#" class="link-primary px-2" data-bs-toggle="modal" data-bs-target="#nws_register">회원 가입하기</a>
+									<a href="#" class="link-primary px-2" data-bs-toggle="modal" data-bs-target="#nws_register" onclick="fn_cleanJoinData();">회원 가입하기</a>
 								</div>
 							</div>
 							<!--end::Actions-->
@@ -148,20 +148,20 @@
 					<div class="modal-body pb-0">
 						<ul class="nav nav-tabs mb-5 fs-8 fw-bolder">
 							<li class="nav-item me-1">
-								<a class="nav-link fs-5 text-gray-600 text-active-primary active" data-bs-toggle="tab" href="#kt_tab_id_check">
+								<a class="nav-link fs-5 text-gray-600 text-active-primary kt_tab_toggle_btn active" data-bs-toggle="tab" href="#kt_tab_id_find">
 									<i class="nav-icon bi bi-person-check-fill me-2 lh-base"></i>
 									아이디 찾기
 								</a>
 							</li>
 							<li class="nav-item me-1">
-								<a class="nav-link fs-5 text-gray-600 text-active-primary" data-bs-toggle="tab" href="#kt_tab_pw_check">
+								<a class="nav-link fs-5 text-gray-600 text-active-primary kt_tab_toggle_btn" data-bs-toggle="tab" href="#kt_tab_pw_find">
 									<i class="nav-icon bi bi-lock-fill me-2 lh-base"></i>
 									비밀번호 찾기
 								</a>
 							</li>
 						</ul>
-						<div class="tab-content" id="myTabContent">
-							<div class="tab-pane px-5 py-3 fade show active" id="kt_tab_id_check" role="tabpanel">
+						<div class="tab-content" id="loginFindTab">
+							<div class="tab-pane px-5 py-3 fade show active" id="kt_tab_id_find" role="tabpanel">
 								<div class="d-flex flex-column mb-3 fv-row">
 									<div class="fs-6 text-gray-700">
 										회원시 가입하신 이메일로 아이디 정보를 발송해드립니다.
@@ -170,31 +170,22 @@
 									<!--begin::Input group-->
 									<div class="row mt-5">
 										<div class="col-12 fv-row">
-											<label for='pw-check-org-name' class="d-flex align-items-center fs-6 fw-bolder form-label text-gray-700 mb-2">관리자 이름</label>
-											<input type="text" class="form-control form-control-solid" id="pw-check-org-name" placeholder="관리자 이름" />
-											<!--begin::Input Check
-												<span class="form-text text-danger d-flex mt-2">관리자 이름을 입력해주세요.</span>
-											end::Input Check-->
+											<label for='id-find-name' class="d-flex align-items-center fs-6 fw-bolder form-label text-gray-700 mb-2">관리자 이름</label>
+											<input type="text" class="form-control form-control-solid" id="id-find-name" placeholder="관리자 이름" />
 										</div>
 									</div>
 									<!--end::Input group-->
 									<!--begin::Input group-->
 									<div class="row mt-5">
 										<div class="col-12 fv-row">
-											<label for='check-email' class="d-flex align-items-center fs-6 fw-bolder form-label text-gray-700 mb-2">이메일 주소</label>
-											<input type="text" class="form-control form-control-solid" id="check-email" placeholder="example@exapmle.com" />
-											<!--begin::Input Check
-												<span class="form-text text-danger d-flex mt-2">관리자 이름을 입력해주세요.</span>
-											end::Input Check-->
+											<label for='id-find-email' class="d-flex align-items-center fs-6 fw-bolder form-label text-gray-700 mb-2">이메일 주소</label>
+											<input type="text" class="form-control form-control-solid" id="id-find-email" placeholder="example@exapmle.com" />
 										</div>
-											<!--begin::Input Check
-												<span class="form-text text-danger d-flex mt-2">이메일을 입력해주세요.</span>
-											end::Input Check-->
 									</div>
 									<!--end::Input group-->
 								</div>
 							</div>
-							<div class="tab-pane px-5 py-3 fade" id="kt_tab_pw_check" role="tabpanel">
+							<div class="tab-pane px-5 py-3 fade" id="kt_tab_pw_find" role="tabpanel">
 								<div class="d-flex flex-column mb-3 fv-row">
 									<div class="fs-6 text-gray-700">
 										회원시 가입하신 이메일로 임시 비밀번호를 발송해드립니다.
@@ -203,34 +194,25 @@
 									<!--begin::Input group-->
 									<div class="row mt-5">
 										<div class="col-12 fv-row">
-											<label for='check-org-name' class="d-flex align-items-center fs-6 fw-bolder form-label text-gray-700 mb-2">관리자 이름</label>
-											<input type="text" class="form-control form-control-solid" id="check-org-name" placeholder="관리자 이름" />
-											<!--begin::Input Check
-												<span class="form-text text-danger d-flex mt-2">관리자 이름을 입력해주세요.</span>
-											end::Input Check-->
+											<label for='pw-find-name' class="d-flex align-items-center fs-6 fw-bolder form-label text-gray-700 mb-2">관리자 이름</label>
+											<input type="text" class="form-control form-control-solid" id="pw-find-name" placeholder="관리자 이름" />
 										</div>
 									</div>
 									<!--end::Input group-->
 									<!--begin::Input group-->
 									<div class="row mt-5">
 										<div class="col-12 fv-row">
-											<label for='pw-check-email' class="d-flex align-items-center fs-6 fw-bolder form-label text-gray-700 mb-2">이메일 주소</label>
-											<input type="text" class="form-control form-control-solid" id="pw-check-email" placeholder="example@exapmle.com" />
+											<label for='pw-find-email' class="d-flex align-items-center fs-6 fw-bolder form-label text-gray-700 mb-2">이메일 주소</label>
+											<input type="text" class="form-control form-control-solid" id="pw-find-email" placeholder="example@exapmle.com" />
 										</div>
-											<!--begin::Input Check
-												<span class="form-text text-danger d-flex mt-2">이메일을 입력해주세요.</span>
-											end::Input Check-->
 									</div>
 									<!--end::Input group-->
 									<!--begin::Input group-->
 									<div class="row mt-5">
 										<div class="col-12 fv-row">
-											<label for='check-ID' class="d-flex align-items-center fs-6 fw-bolder form-label text-gray-700 mb-2">User ID</label>
-											<input type="text" class="form-control form-control-solid" id="check-ID" placeholder="User ID" />
+											<label for='pw-find-id' class="d-flex align-items-center fs-6 fw-bolder form-label text-gray-700 mb-2">User ID</label>
+											<input type="text" class="form-control form-control-solid" id="pw-find-id" placeholder="User ID" />
 										</div>
-											<!--begin::Input Check
-												<span class="form-text text-danger d-flex mt-2">User ID를 입력해주세요.</span>
-											end::Input Check-->
 									</div>
 									<!--end::Input group-->
 								</div>
@@ -238,9 +220,7 @@
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-primary btn fw-bold" id="sm_idinfo_send">확인(아이디)</button>
-						<button type="button" class="btn btn-primary btn fw-bold" id="sm_pwinfo_send">확인(비번)</button>
-						<button type="button" class="btn btn-danger btn fw-bold" id="sm_info_none">체크(없음)</button>
+						<button type="button" class="btn btn-primary btn fw-bold" id="sm_info_send">확인</button>
 						<button type="button" class="btn btn-light btn fw-bold" data-bs-dismiss="modal">취소</button>
 					</div>
 				</div>
@@ -298,7 +278,7 @@
 									<label class="required fs-5 fw-semibold mb-2">업체명</label>
 									<!--end::Label-->
 									<!--begin::Input-->
-									<input type="text" class="form-control form-control-solid" placeholder="업체명" name="company">
+									<input type="text" class="form-control form-control-solid" placeholder="업체명" name="corp_name">
 									<!--end::Input-->
 								</div>
 								<!--end::Input group-->
@@ -311,12 +291,12 @@
 									<input type="text" class="form-control form-control-solid" placeholder="User ID" name="userid">
 									<!--end::Input-->
 									<!--begin::Check-->
-									<div class="text-success fw-normal fs-7 mt-2 ms-2">
+									<div class="text-success fw-normal fs-7 mt-2 ms-2" id="join_id_new" style="display:none;">
 										사용할 수 있는 아이디 입니다.
 									</div>
 									<!--end::Check-->
 									<!--begin::Check-->
-									<div class="text-danger fw-normal fs-7 mt-2 ms-2">
+									<div class="text-danger fw-normal fs-7 mt-2 ms-2" id="join_id_used" style="display:none;">
 										이미 사용된 아이디 입니다.
 									</div>
 									<!--end::Check-->
@@ -329,7 +309,7 @@
 									<!--end::Label-->
 									<!--begin::Input-->
 									<div class="position-relative">
-										<input class="form-control form-control-lg form-control-solid" type="password" placeholder="" name="current_password" autocomplete="off">
+										<input class="form-control form-control-lg form-control-solid" type="password" placeholder="" name="password" autocomplete="off" oninput="fn_joinCheckPw();">
 			
 										<span class="btn btn-sm btn-icon position-absolute translate-middle top-50 end-0 me-n2" data-kt-password-meter-control="visibility">
 											<i class="bi bi-eye-slash fs-2"></i>
@@ -338,6 +318,29 @@
 										</span>
 									</div>
 									<!--end::Input-->
+								</div>
+								<!--end::Input group-->
+								<!--begin::Input group-->
+								<div class="mb-5 fv-row" data-kt-password-meter="true">
+									<!--begin::Label-->
+									<label class="required fs-5 fw-semibold mb-2">Password 재입력</label>
+									<!--end::Label-->
+									<!--begin::Input-->
+									<div class="position-relative">
+										<input class="form-control form-control-lg form-control-solid" type="password" placeholder="" name="password_check" autocomplete="off" oninput="fn_joinCheckPw();">
+			
+										<span class="btn btn-sm btn-icon position-absolute translate-middle top-50 end-0 me-n2" data-kt-password-meter-control="visibility">
+											<i class="bi bi-eye-slash fs-2"></i>
+			
+											<i class="bi bi-eye fs-2 d-none"></i>
+										</span>
+									</div>
+									<!--end::Input-->
+									<!--begin::Check-->
+									<div class="text-danger fw-normal fs-7 mt-2 ms-2" id="join_pw_different" style="display:none;">
+										비밀번호가 다릅니다.
+									</div>
+									<!--end::Check-->
 								</div>
 								<!--end::Input group-->
 							</div>
@@ -350,7 +353,7 @@
 							<button type="reset" id="nws_register_cancel" class="btn btn-light me-3" data-bs-dismiss="modal">취소</button>
 							<!--end::Button-->
 							<!--begin::Button-->
-							<button type="submit" id="nws_register_submit" class="btn btn-primary">
+							<button type="button" id="nws_register_submit" class="btn btn-primary">
 								<span class="indicator-label">회원가입</span>
 								<span class="indicator-progress">Please wait... 
 								<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
@@ -387,54 +390,78 @@
 				}
 			}
 
-			const BtnIDSend = document.getElementById('sm_idinfo_send');
-			BtnIDSend.addEventListener('click', e =>{
+			const BtnSend = document.getElementById('sm_info_send');
+			BtnSend.addEventListener('click', e =>{
 				e.preventDefault();
-				Swal.fire({
-					html: `<strong class="fs-4">아이디 정보 발송 완료</strong><br />
-					<span class="fs-6">입력하신 이메일로 아이디 정보를 발송하였습니다.<br />
-					이메일에서 아이디를 확인해주세요.</span>`,
-					icon: "success",
-					buttonsStyling: false,
-					confirmButtonText: "확인",
-					customClass: {
-						confirmButton: "btn btn-primary px-5 py-2",
-					}
-				}).then((result) => {
-                            bootstrap.Modal.getInstance(modal).hide();
-                        });
-			});
+				let btn = document.querySelector(".kt_tab_toggle_btn.active");
+				let formData = new FormData();
+				let html = "";
+				let url = "/loginFind";
 
-			const BtnPWSend = document.getElementById('sm_pwinfo_send');
-			BtnPWSend.addEventListener('click', e =>{
-				e.preventDefault();
-				Swal.fire({
-					html: `<strong class="fs-4">임시 비밀번호 발송 완료</strong><br />
-					<span class="fs-6">입력하신 이메일로 임시 비밀번호가 발송되었습니다. <br />수신된 이메일을 확인해주세요.</span>`,
-					icon: "success",
-					buttonsStyling: false,
-					confirmButtonText: "확인",
-					customClass: {
-						confirmButton: "btn btn-primary px-5 py-2",
+				formData.append('csrfmiddlewaretoken', document.querySelector("input[name=csrfmiddlewaretoken]").value);
+				if(btn.attributes.href.value == "#kt_tab_id_find"){
+					formData.append('type', 'id');
+					formData.append('name', document.getElementById("id-find-name").value);
+					formData.append('email', document.getElementById("id-find-email").value);
+					html = `<strong class="fs-4">아이디 정보 발송 완료</strong><br />
+						<span class="fs-6">입력하신 이메일로 아이디 정보를 발송하였습니다.<br />
+						이메일에서 아이디를 확인해주세요.</span>`;
+				}else{
+					formData.append('type', 'pw');
+					formData.append('name', document.getElementById("pw-find-name").value);
+					formData.append('email', document.getElementById("pw-find-email").value);
+					formData.append('id', document.getElementById("pw-find-id").value);
+					html = `<strong class="fs-4">임시 비밀번호 발송 완료</strong><br />
+						<span class="fs-6">입력하신 이메일로 임시 비밀번호가 발송되었습니다. <br />
+						수신된 이메일을 확인해주세요.</span>`;
+				}
+
+				fetch(url, {
+					method: "POST",
+					cache: 'no-cache',
+					body: formData,
+				}).then((response) => {
+					if (!response.ok || response.status != '200') {
+						throw new Error('연결 실패. 다시 요청하세요.\n' + response.statusText + "(" + response.status + ")");
 					}
+					return response.json();
+				}).then((res) => {
+					if(res.flag == '0'){
+						Swal.fire({
+							html: html,
+							icon: "success",
+							buttonsStyling: false,
+							confirmButtonText: "확인",
+							customClass: {
+								confirmButton: "btn btn-primary px-5 py-2",
+							}
+						});
+					}else{
+						e.preventDefault();
+						Swal.fire({
+							html: res.result_msg,
+							icon: "warning",
+							buttonsStyling: false,
+							confirmButtonText: "확인",
+							customClass: {
+								confirmButton: "btn btn-danger px-5 py-2",
+							}
+						});
+					}
+				}).catch((err) => {
+					e.preventDefault();
+					Swal.fire({
+						html: err,
+						icon: "warning",
+						buttonsStyling: false,
+						confirmButtonText: "확인",
+						customClass: {
+							confirmButton: "btn btn-danger px-5 py-2",
+						}
+					});
 				});
 			});
 
-			const BtnInfoNone = document.getElementById('sm_info_none');
-			BtnInfoNone.addEventListener('click', e =>{
-				e.preventDefault();
-				Swal.fire({
-					html: `입력하신 정보와 일치하는 정보가 없습니다.<br />
-					다시 한번 확인해주시기 바랍니다.`,
-					icon: "warning",
-					buttonsStyling: false,
-					confirmButtonText: "확인",
-					customClass: {
-						confirmButton: "btn btn-danger px-5 py-2",
-					}
-				});
-			});
-        
 			const BtnLoginSend = document.getElementById('login_send');
 			BtnLoginSend.addEventListener('click', e =>{
 				let url = "/login";
@@ -445,15 +472,6 @@
 					method: "POST",
 					cache: 'no-cache',
 					body: formData,
-					enctype: 'multipart/form-data',
-					// headers: {
-					// "Content-Type": "application/json",
-					// },
-					// body: JSON.stringify({
-					// title: "Test",
-					// body: "I am testing!",
-					// userId: 1,
-					// }),
 				}).then((response) => {
 					if (!response.ok || response.status != '200') {
 						throw new Error('연결 실패. 다시 요청하세요.\n' + response.statusText + "(" + response.status + ")");
@@ -468,6 +486,155 @@
 							window.localStorage.removeItem("saveId");
 						}
 						location.href = "/";
+					}else{
+						e.preventDefault();
+						Swal.fire({
+							html: res.result_msg,
+							icon: "warning",
+							buttonsStyling: false,
+							confirmButtonText: "확인",
+							customClass: {
+								confirmButton: "btn btn-danger px-5 py-2",
+							}
+						});
+					}
+				}).catch((err) => {
+					e.preventDefault();
+					Swal.fire({
+						html: err,
+						icon: "warning",
+						buttonsStyling: false,
+						confirmButtonText: "확인",
+						customClass: {
+							confirmButton: "btn btn-danger px-5 py-2",
+						}
+					});
+				});
+			});
+
+			const InputJoinId = document.querySelector('#nws_register_form input[name=userid]')
+			InputJoinId.addEventListener('input', e =>{
+				let url = "/joinIdCheck";
+				let formData = new FormData();
+				formData.append('csrfmiddlewaretoken', document.querySelector("input[name=csrfmiddlewaretoken]").value);
+				formData.append('id', document.querySelector('#nws_register_form input[name=userid]').value);
+
+				fetch(url, {
+					method: "POST",
+					cache: 'no-cache',
+					body: formData,
+				}).then((response) => {
+					if (!response.ok || response.status != '200') {
+						throw new Error('연결 실패. 다시 요청하세요.\n' + response.statusText + "(" + response.status + ")");
+					}
+					return response.json();
+				}).then((res) => {
+					if(res.flag == '0'){
+						document.getElementById("join_id_new").style = "";
+						document.getElementById("join_id_used").style = "display:none;";
+					}else{
+						document.getElementById("join_id_new").style = "display:none;";
+						document.getElementById("join_id_used").style = "";
+					}
+				}).catch((err) => {
+				});
+			});
+
+			var fn_joinCheckPw = function(e) {
+				let pw = document.querySelector('#nws_register_form input[name=password]').value;
+				let pw_check = document.querySelector('#nws_register_form input[name=password_check]').value;
+				if(pw != '' && pw_check != '' && pw != pw_check){
+					document.getElementById("join_pw_different").style = "";
+				}else{
+					document.getElementById("join_pw_different").style = "display:none;";
+				}
+			}
+
+			var fn_cleanFindData = function(e) {
+				let inputs = document.querySelectorAll('#loginFindTab input');
+				for(let i = 0; i < inputs.length; i++){
+					inputs[i].value = "";
+				}
+			}
+
+			var fn_cleanJoinData = function(e) {
+				let inputs = document.querySelectorAll('#nws_register_form input');
+				for(let i = 0; i < inputs.length; i++){
+					inputs[i].value = "";
+				}
+				document.getElementById("join_id_new").style = "display:none;";
+				document.getElementById("join_id_used").style = "display:none;";
+			}
+
+			const BtnJoin = document.getElementById('nws_register_submit');
+			BtnJoin.addEventListener('click', e =>{
+				e.preventDefault();
+				let formData = new FormData();
+				let html = "";
+				let url = "/join";
+
+				formData.append('csrfmiddlewaretoken', document.querySelector("input[name=csrfmiddlewaretoken]").value);
+				formData.append("name", document.querySelector("#nws_register_form input[name=name]").value);
+				formData.append("email", document.querySelector("#nws_register_form input[name=email]").value);
+				formData.append("corp_name", document.querySelector("#nws_register_form input[name=corp_name]").value);
+				formData.append("id", document.querySelector("#nws_register_form input[name=userid]").value);
+				formData.append("password", document.querySelector("#nws_register_form input[name=password]").value);
+				formData.append("password_check", document.querySelector("#nws_register_form input[name=password_check]").value);
+
+				for (let key of formData.keys()) {
+					if (key == 'name') {
+						if (formData.get(key) == '') html = "관리자 이름을 입력하세요";
+						else if (formData.get(key) != formData.get(key).replace(/[^ㄱ-ㅎㅏ-ㅣ가-힣]/g, '')) html = "관리자 이름은 한글만 입력 가능합니다.";
+					} else if (key == 'email') {
+						if (formData.get(key) == '') html = "이메일을 입력하세요";
+						else if (formData.get(key) != formData.get(key).replace(/[^0-9a-zA-Z@.]/g, '')) html = "사용 불가능한 메일 형식입니다.";
+					} else if (key == 'id') {
+						if (formData.get(key) == '') html = "아이디를 입력하세요";
+						else if (formData.get(key) != formData.get(key).replace(/[^0-9a-zA-Z]/g, '')) html = "아이디는 영문, 숫자만 가능합니다.";
+					} else if (key == 'password') {
+						if (formData.get(key) == '') html = "비밀번호를 입력하세요";
+					} else if (key == 'password_check') {
+						if (formData.get(key) == '') html = "비밀번호를 입력하세요";
+						else if (formData.get(key) != formData.get('password')) html = "비밀번호가 일치하지 않습니다.";
+					}
+					if (html != "") break;
+				}
+
+				if (html != "") {
+					Swal.fire({
+						html: html,
+						icon: "warning",
+						buttonsStyling: false,
+						confirmButtonText: "확인",
+						customClass: {
+							confirmButton: "btn btn-primary px-5 py-2",
+						}
+					});
+					return;
+				}
+				
+				fetch(url, {
+					method: "POST",
+					cache: 'no-cache',
+					body: formData,
+				}).then((response) => {
+					if (!response.ok || response.status != '200') {
+						throw new Error('연결 실패. 다시 요청하세요.\n' + response.statusText + "(" + response.status + ")");
+					}
+					return response.json();
+				}).then((res) => {
+					if(res.flag == '0'){
+						Swal.fire({
+							html: "회원가입에 성공하였습니다.",
+							icon: "success",
+							buttonsStyling: false,
+							confirmButtonText: "확인",
+							customClass: {
+								confirmButton: "btn btn-primary px-5 py-2",
+							}
+						}).then((e) => {
+							location.href = '/';
+						});
 					}else{
 						e.preventDefault();
 						Swal.fire({

@@ -16,7 +16,6 @@ from AUTH.authApi import *
 
 # region Main 관련
 
-
 def index(request):
     if 'memberInfo' in request.session:
         return render(request, 'NWAD/main.html')
@@ -75,37 +74,17 @@ def logout(request):
     return redirect('/')
 
 
-def testLogin(request):
-    if request.method == "GET":
-        apiInfo = {}
-        apiInfo["client_id"] = "dDX9hTgohiMOVOiG8XAC"
-        apiInfo["client_secret"] = "ouyUJ8511q"
-        apiInfo["service_account"] = "vyka1.serviceaccount@didim365.kr"
-        apiInfo["private_key"] = ""
-        apiInfo["scope"] = "bot"
-        apiInfo["bot_id"] = "3481407"
-        apiInfo["bot_secret"] = "IOmaUQa+ucJkcrXojZMs0fNxD9PnQl"
-        request.session["apiInfo"] = apiInfo
-        request.session["id"] = "test"
-        msg = ""
-        msg += "테스트 사이트 로그인(" + request.POST["id"] + ")"
-        util.insertLog(request, msg + "    " +
-                       util.jsonToStr(request.POST.dict()))
-    return redirect('/')
-
-
 def join(request):
     if 'memberInfo' in request.session:
         return render(request, 'NWAD/main.html')
     if (request.method == "GET"):
         return render(request, 'NWAD/join.html')
     elif (request.method == "POST"):
-        memeberInfo = {}
         context = {}
         context["flag"] = "0"
         context["result_msg"] = "success"
-        checkList = ['id', 'password', 'name', 'email']
-        replaceList = ['아이디를', '비밀번호를', '이름을', '이메일을']
+        checkList = ['id', 'password', 'name', 'email', 'corp_name']
+        replaceList = ['아이디를', '비밀번호를', '이름을', '이메일을', '업체명을']
 
         # 파라미터 검사
         for idx, val in enumerate(checkList):
@@ -136,6 +115,66 @@ def join(request):
         util.insertLog(
             request, context["result_msg"] + "    " + util.jsonToStr(request.POST.dict()))
         return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
+
+
+def loginFind(request):
+    if request.method == "POST":
+        context = {}
+        context["flag"] = "0"
+        context["result_msg"] = "success"
+        checkList = ['name', 'email', 'id']
+        replaceList = ['이름을', '이메일을', '아이디를']
+        for idx, val in enumerate(checkList):
+            if (val == 'id' and request.POST['type'] == 'id'):
+                continue
+            if (request.POST[val] == None or request.POST[val] == ""):
+                context["flag"] = "2"
+                context["result_msg"] = replaceList[idx] + " 입력하세요"
+                break
+
+        if (context["flag"] == "0"):
+            if (request.POST["type"] == "id"):
+                memberSearchData = member.objects.filter(
+                    name=request.POST["name"], email=request.POST["email"], status="1").first()
+            elif (request.POST["type"] == "pw"):
+                memberSearchData = member.objects.filter(
+                    name=request.POST["name"], email=request.POST["email"], id=request.POST["id"], status="1").first()
+
+            if memberSearchData is None:
+                memberSearchData = member.objects.filter(
+                    name=request.POST["name"], email=request.POST["email"]).first()
+                context["flag"] = "2"
+                if memberSearchData is None:
+                    context["result_msg"] = "일치하는 회원이 없습니다."
+                else:
+                    context["result_msg"] = "가입 승인 후 사용 가능합니다."
+            else:
+                memberInfo = {}
+                memberInfo["member_no"] = memberSearchData.member_no
+                memberInfo["name"] = memberSearchData.name
+                memberInfo["email"] = memberSearchData.email
+                request.session["memberInfo"] = memberInfo
+                msg = ""
+                msg += "아이디/비밀번호 찾기 (" + str(memberSearchData.member_no) + ")"
+                util.insertLog(request, msg + "    " +
+                               util.jsonToStr(request.POST.dict()))
+        return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
+
+
+def joinIdCheck(request):
+    if (request.method == "POST"):
+        context = {}
+        context["flag"] = "0"
+        context["result_msg"] = "success"
+
+        # 중복 검사
+        if (context["flag"] == "0"):
+            memberData = member.objects.filter(id=request.POST["id"]).first()
+            if memberData is not None:
+                context["flag"] = "3"
+                context["result_msg"] = "이미 등록된 id 입니다."
+        return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
+
 # endregion
 
 # region Api 관련
