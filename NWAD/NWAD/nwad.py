@@ -7,6 +7,7 @@ from django.views.generic import TemplateView
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.urls import reverse
 from urllib import parse
+from django.template import loader
 
 from django.views.decorators.csrf import csrf_exempt
 
@@ -176,6 +177,18 @@ def joinIdCheck(request):
         return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
 
 # endregion
+
+
+def apiBotList(request):
+    if 'memberInfo' in request.session:
+        context = {
+            'name': request.session["memberInfo"]["name"]
+        }
+        return render(request, 'NWAD/api_bot_list.html', context)
+    else:
+        return redirect('login')
+
+
 
 # region Api 관련
 

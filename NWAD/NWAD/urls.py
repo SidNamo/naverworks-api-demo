@@ -7,7 +7,8 @@ urlpatterns = [
     path('auth/', include('AUTH.urls')),
     path('api/', include('API.urls')),
 
-    path('', nwad.index, name="main"),
+    path('', nwad.apiBotList, name=""),
+    path('apiBotList', nwad.apiBotList, name="apiBotList"),
     path('login', nwad.login, name="login"),
     path('logout', nwad.logout, name="logout"),
     path('loginFind', nwad.loginFind, name="loginFind"),

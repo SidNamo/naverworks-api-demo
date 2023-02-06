@@ -20,6 +20,10 @@
         <link href="{% static 'assets/css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
         <!--end::Global Stylesheets Bundle-->
         <link href="{% static 'assets/css/custom.css' %}" rel="stylesheet" type="text/css" />
+        <script src="{% static 'assets/js/common.js' %}"></script>
+
+        {% block scripts %}
+        {% endblock %}
     </head>
     <!--end::Head-->
     <!--begin::Body-->
@@ -115,7 +119,7 @@
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a href="./api-bot-list" class="menu-link active">
+                                            <a href="./apiBotList" class="menu-link active">
                                                 <span class="menu-icon">
                                                     <!--begin::Svg Icon | path: icons/duotune/general/gen025.svg-->
                                                     <span class="svg-icon svg-icon-2">
@@ -223,7 +227,8 @@
                         <!--end::Aside-->
 
                         <!--begin::Container-->
-                        {% include path %}
+                        {% block contents %}
+                        {% endblock %}
                         <!--end::Container-->
                     </div>
                     <!--end::Content wrapper-->
@@ -249,7 +254,8 @@
         <!--end::ScrollTop-->
 
         <!--begin::Modals-->
-
+        {% block modals %}
+        {% endblock %}
         <!--end::Modals-->
 
         <!--begin::Javascript-->
