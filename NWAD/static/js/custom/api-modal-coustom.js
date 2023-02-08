@@ -383,17 +383,6 @@ KTUtil.onDOMContentLoaded(function () {
 
 
 
-//////////////////////////////////////
-/////////////Tagify script////////////
-//////////////////////////////////////
-
-// The DOM elements you wish to replace with Tagify
-var input2 = document.querySelector("#kt_tagify_2");
-
-// Initialize Tagify components on the above inputs
-new Tagify(input2);
-
-
 
 //////////////////////////////////////
 ////////////Bot List Modal ADD////////////

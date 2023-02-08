@@ -185,6 +185,7 @@
             <!--end::Modal header-->
             <!--begin::Form-->
             <form id="modal_api_list_add_form" class="form" action="#">
+                {% csrf_token %}
                 <!--begin::Modal body-->
                 <div class="modal-body py-10 px-lg-17">
                     <!--begin::Scroll-->
@@ -195,7 +196,7 @@
                             <label class="required fs-5 fw-semibold mb-2">API 이름</label>
                             <!--end::Label-->
                             <!--begin::Input-->
-                            <input type="text" class="form-control form-control-solid" placeholder="API 이름 입력" name="name" />
+                            <input type="text" class="form-control form-control-solid" placeholder="API 이름 입력" name="api_name" />
                             <!--end::Input-->
                         </div>
                         <!--end::Input group-->
@@ -205,7 +206,7 @@
                             <label class="required fs-5 fw-semibold mb-2">Client ID</label>
                             <!--end::Label-->
                             <!--begin::Input-->
-                            <input type="text" class="form-control form-control-solid" placeholder="Client ID 입력" name="ID" />
+                            <input type="text" class="form-control form-control-solid" placeholder="Client ID 입력" name="client_id" />
                             <!--end::Input-->
                         </div>
                         <!--end::Input group-->
@@ -215,7 +216,7 @@
                             <label class="required fs-5 fw-semibold mb-2">Client Secret</label>
                             <!--end::Label-->
                             <!--begin::Input-->
-                            <input type="text" class="form-control form-control-solid" placeholder="Client Secret 입력" name="secret" />
+                            <input type="text" class="form-control form-control-solid" placeholder="Client Secret 입력" name="client_secret" />
                             <!--end::Input-->
                         </div>
                         <!--end::Input group-->
@@ -225,7 +226,7 @@
                             <label class="required fs-5 fw-semibold mb-2">Service Account</label>
                             <!--end::Label-->
                             <!--begin::Input-->
-                            <input type="text" class="form-control form-control-solid" placeholder="Service Account 입력" name="account" />
+                            <input type="text" class="form-control form-control-solid" placeholder="Service Account 입력" name="service_account" />
                             <!--end::Input-->
                         </div>
                         <!--end::Input group-->
@@ -235,7 +236,7 @@
                             <label class="required fs-5 fw-semibold mb-2">Private Key</label>
                             <!--end::Label-->
                             <!--begin::Input-->
-                            <textarea class="form-control form-control-solid" rows="3" name="private key" placeholder="Private Key 입력"></textarea>
+                            <textarea class="form-control form-control-solid" rows="3" name="private_key" placeholder="Private Key 입력"></textarea>
                             <!--end::Input-->
                         </div>
                         <!--end::Input group-->
@@ -245,7 +246,7 @@
                             <label class="required fs-5 fw-semibold mb-2">Scope</label>
                             <!--end::Label-->
                             <!--begin::Input-->
-                            <input class="form-control form-control-solid" name="scope" id="kt_tagify_2" />
+                            <input class="form-control form-control-solid" name="scope_tags" id="kt_tagify_2" />
                             <!--end::Input-->
                             <div class="fs-7 fw-semibold text-muted mt-2">엔터로 구분</div>
                         </div>
@@ -260,7 +261,7 @@
                     <button type="reset" id="modal_api_list_add_cancel" class="btn btn-light me-3">취소</button>
                     <!--end::Button-->
                     <!--begin::Button-->
-                    <button type="submit" id="modal_api_list_add_submit" class="btn btn-primary">
+                    <button type="button" id="modal_api_list_add_submit" class="btn btn-primary">
                         <span class="indicator-label">추가</span>
                         <span class="indicator-progress">처리중 ...
                             <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
@@ -304,6 +305,8 @@
             <!--end::Modal header-->
             <!--begin::Form-->
             <form id="modal-api-list_form" class="form" action="#">
+                {% csrf_token %}
+                <input type="hidden" name="api_no">
                 <!--begin::Modal body-->
                 <div class="modal-body py-10 px-lg-17">
                     <!--begin::Scroll-->
@@ -314,7 +317,7 @@
                             <label class="required fs-5 fw-semibold mb-2">API 이름</label>
                             <!--end::Label-->
                             <!--begin::Input-->
-                            <input value="API 이름" type="text" class="form-control form-control-solid" placeholder="" name="name" />
+                            <input type="text" class="form-control form-control-solid" placeholder="API 이름 입력" name="api_name" />
                             <!--end::Input-->
                         </div>
                         <!--end::Input group-->
@@ -324,7 +327,7 @@
                             <label class="required fs-5 fw-semibold mb-2">Client ID</label>
                             <!--end::Label-->
                             <!--begin::Input-->
-                            <input value="Client ID" type="text" class="form-control form-control-solid" placeholder="Client ID 입력" name="ID" />
+                            <input type="text" class="form-control form-control-solid" placeholder="Client ID 입력" name="client_id" />
                             <!--end::Input-->
                         </div>
                         <!--end::Input group-->
@@ -334,7 +337,7 @@
                             <label class="required fs-5 fw-semibold mb-2">Client Secret</label>
                             <!--end::Label-->
                             <!--begin::Input-->
-                            <input value="Client Secret" type="text" class="form-control form-control-solid" placeholder="Client Secret 입력" name="secret" />
+                            <input type="text" class="form-control form-control-solid" placeholder="Client Secret 입력" name="client_secret" />
                             <!--end::Input-->
                         </div>
                         <!--end::Input group-->
@@ -344,7 +347,7 @@
                             <label class="required fs-5 fw-semibold mb-2">Service Account</label>
                             <!--end::Label-->
                             <!--begin::Input-->
-                            <input value="Service Account" type="text" class="form-control form-control-solid" placeholder="Service Account 입력" name="account" />
+                            <input type="text" class="form-control form-control-solid" placeholder="Service Account 입력" name="service_account" />
                             <!--end::Input-->
                         </div>
                         <!--end::Input group-->
@@ -354,12 +357,7 @@
                             <label class="required fs-5 fw-semibold mb-2">Private Key</label>
                             <!--end::Label-->
                             <!--begin::Input-->
-                            <textarea class="form-control form-control-solid" rows="3" name="private key" placeholder="Private Key 입력">
-                                -----BEGIN PRIVATE KEY-----
-                                MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCE/JBedlqLYULi
-                                aUWyqmhoPmuejWppu8UPjO0iPMq7/H50Y2N1a/Moz1
-                                unEMa81lfwKBgArkGBgde29A2fA+RfHhMi9BdJt26PAHM5YKVhLqfFIMONC1mo33
-                                -----END PRIVATE KEY-----
+                            <textarea class="form-control form-control-solid" rows="3" name="private_key" placeholder="Private Key 입력">
                             </textarea>
                             <!--end::Input-->
                         </div>
@@ -370,11 +368,7 @@
                             <label class="required fs-5 fw-semibold mb-2">Scope</label>
                             <!--end::Label-->
                             <!--begin::Input-->
-                            <tags class="tagify  form-control form-control-solid" tabindex="-1">
-                                <tag title="Important" contenteditable="false" spellcheck="false" tabindex="-1" class="tagify__tag tagify--noAnim" value="Important"><x title="" class="tagify__tag__removeBtn" role="button" aria-label="remove tag"></x><div><span class="tagify__tag-text">Important</span></div></tag><tag title="Urgent" contenteditable="false" spellcheck="false" tabindex="-1" class="tagify__tag tagify--noAnim" value="Urgent"><x title="" class="tagify__tag__removeBtn" role="button" aria-label="remove tag"></x><div><span class="tagify__tag-text">Urgent</span></div></tag><span contenteditable="" tabindex="0" data-placeholder="&ZeroWidthSpace;" aria-placeholder="" class="tagify__input" role="textbox" aria-autocomplete="both" aria-multiline="false"></span>
-                                    &ZeroWidthSpace;
-                            </tags>
-                            <input value="Important, Urgent" class="form-control form-control-solid" name="scope" id="kt_tagify_2" />
+                            <input class="form-control form-control-solid" name="scope_tags" id="kt_tagify_3" />
                             <!--end::Input-->
                             <div class="fs-7 fw-semibold text-muted mt-2">엔터로 구분</div>
                         </div>
@@ -389,7 +383,7 @@
                     <button type="reset" id="modal-api-list_cancel" class="btn btn-light me-3">취소</button>
                     <!--end::Button-->
                     <!--begin::Button-->
-                    <button type="submit" id="modal-api-list_submit" class="btn btn-primary">
+                    <button type="button" id="modal-api-list_submit" class="btn btn-primary">
                         <span class="indicator-label">저장</span>
                         <span class="indicator-progress">처리중 ...
                             <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
@@ -433,6 +427,7 @@
             <!--end::Modal header-->
             <!--begin::Form-->
             <form id="modal_bot_list_add_form" class="form" action="#">
+                {% csrf_token %}
                 <!--begin::Modal body-->
                 <div class="modal-body py-10 px-lg-17">
                     <!--begin::Scroll-->
@@ -440,13 +435,11 @@
                         <!--begin::Input group-->
                         <div class="d-flex flex-column mb-5 fv-row fv-plugins-icon-container" data-select2-id="select2">
                             <!--begin::Label-->
-                            <label class="required fs-5 fw-semibold mb-2">API</label>
+                            <label class="required fs-5 fw-semibold mb-2">API <span class="fs-7 fw-semibold text-gray-400 mb-1">(Bot 인증에 사용됩니다.)</span></label>
                             <!--end::Label-->
                             <!--begin::Select-->
-                            <select class="form-select form-select-solid" name="api_select" data-control="select2" data-hide-search="true" data-placeholder="API 선택하기">
+                            <select class="form-select form-select-solid" name="api_no" data-control="select2" data-hide-search="true" data-placeholder="API 선택하기">
                                 <option></option>
-                                <option value="1">API Test 1</option>
-                                <option value="2">API Test 2</option>
                             </select>
                             <!--end::Select-->
                             <div class="fv-plugins-message-container invalid-feedback"></div>
@@ -458,7 +451,7 @@
                             <label class="required fs-5 fw-semibold mb-2">Bot ID</label>
                             <!--end::Label-->
                             <!--begin::Input-->
-                            <input type="text" class="form-control form-control-solid" placeholder="Bot ID 입력" name="Bot_ID" />
+                            <input type="text" class="form-control form-control-solid" placeholder="Bot ID 입력" name="bot_id" />
                             <!--end::Input-->
                         </div>
                         <!--end::Input group-->
@@ -527,19 +520,29 @@
             <!--end::Modal header-->
             <!--begin::Form-->
             <form id="modal_bot_list_form" class="form" action="#">
+                {% csrf_token %}
+                <input type="hidden" name="bot_no">
                 <!--begin::Modal body-->
                 <div class="modal-body py-10 px-lg-17">
                     <!--begin::Scroll-->
                     <div class="scroll-y me-n7 pe-7" id="modal_bot_list_scroll" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#modal_bot_list_header" data-kt-scroll-wrappers="#modal_bot_list_scroll" data-kt-scroll-offset="300px">
                         <!--begin::Input group-->
+                        <div class="mb-5 fv-row">
+                            <!--begin::Label-->
+                            <label class="required fs-5 fw-semibold mb-2">Bot 이름</label>
+                            <!--end::Label-->
+                            <!--begin::Input-->
+                            <input type="text" class="form-control form-control-solid" placeholder="Bot 이름 입력" name="bot_name" />
+                            <!--end::Input-->
+                        </div>
+                        <!--end::Input group-->
+                        <!--begin::Input group-->
                         <div class="d-flex flex-column mb-5 fv-row fv-plugins-icon-container" data-select2-id="select2">
                             <!--begin::Label-->
-                            <label class="required fs-5 fw-semibold mb-2">API</label>
+                            <label class="required fs-5 fw-semibold mb-2">API <span class="fs-7 fw-semibold text-gray-400 mb-1">(Bot 인증에 사용됩니다.)</span></label>
                             <!--end::Label-->
                             <!--begin::Select-->
-                            <select class="form-select form-select-solid" name="api_select" data-control="select2"  data-hide-search="true" data-placeholder="API 선택하기">
-                                <option value="1">API Test 1</option>
-                                <option value="2">API Test 2</option>
+                            <select class="form-select form-select-solid" name="api_no" data-control="select2"  data-hide-search="true" data-placeholder="API 선택하기">
                             </select>
                             <!--end::Select-->
                             <div class="fv-plugins-message-container invalid-feedback"></div>
@@ -551,7 +554,7 @@
                             <label class="required fs-5 fw-semibold mb-2">Bot ID</label>
                             <!--end::Label-->
                             <!--begin::Input-->
-                            <input value="Bot ID" type="text" class="form-control form-control-solid" placeholder="Bot ID 입력" name="Bot_ID" />
+                            <input value="" type="text" class="form-control form-control-solid" placeholder="Bot ID 입력" name="bot_id" />
                             <!--end::Input-->
                         </div>
                         <!--end::Input group-->
@@ -562,7 +565,7 @@
                             <label class="required fs-5 fw-semibold mb-2">Bot Secret</label>
                             <!--end::Label-->
                             <!--begin::Input-->
-                            <textarea class="form-control form-control-solid" rows="3" name="bot_secret" placeholder="Bot Secret 입력">Bot Secret</textarea>
+                            <textarea class="form-control form-control-solid" rows="3" name="bot_secret" placeholder="Bot Secret 입력"></textarea>
                             <!--end::Input-->
                         </div>
                         <!--end::Input group-->
@@ -599,6 +602,28 @@
     window.onload = function() {
         fn_getApiList();
         fn_getBotList();
+
+        document.getElementById('modal_api_list_add').addEventListener('hide.bs.modal',(e)=>{
+            fn_getApiList();
+        });
+        document.getElementById('modal-api-list').addEventListener('show.bs.modal',(e)=>{
+            fn_getApiInfo();
+        });
+        document.getElementById('modal-api-list').addEventListener('hide.bs.modal',(e)=>{
+            fn_getApiList();
+        });
+        document.getElementById('modal_bot_list_add').addEventListener('show.bs.modal',(e)=>{
+            fn_getBotApiList();
+        });
+        document.getElementById('modal_bot_list_add').addEventListener('hide.bs.modal',(e)=>{
+            fn_getBotList();
+        });
+        document.getElementById('modal_bot_list').addEventListener('show.bs.modal',(e)=>{
+            fn_getBotInfo();
+        });
+        document.getElementById('modal_bot_list').addEventListener('hide.bs.modal',(e)=>{
+            fn_getBotList();
+        });
     }
     
     var fn_getApiList = function() {
@@ -620,10 +645,60 @@
             fn_apiAddEvent();
             KTComponents.init();
         }).catch((err) => {
-            alert(err);
+            Swal.fire({
+                text: err,
+                icon: "error",
+                buttonsStyling: false,
+                confirmButtonText: "다시 확인하기",
+                customClass: {
+                    confirmButton: "btn btn-primary"
+                }
+            });
         });
     }
     
+    var fn_getApiInfo = function() {
+        let url = "api/getApi";
+        let formData = new FormData();
+        formData.append("csrfmiddlewaretoken",Cookies("csrftoken"));
+        formData.append("api_no",document.querySelector('input[name=api_select]:checked').closest('label').dataset.apiNo);
+
+        fetch(url, {
+            method: "POST",
+            cache: 'no-cache',
+            body: formData,
+        }).then((response) => {
+            if (!response.ok || response.status != '200') {
+                throw new Error('연결 실패. 다시 요청하세요.\n' + response.statusText + "(" + response.status + ")");
+            }
+            return response.json();
+        }).then((res) => {
+            let form = document.getElementById('modal-api-list');
+            form.querySelector('input[name=api_no]').value = res.data.data[0].api_no;
+            form.querySelector('input[name=api_name]').value = res.data.data[0].api_name;
+            form.querySelector('input[name=client_id]').value = res.data.data[0].client_id;
+            form.querySelector('input[name=client_secret]').value = res.data.data[0].client_secret;
+            form.querySelector('input[name=service_account]').value = res.data.data[0].service_account;
+            form.querySelector('textarea[name=private_key]').value = res.data.data[0].private_key;
+            form.querySelector('input[name=scope_tags]').value = res.data.data[0].scope;
+            
+        }).catch((err) => {
+            Swal.fire({
+                text: err,
+                icon: "error",
+                buttonsStyling: false,
+                confirmButtonText: "확인",
+                customClass: {
+                    confirmButton: "btn btn-primary"
+                }
+            }).then(function (result) {
+                if (result.isConfirmed) {
+                    modalClose();
+                }
+            });
+        });
+    }
+      
     var fn_getBotList = function() {
         let url = "bot/getBotList";
         let formData = new FormData();
@@ -643,10 +718,97 @@
             fn_botAddEvent();
             KTComponents.init();
         }).catch((err) => {
-            alert(err);
+            Swal.fire({
+                text: err,
+                icon: "error",
+                buttonsStyling: false,
+                confirmButtonText: "다시 확인하기",
+                customClass: {
+                    confirmButton: "btn btn-primary"
+                }
+            });
         });
     }
     
+    var fn_getBotInfo = function() {
+        let url = "bot/getBot";
+        let formData = new FormData();
+        formData.append("csrfmiddlewaretoken",Cookies("csrftoken"));
+        formData.append("bot_no",document.querySelector('input[name=bot-check]:checked').closest('label').dataset.botNo);
+
+        fetch(url, {
+            method: "POST",
+            cache: 'no-cache',
+            body: formData,
+        }).then((response) => {
+            if (!response.ok || response.status != '200') {
+                throw new Error('연결 실패. 다시 요청하세요.\n' + response.statusText + "(" + response.status + ")");
+            }
+            return response.json();
+        }).then((res) => {
+            let form = document.getElementById('modal_bot_list');
+            form.querySelector('input[name=bot_no]').value = res.data.data[0].bot_no;
+            form.querySelector('input[name=bot_name]').value = res.data.data[0].bot_name;
+            form.querySelector('input[name=bot_id]').value = res.data.data[0].bot_id;
+            form.querySelector('textarea[name=bot_secret]').value = res.data.data[0].bot_secret;
+
+            form.querySelector('select[name=api_no]').innerHTML = "<option value=''></option>";
+            for(let i = 0; i < res.apis.data.length; i++){
+                let option = `<option value="` + res.apis.data[i].api_no + `">` + res.apis.data[i].api_name + `</option>`;
+                form.querySelector('select[name=api_no]').innerHTML += option;
+            }
+            
+        }).catch((err) => {
+            Swal.fire({
+                text: err,
+                icon: "error",
+                buttonsStyling: false,
+                confirmButtonText: "확인",
+                customClass: {
+                    confirmButton: "btn btn-primary"
+                }
+            }).then(function (result) {
+                if (result.isConfirmed) {
+                    modalClose();
+                }
+            });
+        });
+    }
+
+    var fn_getBotApiList = function() {
+        let url = "api/getApiList";
+        let formData = new FormData();
+        formData.append("csrfmiddlewaretoken",Cookies("csrftoken"));
+
+        fetch(url, {
+            method: "POST",
+            cache: 'no-cache',
+            body: formData,
+        }).then((response) => {
+            if (!response.ok || response.status != '200') {
+                throw new Error('연결 실패. 다시 요청하세요.\n' + response.statusText + "(" + response.status + ")");
+            }
+            return response.json();
+        }).then((res) => {
+            let form = document.getElementById('modal_bot_list_add');
+            form.querySelector('select[name=api_no]').innerHTML = "<option value=''></option>";
+            for(let i = 0; i < res.data.length; i++){
+                let option = `<option value="` + res.data[i].api_no + `">` + res.data[i].api_name + `</option>`;
+                form.querySelector('select[name=api_no]').innerHTML += option;
+            }
+        }).catch((err) => {
+            Swal.fire({
+                text: err,
+                icon: "error",
+                buttonsStyling: false,
+                confirmButtonText: "다시 확인하기",
+                customClass: {
+                    confirmButton: "btn btn-primary"
+                }
+            });
+        });
+    }
+
     var fn_apiDrawTable = function(data) {
         document.getElementById("spanApiCount").innerHTML = data.data.length;
         var apiList = document.getElementById("apiList");
@@ -656,7 +818,7 @@
             html = ``;
             html += `<!--begin::Option-->`;
             html += `<div class="col-md-6 col-lg-4 col-xl-3 ">`;
-            html += `    <label class="h-100 btn btn-custom btn-active-light-primary border border-gray-300 border-dashed border-active-primary position-relative d-flex flex-column text-start p-6">`;
+            html += `    <label class="h-100 btn btn-custom btn-active-light-primary border border-gray-300 border-dashed border-active-primary position-relative d-flex flex-column text-start p-6"  data-api-no="` + data.data[i].api_no + `">`;
             html += `        <div class="d-flex align-items-center flex-stack mb-1">`;
             html += `            <!--begin::Radio Field-->`;
             html += `            <div class="form-check form-check-custom form-check-solid form-check-primary me-6">`;
@@ -684,7 +846,7 @@
             html += `                    <!--end::Menu item-->`;
             html += `                    <!--begin::Menu item-->`;
             html += `                    <div class="menu-item px-3">`;
-            html += `                        <a href="#" id="delete_alert" class="menu-link px-3">삭제하기</a>`;
+            html += `                        <a href="#" class="menu-link px-3" data-action="btn-api-delete">삭제하기</a>`;
             html += `                    </div>`;
             html += `                    <!--end::Menu item-->`;
             html += `                </div>`;
@@ -740,7 +902,7 @@
             html = ``;
             html += `<!--begin::Option-->`;
             html += `<div class="col-md-6 col-lg-4 col-xl-3">`;
-            html += `    <label class="h-100 btn btn-custom btn-active-light-success border border-gray-300 border-dashed border-active-success position-relative d-flex flex-column text-start p-6">`;
+            html += `    <label class="h-100 btn btn-custom btn-active-light-success border border-gray-300 border-dashed border-active-success position-relative d-flex flex-column text-start p-6" data-bot-no="` + data.data[i].bot_no + `">`;
             html += `        <div class="d-flex align-items-center flex-stack mb-1">`;
             html += `            <!--begin::Check Field-->`;
             html += `            <div class="form-check form-check-sm form-check-custom form-check-solid bot-check">`;
@@ -768,7 +930,7 @@
             html += `                    <!--end::Menu item-->`;
             html += `                    <!--begin::Menu item-->`;
             html += `                    <div class="menu-item px-3">`;
-            html += `                        <a href="#" id="delete_alert" class="menu-link px-3">삭제하기</a>`;
+            html += `                        <a href="#" id="delete_alert" class="menu-link px-3" data-action="btn-bot-delete">삭제하기</a>`;
             html += `                    </div>`;
             html += `                    <!--end::Menu item-->`;
             html += `                </div>`;
@@ -816,27 +978,85 @@
     }
 
     var fn_apiAddEvent = function(e){
-        let apis = document.querySelectorAll('#apiList label input');
+        let apis = document.querySelectorAll('#apiList label');
         for(let i = 0; i<apis.length; i++){
             apis[i].addEventListener('click',(e)=>{
-                let labels = document.querySelectorAll('#apiList label');
-                for(let j = 0; j<labels.length; j++){
-                    labels[j].classList.remove('active');
+                for(let j = 0; j<apis.length; j++){
+                    apis[j].classList.remove('active');
                 }
                 document.getElementById("selectApiName").innerHTML = e.target.closest('label').querySelector('.api-name').innerHTML;
+                e.target.closest('label').querySelector('input[name=api_select]').checked = true;
+            });
+            
+            apis[i].querySelector('a[data-action=btn-api-delete]').addEventListener('click',(event)=>{
+                let url = "./api/apiRm";
+                let formData = new FormData();
+                formData.append("api_no", apis[i].dataset.apiNo);
+                formData.append("csrfmiddlewaretoken",Cookies("csrftoken"));
+
+                fetch(url, {
+                    method: "POST",
+                    cache: 'no-cache',
+                    body: formData,
+                }).then((response) => {
+                    if (!response.ok || response.status != '200') {
+                        throw new Error('연결 실패. 다시 요청하세요.\n' + response.statusText + "(" + response.status + ")");
+                    }
+                }).then((res) => {
+                    fn_getApiList();
+                }).catch((err) => {
+                    Swal.fire({
+                        text: err,
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "다시 확인하기",
+                        customClass: {
+                            confirmButton: "btn btn-primary"
+                        }
+                    });
+                });
             });
         }
     }
 
     var fn_botAddEvent = function(e){
-        let bots = document.querySelectorAll('#botList label input');
+        let bots = document.querySelectorAll('#botList label');
         for(let i = 0; i<bots.length; i++){
             bots[i].addEventListener('click',(e)=>{
-                let labels = document.querySelectorAll('#botList label');
-                for(let j = 0; j<labels.length; j++){
-                    labels[j].classList.remove('active');
+                for(let j = 0; j<bots.length; j++){
+                    bots[j].classList.remove('active');
                 }
                 document.getElementById("selectBotName").innerHTML = e.target.closest('label').querySelector('.bot-name').innerHTML;
+                e.target.closest('label').querySelector('input[name=bot-check]').checked = true;
+            });
+            
+            bots[i].querySelector('a[data-action=btn-bot-delete]').addEventListener('click',(event)=>{
+                let url = "./bot/botRm";
+                let formData = new FormData();
+                formData.append("bot_no", bots[i].dataset.botNo);
+                formData.append("csrfmiddlewaretoken",Cookies("csrftoken"));
+
+                fetch(url, {
+                    method: "POST",
+                    cache: 'no-cache',
+                    body: formData,
+                }).then((response) => {
+                    if (!response.ok || response.status != '200') {
+                        throw new Error('연결 실패. 다시 요청하세요.\n' + response.statusText + "(" + response.status + ")");
+                    }
+                }).then((res) => {
+                    fn_getBotList();
+                }).catch((err) => {
+                    Swal.fire({
+                        text: err,
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "다시 확인하기",
+                        customClass: {
+                            confirmButton: "btn btn-primary"
+                        }
+                    });
+                });
             });
         }
     }
@@ -847,14 +1067,15 @@
         let apiLabels = document.querySelectorAll('#apiList label');
         for(let i = 0; i<apiLabels.length; i++){
             apiLabels[i].classList.remove('active');
-            apiLabels[i].querySelector('input').checked = false;
+            apiLabels[i].querySelector('input[name=api_select]').checked = false;
         }
         let botLabels = document.querySelectorAll('#botList label');
         for(let i = 0; i<botLabels.length; i++){
             botLabels[i].classList.remove('active');
-            botLabels[i].querySelector('input').checked = false;
+            botLabels[i].querySelector('input[name=bot-check]').checked = false;
         }
         document.querySelector("#kt_content .btn").blur();
     }
+
 </script>
 {% endblock %}

@@ -72,9 +72,9 @@
 
         var fn_removeApi = function(api_no) {
             let url = "api/apiRm";
-            let form = document.getElementById("Form1")
-            let formData = new FormData(form);
+            let formData = new FormData();
             formData.append("api_no", api_no);
+            formData.append("csrfmiddlewaretoken",Cookies("csrftoken"));
 
             fetch(url, {
                 method: "POST",

@@ -8,6 +8,7 @@ from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.urls import reverse
 from urllib import parse
 from django.template import loader
+from django.core import serializers
 
 from django.views.decorators.csrf import csrf_exempt
 
@@ -210,14 +211,28 @@ def getApiList(request):
         res = util.objectToPaging(apiData, 1, 0)
         return JsonResponse(res, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
 
+def getApi(request):
+    context = {}
+    context["flag"] = "0"
+    context["result_msg"] = "success"
+    if request.method == "POST":
+        try:
+            apiData = api.objects.filter(
+                member_no=request.session["memberInfo"]["member_no"],
+                api_no=request.POST["api_no"]
+            ).all()
+            res = util.objectToPaging(apiData, 1, 0)
+            context["data"] = res
+        except Exception as err:
+            context["flag"] = "2"
+            context["result_msg"] = err.args[0]
+    return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
 
 def apiReg(request):
     if 'memberInfo' not in request.session:
         return redirect('login')
 
-    if request.method == "GET":
-        return render(request, 'NWAD/API/apiReg.html')
-    elif request.method == "POST":
+    if request.method == "POST":
         context = {}
         context["flag"] = "0"
         context["result_msg"] = "success"
@@ -277,11 +292,88 @@ def apiReg(request):
                     context["result_msg"] = result["description"]
             except Exception as err:
                 context["flag"] = "2"
-                context["result_msg"] = err
+                context["result_msg"] = err.args[0]
         util.insertLog(
             request, context["result_msg"] + "    " + util.jsonToStr(request.POST.dict()))
         return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
 
+def apiUpd(request):
+    if 'memberInfo' not in request.session:
+        return redirect('login')
+
+    if request.method == "POST":
+        context = {}
+        context["flag"] = "0"
+        context["result_msg"] = "success"
+        checkList = ['api_no','api_name', 'client_id', 'client_secret',
+                     'service_account', 'private_key', 'scope']
+        replaceList = ['api 번호를', 'api 이름을', 'client id를', 'client secret을',
+                       'service account를', 'private_key를', 'scope를',]
+        apidata = {}
+
+        # 파라미터 검사
+        for idx, val in enumerate(checkList):
+            if (request.POST[val] == None or request.POST[val] == ""):
+                context["flag"] = "2"
+                context["result_msg"] = replaceList[idx] + " 입력하세요"
+                break
+            else:
+                apidata[val] = parse.quote(request.POST[val])
+
+        if (context["flag"] == "0"):
+            apiData = api.objects.filter(
+                api_no=request.POST["api_no"], 
+                member_no=request.session["memberInfo"]["member_no"]
+            ).first()
+            if apiData is None:
+                context["flag"] = "3"
+                context["result_msg"] = "잘못된 API 입니다."
+
+        # 중복 검사
+        if (context["flag"] == "0"):
+            apiData2 = api.objects.filter(
+                client_id=request.POST["client_id"], 
+                member_no=request.session["memberInfo"]["member_no"],
+            ).exclude(
+                api_no=request.POST["api_no"]
+            ).first()
+            if apiData2 is not None:
+                context["flag"] = "3"
+                context["result_msg"] = "이미 등록된 client_id 입니다."
+
+        if (context["flag"] == "0"):
+            try:
+                res = authJwt(
+                    client_id=request.POST["client_id"],
+                    client_secret=request.POST["client_secret"],
+                    service_account=request.POST["service_account"],
+                    private_key=request.POST["private_key"],
+                    scope=request.POST["scope"]
+                )
+                result = util.strToJson(res.text)  # 인증 완료 후 응답 값
+                if res.status_code == 200 or res.status_code == 201:
+
+                    # API 테이블에 값 저장
+                    apiData.api_name=request.POST["api_name"]
+                    apiData.client_id=request.POST["client_id"]
+                    apiData.client_secret=request.POST["client_secret"]
+                    apiData.service_account=request.POST["service_account"]
+                    apiData.private_key=request.POST["private_key"]
+                    apiData.scope=request.POST["scope"]
+                    apiData.rmk=""
+                    apiData.save()
+                    result["api"] = apiData
+                    util.tokenReg(result)
+
+                else:
+                    context["flag"] = "2"
+                    context["result_msg"] = result["description"]
+            except Exception as err:
+                context["flag"] = "2"
+                context["result_msg"] = err.args[0]
+        util.insertLog(
+            request, context["result_msg"] + "    " + util.jsonToStr(request.POST.dict()))
+        return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
 
 def apiRm(request):
     if 'memberInfo' not in request.session:
@@ -323,6 +415,27 @@ def getBotList(request):
         res = util.objectToPaging(apiData, 1, 0)
         return JsonResponse(res, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
 
+def getBot(request):
+    context = {}
+    context["flag"] = "0"
+    context["result_msg"] = "success"
+    if request.method == "POST":
+        try:
+            botData = bot.objects.filter(
+                member_no=request.session["memberInfo"]["member_no"],
+                bot_no=request.POST["bot_no"]
+            ).all()
+            res = util.objectToPaging(botData, 1, 0)
+            context["data"] = res
+            
+            apiData = api.objects.filter(
+                member_no=request.session["memberInfo"]["member_no"]
+            ).all()
+            context["apis"] = util.objectToPaging(apiData, 1, 0)
+        except Exception as err:
+            context["flag"] = "2"
+            context["result_msg"] = err.args[0]
+    return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
 
 def botReg(request):
     if 'memberInfo' not in request.session:
@@ -396,6 +509,77 @@ def botReg(request):
             request, context["result_msg"] + "    " + util.jsonToStr(request.POST.dict()))
         return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
 
+def botUpd(request):
+    if 'memberInfo' not in request.session:
+        return redirect('login')
+
+    if request.method == "POST":
+        context = {}
+        context["flag"] = "0"
+        context["result_msg"] = "success"
+        checkList = ['bot_no', 'bot_name', 'api_no', 'bot_id', 'bot_secret']
+        replaceList = ['bot no를', 'bot 이름을', 'api no를', 'bot id를', 'bot secret을']
+        apidata = {}
+
+        # 파라미터 검사
+        for idx, val in enumerate(checkList):
+            if (request.POST[val] == None or request.POST[val] == ""):
+                context["flag"] = "2"
+                context["result_msg"] = replaceList[idx] + " 입력하세요"
+                break
+            else:
+                apidata[val] = parse.quote(request.POST[val])
+
+        # API NO 유효성 검사
+        apiData = api.objects.filter(
+            api_no=request.POST["api_no"], member_no=request.session["memberInfo"]["member_no"]).first()
+        if apiData is None:
+            context["flag"] = "4"
+            context["result_msg"] = "잘못된 API NO 입니다."
+
+        # 중복 검사
+        if (context["flag"] == "0"):
+            botData = bot.objects.filter(
+                bot_id=request.POST["bot_id"], member_no=request.session["memberInfo"]["member_no"]
+            ).exclude(
+                bot_no=request.POST["bot_no"]
+            ).first()
+            if botData is not None:
+                context["flag"] = "3"
+                context["result_msg"] = "이미 등록된 bot id 입니다."
+
+        if (context["flag"] == "0"):
+            # AccessToken 조회
+            apidata["access_token"] = util.getAccessTokenRe(request.POST["api_no"])
+            if apidata["access_token"] == "" or apidata["access_token"] is None:
+                context["flag"] = "5"
+                context["result_msg"] = "access_token을 조회 할 수 없습니다."
+
+        if (context["flag"] == "0"):
+            try:
+                res = getBotInfo(request.POST["bot_id"], apidata["access_token"])
+                result = util.strToJson(res.text)  # 인증 완료 후 응답 값
+                if res.status_code == 200 or res.status_code == 201:
+                    # BOT 테이블에 값 저장
+                    botData = bot.objects.filter(
+                        bot_no=request.POST["bot_no"], 
+                        member_no=request.session["memberInfo"]["member_no"]
+                    ).first()
+                    
+                    botData.bot_id=request.POST["bot_id"]
+                    botData.bot_secret=request.POST["bot_secret"]
+                    botData.bot_name=request.POST["bot_name"]
+                    botData.rmk=""
+                    botData.save()
+                else:
+                    context["flag"] = "2"
+                    context["result_msg"] = result["description"]
+            except Exception as err:
+                context["flag"] = "2"
+                context["result_msg"] = err.args[0]
+        util.insertLog(
+            request, context["result_msg"] + "    " + util.jsonToStr(request.POST.dict()))
+        return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
 
 def botRm(request):
     if 'memberInfo' not in request.session:
@@ -407,7 +591,9 @@ def botRm(request):
         context["result_msg"] = "success"
         try:
             bot.objects.filter(
-                bot_no=request.POST["bot_no"], member_no=request.session["memberInfo"]["member_no"]).delete()
+                bot_no=request.POST["bot_no"], 
+                member_no=request.session["memberInfo"]["member_no"]
+            ).delete()
         except Exception as err:
             context["flag"] = "2"
             context["result_msg"] = err

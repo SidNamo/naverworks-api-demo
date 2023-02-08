@@ -165,6 +165,26 @@ def tokenReg(tokenData):
                 )
     
 
+
+def getAccessTokenRe(api_no, token_type="access_token"):
+    res = util.getAccessToken(api_no, token_type)
+    if res != "":
+        re = False
+    else:
+        re = True
+    if re:
+        if token_type != "jwt":
+            if token_type == "access_token":
+                token.objects.filter(api_no=api_no, type="access_token").delete()
+                token_type="refresh_token"
+            elif token_type == "refresh_token":
+                token.objects.filter(api_no=api_no).delete()
+                token_type = "jwt"
+            res = getAccessTokenRe(api_no, token_type)
+    else:
+        return res
+
+
 """
 AccessToken 조회
 1. DB에 AccessToken 있는지 조회

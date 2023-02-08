@@ -28,42 +28,42 @@ var ModalApiListAdd = function () {
 			form,
 			{
 				fields: {
-					'name': {
+					'api_name': {
 						validators: {
 							notEmpty: {
 								message: 'API 이름은 필수값입니다.'
 							}
 						}
 					},
-					'ID': {
+					'client_id': {
 						validators: {
 							notEmpty: {
 								message: 'Client ID는 필수값입니다.'
 							}
 						}
 					},
-					'secret': {
+					'client_secret': {
 						validators: {
 							notEmpty: {
 								message: 'Client Secret는 필수값입니다.'
 							}
 						}
 					},
-					'account': {
+					'service_account': {
 						validators: {
 							notEmpty: {
 								message: 'Service Account는 필수값입니다.'
 							}
 						}
 					},
-					'private key': {
+					'private_key': {
 						validators: {
 							notEmpty: {
 								message: 'Private Key는 필수값입니다.'
 							}
 						}
 					},
-					'scope': {
+					'scope_tags': {
 						validators: {
 							notEmpty: {
 								message: 'Scope는 필수값입니다.'
@@ -89,7 +89,7 @@ var ModalApiListAdd = function () {
 			// Validate form before submit
 			if (validator) {
 				validator.validate().then(function (status) {
-					console.log('validated!');
+					//console.log('validated!');
 
 					if (status == 'Valid') {
 						submitButton.setAttribute('data-kt-indicator', 'on');
@@ -97,28 +97,64 @@ var ModalApiListAdd = function () {
 						// Disable button to avoid multiple click 
 						submitButton.disabled = true;
 
-						setTimeout(function() {
-							submitButton.removeAttribute('data-kt-indicator');
+						let url = "./api/apiReg";
+						let formData = new FormData(form);
+						formData.append("csrfmiddlewaretoken",Cookies("csrftoken"));
 
+						let scopes = JSON.parse(form.querySelector('input[name=scope_tags]').value);
+						let scope = '';
+						for(let i = 0 ; i < scopes.length; i++){
+							if(i != 0) scope += ',';
+							scope += scopes[i].value.trim();
+						}
+						formData.append("scope",scope);
+
+						
+						fetch(url, {
+							method: "POST",
+							cache: 'no-cache',
+							body: formData,
+						}).then((response) => {
+							if (!response.ok || response.status != '200') {
+								throw new Error('연결 실패. 다시 요청하세요.\n' + response.statusText + "(" + response.status + ")");
+							}
+							return response.json();
+						}).then((res) => {
+							if(res.flag == '0'){
+								submitButton.removeAttribute('data-kt-indicator');
+								// Enable button
+								submitButton.disabled = false;
+								Swal.fire({
+									text: "새로운 API가 생성되었습니다.",
+									icon: "success",
+									buttonsStyling: false,
+									confirmButtonText: "완료하기",
+									customClass: {
+										confirmButton: "btn btn-primary"
+									}
+								}).then(function (result) {
+									if (result.isConfirmed) {
+										modal.hide();
+										form.reset(); // Reset form	
+									}
+								});
+							}else{
+								throw new Error(res.result_msg);
+							}
+						}).catch((err) => {
+							submitButton.removeAttribute('data-kt-indicator');
 							// Enable button
 							submitButton.disabled = false;
-							
 							Swal.fire({
-								text: "새로운 API가 생성되었습니다.",
-								icon: "success",
+								text: err,
+								icon: "error",
 								buttonsStyling: false,
-								confirmButtonText: "완료하기",
+								confirmButtonText: "확인",
 								customClass: {
 									confirmButton: "btn btn-primary"
 								}
-							}).then(function (result) {
-								if (result.isConfirmed) {
-									modal.hide();
-								}
 							});
-
-							//form.submit(); // Submit form
-						}, 500);   						
+						});
 					} else {
 						// Show error popuo. For more info check the plugin's official documentation: https://sweetalert2.github.io/
 						Swal.fire({
@@ -220,42 +256,42 @@ var ModalApiList = function () {
 			form,
 			{
 				fields: {
-					'name': {
+					'api_name': {
 						validators: {
 							notEmpty: {
 								message: 'API 이름은 필수값입니다.'
 							}
 						}
 					},
-					'ID': {
+					'client_id': {
 						validators: {
 							notEmpty: {
 								message: 'Client ID는 필수값입니다.'
 							}
 						}
 					},
-					'secret': {
+					'client_secret': {
 						validators: {
 							notEmpty: {
 								message: 'Client Secret는 필수값입니다.'
 							}
 						}
 					},
-					'account': {
+					'service_account': {
 						validators: {
 							notEmpty: {
 								message: 'Service Account는 필수값입니다.'
 							}
 						}
 					},
-					'private key': {
+					'private_key': {
 						validators: {
 							notEmpty: {
 								message: 'Private Key는 필수값입니다.'
 							}
 						}
 					},
-					'scope': {
+					'scope_tags': {
 						validators: {
 							notEmpty: {
 								message: 'Scope는 필수값입니다.'
@@ -281,7 +317,7 @@ var ModalApiList = function () {
 			// Validate form before submit
 			if (validator) {
 				validator.validate().then(function (status) {
-					console.log('validated!');
+					//console.log('validated!');
 
 					if (status == 'Valid') {
 						submitButton.setAttribute('data-kt-indicator', 'on');
@@ -289,28 +325,63 @@ var ModalApiList = function () {
 						// Disable button to avoid multiple click 
 						submitButton.disabled = true;
 
-						setTimeout(function() {
-							submitButton.removeAttribute('data-kt-indicator');
+						let url = "./api/apiUpd";
+						let formData = new FormData(form);
 
+						let scopes = JSON.parse(form.querySelector('input[name=scope_tags]').value);
+						let scope = '';
+						for(let i = 0 ; i < scopes.length; i++){
+							if(i != 0) scope += ',';
+							scope += scopes[i].value.trim();
+						}
+						formData.append("scope",scope);
+
+						
+						fetch(url, {
+							method: "POST",
+							cache: 'no-cache',
+							body: formData,
+						}).then((response) => {
+							if (!response.ok || response.status != '200') {
+								throw new Error('연결 실패. 다시 요청하세요.\n' + response.statusText + "(" + response.status + ")");
+							}
+							return response.json();
+						}).then((res) => {
+							if(res.flag == '0'){
+								submitButton.removeAttribute('data-kt-indicator');
+								// Enable button
+								submitButton.disabled = false;
+								Swal.fire({
+									text: "API 정보가 수정되었습니다.",
+									icon: "success",
+									buttonsStyling: false,
+									confirmButtonText: "완료하기",
+									customClass: {
+										confirmButton: "btn btn-primary"
+									}
+								}).then(function (result) {
+									if (result.isConfirmed) {
+										modal.hide();
+										form.reset(); // Reset form	
+									}
+								});
+							}else{
+								throw new Error(res.result_msg);
+							}
+						}).catch((err) => {
+							submitButton.removeAttribute('data-kt-indicator');
 							// Enable button
 							submitButton.disabled = false;
-							
 							Swal.fire({
-								text: "API 정보가 수정되었습니다.",
-								icon: "success",
+								text: err,
+								icon: "error",
 								buttonsStyling: false,
-								confirmButtonText: "완료하기",
+								confirmButtonText: "확인",
 								customClass: {
 									confirmButton: "btn btn-primary"
 								}
-							}).then(function (result) {
-								if (result.isConfirmed) {
-									modal.hide();
-								}
 							});
-
-							//form.submit(); // Submit form
-						}, 500);   						
+						});
 					} else {
 						// Show error popuo. For more info check the plugin's official documentation: https://sweetalert2.github.io/
 						Swal.fire({
@@ -389,9 +460,11 @@ KTUtil.onDOMContentLoaded(function () {
 
 // The DOM elements you wish to replace with Tagify
 var input2 = document.querySelector("#kt_tagify_2");
+var input3 = document.querySelector("#kt_tagify_3");
 
 // Initialize Tagify components on the above inputs
 new Tagify(input2);
+new Tagify(input3);
 
 
 
@@ -425,14 +498,14 @@ var ModalBotListAdd = function () {
 			form,
 			{
 				fields: {
-					'api_select': {
+					'api_no': {
 						validators: {
 							notEmpty: {
 								message: 'API를 선택해주세요.'
 							}
 						}
 					},
-					'Bot_ID': {
+					'bot_id': {
 						validators: {
 							notEmpty: {
 								message: 'Bot ID는 필수값입니다.'
@@ -467,7 +540,7 @@ var ModalBotListAdd = function () {
 			// Validate form before submit
 			if (validator) {
 				validator.validate().then(function (status) {
-					console.log('validated!');
+					//console.log('validated!');
 
 					if (status == 'Valid') {
 						// Show loading indication
@@ -476,31 +549,55 @@ var ModalBotListAdd = function () {
 						// Disable button to avoid multiple click 
 						submitButton.disabled = true;
 
-						// Simulate form submission. For more info check the plugin's official documentation: https://sweetalert2.github.io/
-						setTimeout(function() {
-							// Remove loading indication
-							submitButton.removeAttribute('data-kt-indicator');
+						let url = "./bot/botReg";
+						let formData = new FormData(form);
 
+						
+						fetch(url, {
+							method: "POST",
+							cache: 'no-cache',
+							body: formData,
+						}).then((response) => {
+							if (!response.ok || response.status != '200') {
+								throw new Error('연결 실패. 다시 요청하세요.\n' + response.statusText + "(" + response.status + ")");
+							}
+							return response.json();
+						}).then((res) => {
+							if(res.flag == '0'){
+								submitButton.removeAttribute('data-kt-indicator');
+								// Enable button
+								submitButton.disabled = false;
+								Swal.fire({
+									text: "새로운 Bot이 생성되었습니다.",
+									icon: "success",
+									buttonsStyling: false,
+									confirmButtonText: "완료하기",
+									customClass: {
+										confirmButton: "btn btn-primary"
+									}
+								}).then(function (result) {
+									if (result.isConfirmed) {
+										modal.hide();
+										form.reset(); // Reset form	
+									}
+								});
+							}else{
+								throw new Error(res.result_msg);
+							}
+						}).catch((err) => {
+							submitButton.removeAttribute('data-kt-indicator');
 							// Enable button
 							submitButton.disabled = false;
-							
-							// Show popup confirmation 
 							Swal.fire({
-								text: "새로운 Bot이 생성되었습니다.",
-								icon: "success",
+								text: err,
+								icon: "error",
 								buttonsStyling: false,
-								confirmButtonText: "완료하기",
+								confirmButtonText: "확인",
 								customClass: {
 									confirmButton: "btn btn-primary"
 								}
-							}).then(function (result) {
-								if (result.isConfirmed) {
-									modal.hide();
-								}
 							});
-
-							//form.submit(); // Submit form
-						}, 500);   						
+						});											
 					} else {
 						// Show popup warning. For more info check the plugin's official documentation: https://sweetalert2.github.io/
 						Swal.fire({
@@ -603,14 +700,21 @@ var ModalBotList = function () {
 			form,
 			{
 				fields: {
-					'api_select': {
+					'bot_name': {
+						validators: {
+							notEmpty: {
+								message: 'Bot 이름은 필수값입니다.'
+							}
+						}
+					},
+					'api_no': {
 						validators: {
 							notEmpty: {
 								message: 'API를 선택해주세요.'
 							}
 						}
 					},
-					'Bot_ID': {
+					'bot_id': {
 						validators: {
 							notEmpty: {
 								message: 'Bot ID는 필수값입니다.'
@@ -620,7 +724,7 @@ var ModalBotList = function () {
 					'bot_secret': {
 						validators: {
 							notEmpty: {
-								message: 'Bot Secret는 필수값입니다'
+								message: 'Bot Secret는 필수값입니다.'
 							}
 						}
 					},
@@ -645,7 +749,7 @@ var ModalBotList = function () {
 			// Validate form before submit
 			if (validator) {
 				validator.validate().then(function (status) {
-					console.log('validated!');
+					//console.log('validated!');
 
 					if (status == 'Valid') {
 						// Show loading indication
@@ -654,31 +758,55 @@ var ModalBotList = function () {
 						// Disable button to avoid multiple click 
 						submitButton.disabled = true;
 
-						// Simulate form submission. For more info check the plugin's official documentation: https://sweetalert2.github.io/
-						setTimeout(function() {
-							// Remove loading indication
-							submitButton.removeAttribute('data-kt-indicator');
+						let url = "./bot/botUpd";
+						let formData = new FormData(form);
 
+						
+						fetch(url, {
+							method: "POST",
+							cache: 'no-cache',
+							body: formData,
+						}).then((response) => {
+							if (!response.ok || response.status != '200') {
+								throw new Error('연결 실패. 다시 요청하세요.\n' + response.statusText + "(" + response.status + ")");
+							}
+							return response.json();
+						}).then((res) => {
+							if(res.flag == '0'){
+								submitButton.removeAttribute('data-kt-indicator');
+								// Enable button
+								submitButton.disabled = false;
+								Swal.fire({
+									text: "BOT 정보가 수정되었습니다.",
+									icon: "success",
+									buttonsStyling: false,
+									confirmButtonText: "완료하기",
+									customClass: {
+										confirmButton: "btn btn-primary"
+									}
+								}).then(function (result) {
+									if (result.isConfirmed) {
+										modal.hide();
+										form.reset(); // Reset form	
+									}
+								});
+							}else{
+								throw new Error(res.result_msg);
+							}
+						}).catch((err) => {
+							submitButton.removeAttribute('data-kt-indicator');
 							// Enable button
 							submitButton.disabled = false;
-							
-							// Show popup confirmation 
 							Swal.fire({
-								text: "Bot 정보가 수정되었습니다.",
-								icon: "success",
+								text: err,
+								icon: "error",
 								buttonsStyling: false,
-								confirmButtonText: "완료하기",
+								confirmButtonText: "확인",
 								customClass: {
 									confirmButton: "btn btn-primary"
 								}
-							}).then(function (result) {
-								if (result.isConfirmed) {
-									modal.hide();
-								}
 							});
-
-							//form.submit(); // Submit form
-						}, 500);   						
+						});						
 					} else {
 						// Show popup warning. For more info check the plugin's official documentation: https://sweetalert2.github.io/
 						Swal.fire({
@@ -752,24 +880,24 @@ KTUtil.onDOMContentLoaded(function () {
 
 ////// Delete Alert //////
 
-const button = document.getElementById('delete_alert');
+// const button = document.getElementById('delete_alert');
 
-button.addEventListener('click', e =>{
-    e.preventDefault();
+// button.addEventListener('click', e =>{
+//     e.preventDefault();
 
-    Swal.fire({
-        text: "해당 정보를 삭제하시겠습니까?",
-        icon: "warning",
-		showCancelButton: true,
-        buttonsStyling: false,
-        confirmButtonText: "네 삭제합니다",
-		cancelButtonText: "다시 돌아가기",
-        customClass: {
-            confirmButton: "btn btn-danger",
-			cancelButton: "btn btn-active-light"
-        }
-    });
-});
+//     Swal.fire({
+//         text: "해당 정보를 삭제하시겠습니까?",
+//         icon: "warning",
+// 		showCancelButton: true,
+//         buttonsStyling: false,
+//         confirmButtonText: "네 삭제합니다",
+// 		cancelButtonText: "다시 돌아가기",
+//         customClass: {
+//             confirmButton: "btn btn-danger",
+// 			cancelButton: "btn btn-active-light"
+//         }
+//     });
+// });
 
 //////////////////////////////////////
 ////////////Bot Message 전달////////////
@@ -837,3 +965,12 @@ KTUtil.onDOMContentLoaded(function () {
 /******/ })()
 ;
 //# sourceMappingURL=new-card.js.map
+
+
+
+var modalClose = function() {
+	let modal = document.querySelectorAll('div.modal.show')
+	for (let i = 0; i < modal.length; i++){
+		(new bootstrap.Modal(modal[i])).hide();
+	}
+}

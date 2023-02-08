@@ -18,12 +18,16 @@ urlpatterns = [
     path('apiList', nwad.apiList, name="apiList"),
     path('api/apiReg', nwad.apiReg, name="api/apiReg"),
     path('api/apiRm', nwad.apiRm, name="api/apiRm"),
+    path('api/apiUpd', nwad.apiUpd, name="api/apiUpd"),
     path('api/getApiList', nwad.getApiList, name="api/getApiList"),
+    path('api/getApi', nwad.getApi, name="api/getApi"),
 
     path('botList', nwad.botList, name="botList"),
     path('bot/botReg', nwad.botReg, name="bot/botReg"),
-    path('bot/botRm', nwad.botRm, name="api/botRm"),
+    path('bot/botRm', nwad.botRm, name="bot/botRm"),
+    path('bot/botUpd', nwad.botUpd, name="bot/botUpd"),
     path('bot/getBotList', nwad.getBotList, name="api/getBotList"),
+    path('bot/getBot', nwad.getBot, name="api/getBot"),
 
     path('Message/textMessage', nwad.textMessage, name="Message/textMessage"),
 
