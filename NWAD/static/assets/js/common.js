@@ -1,3 +1,11 @@
+window.addEventListener('load',function(){
+    let menus = document.querySelectorAll('div[class=menu-item] a')
+    for(let i = 0; i< menus.length; i++){
+        if(location.href.replace("#","") == location.origin + "/" && i == 0) menus[i].classList.add("active");
+        else if(location.href.replace("#","") == menus[i].href) menus[i].classList.add("active");
+    }
+});
+
 //===========================================================================================
 //쿠키
 //===========================================================================================
@@ -80,3 +88,13 @@ function decodeByAES256(data){
         return cipher.toString(CryptoJS.enc.Utf8);
     }
 };
+
+//===========================================================================================
+//Modal Close All
+//===========================================================================================
+var modalClose = function() {
+    let modal = document.querySelectorAll('div.modal.show')
+    for (let i = 0; i < modal.length; i++){
+        (bootstrap.Modal.getInstance(modal[i])).hide();
+    }
+}

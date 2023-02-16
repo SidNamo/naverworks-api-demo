@@ -81,8 +81,10 @@ def createChannelProc(api_no, bot_no, members, title, token_type="access_token")
         status = res.status_code
         if status != 201 and status != 200 and util.strToJson(res.text)["code"] == "UNAUTHORIZED":
             re = True
-        else:
+        elif status == 201 or status == 200:
             re = False
+        else:
+            raise Exception(util.strToJson(res.text)["description"])
     else:
         re = True
     if re:

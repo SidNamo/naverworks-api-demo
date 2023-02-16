@@ -14,6 +14,9 @@ urlpatterns = [
     path('loginFind', nwad.loginFind, name="loginFind"),
     path('join', nwad.join, name="join"),
     path('joinIdCheck', nwad.joinIdCheck, name="joinIdCheck"),
+    path('mypage', nwad.mypage, name="mypage"),
+    path('botMessage', nwad.botMessage, name="botMessage"),
+    path('scenarioList', nwad.scenarioList, name="scenarioList"),
 
     path('apiList', nwad.apiList, name="apiList"),
     path('api/apiReg', nwad.apiReg, name="api/apiReg"),

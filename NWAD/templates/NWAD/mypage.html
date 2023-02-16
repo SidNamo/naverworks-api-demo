@@ -1,0 +1,326 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block contents %}
+<!--begin::Container-->
+<div class="d-flex flex-column flex-column-fluid container-fluid">
+	<!--begin::Toolbar-->
+	<div class="toolbar mb-5 mb-lg-7" id="kt_toolbar">
+		<!--begin::Page title-->
+		<div class="page-title d-flex flex-column me-3">
+			<!--begin::Title-->
+			<h1 class="d-flex text-dark fw-bold my-1 fs-3">My Page</h1>
+			<!--end::Title-->
+			<!--begin::Breadcrumb-->
+			<ul class="breadcrumb breadcrumb-line fw-semibold text-muted fs-7 my-1">
+				<!--begin::Item-->
+				<li class="breadcrumb-item pe-3">
+					<span class="pe-3">Home</span>
+				</li>
+				<!--end::Item-->
+				<!--begin::Item-->
+				<li class="breadcrumb-item pe-3">
+					<span class="pe-3">SETTINGS</span></li>
+				<!--end::Item-->
+				<!--begin::Item-->
+				<li class="breadcrumb-item pe-3">
+					<span class="text-gray-600 pe-3">My Page</span>
+				</li>
+				<!--end::Item-->
+			</ul>
+			<!--end::Breadcrumb-->
+		</div>
+		<!--end::Page title-->
+	</div>
+	<!--end::Toolbar-->
+	<!--begin::Post-->
+	<div class="content flex-column-fluid" id="kt_content">
+
+		<!--begin::Card-->
+		<div class="card">
+			<!--begin::Form-->
+			<form id="formUserInfo">
+				<!--begin::Card header-->
+				<div class="card-header">
+					<!--begin::Card title-->
+					<div class="card-title m-0">
+						<h3 class="fw-bold m-0">기본 정보 관리</h3>
+					</div>
+					<!--end::Card title-->
+				</div>
+				<!--begin::Card header-->
+				<!--begin::Card body-->
+				<div class="card-body mb-0">
+					<div class="mx-auto w-100 mw-600px pt-8 pb-4" novalidate="novalidate">
+						<div class="d-flex flex-column mt-6">
+							<!--begin::Input group-->
+							<div class="fv-row row">
+								<div class="col-xl-6 mb-10">
+									<!--begin::Label-->
+									<label class="required fs-6 fw-semibold form-label">ID</label>
+									<!--end::Label-->
+									<!--begin::Input-->
+									<input type="text" class="form-control form-control-solid fs-6 fw-normal" name="id" placeholder="사용자 ID" value="{{id}}" />
+									<!--end::Input-->
+									
+								</div>
+								<div class="col-xl-6 mb-10">
+									<!--begin::Label-->
+									<label class="required fs-6 fw-semibold form-label">업체명</label>
+									<!--end::Label-->
+									<!--begin::Input-->
+									<input type="text" class="form-control form-control-solid fs-6 fw-normal" name="corp_name" placeholder="업체명" value="{{corp_name}}" />
+									<!--end::Input-->
+								</div>
+							</div>
+							<!--end::Input group-->
+
+							<!--begin::Input group-->
+							<div class="fv-row row">
+								<div class="col-xl-6 mb-10">
+									<!--begin::Label-->
+									<label class="required fs-6 fw-semibold form-label">관리자 이름</label>
+									<!--end::Label-->
+									<!--begin::Input-->
+									<input type="text" class="form-control form-control-solid fs-6 fw-normal" name="name" placeholder="관리자 이름" value="{{name}}" />
+									<!--end::Input-->
+								</div>
+								<div class="col-xl-6 mb-10">
+									<!--begin::Label-->
+									<label class="required fs-6 fw-semibold form-label">이메일</label>
+									<!--end::Label-->
+									<!--begin::Input-->
+									<input type="text" class="form-control form-control-solid fs-6 fw-normal" name="email" placeholder="이메일" value="{{email}}" />
+									<!--end::Input-->
+								</div>
+							</div>
+							<!--end::Input group-->
+
+							<!--begin::Input group-->
+							<div class="fv-row row">
+								<div class="col-xl-6 mb-10">
+									<!--begin::Label-->
+									<label class="fs-6 fw-semibold form-label">비밀번호</label>
+									<!--end::Label-->
+									<!--begin::Input-->
+									<div class="">
+									<button type="button" class="btn btn-danger py-2 fs-6 fw-normal" data-bs-toggle="modal" data-bs-target="#sm_pw_edit">비밀번호 재설정</button>
+								</div>
+									<!--end::Input-->
+								</div>
+							</div>
+							<!--end::Input group-->
+						</div>
+					</div>
+				</div>
+				<!--end::Card body-->
+				<!--begin::Actions-->
+				<div class="card-footer d-flex justify-content-between py-6 px-9">
+					<a href="./" class="btn btn-light btn-active-light-primary me-2" id="sm_myinfo_save_cancle">취소</a>
+					<a href="javascript:void(0);" class="btn btn-primary" id="sm_myinfo_save_completed">저장</a>
+				</div>
+				<!--end::Actions-->
+			</form>
+			<!--end::Form-->
+		</div>	
+		<!--end::Card-->
+
+	</div>
+	<!--end::Post-->
+	<!--begin::Footer-->
+	<div class="footer py-4 d-flex flex-column flex-md-row flex-stack" id="kt_footer">
+		<!--begin::Copyright-->
+		<div class="text-gray-600 order-2 order-md-1">
+			<span class="text-muted fw-semibold me-1">2022&copy;</span>
+			<a href="https://didim365.com" target="_blank" class="text-gray-800 text-hover-primary">Didim365</a>
+		</div>
+		<!--end::Copyright-->
+		<!--begin::Menu-->
+		<ul class="menu menu-gray-600 menu-hover-primary fw-semibold order-1">
+			<li class="menu-item">
+				<a href="#" target="_blank" class="menu-link px-2">이용약관</a>
+			</li>
+			<li class="menu-item">
+				<a href="#" target="_blank" class="menu-link px-2">개인정보처리방침</a>
+			</li>
+		</ul>
+		<!--end::Menu-->
+	</div>
+	<!--end::Footer-->
+</div>
+<!--end::Container-->
+{% endblock %}
+
+{% block modals %}
+<!--begin::Modals-->
+<!--begin::Modal (Password Edit)-->
+<div class="modal fade" tabindex="-1" id="sm_pw_edit">
+	<div class="modal-dialog modal-dialog-centered mw-400px">
+		<div class="modal-content">
+			<form id="formUserInfoPw">
+				<div class="modal-header py-4">
+					<h3 class="modal-title fw-bolder fs-noto">비밀번호 재설정</h3>
+					<!--begin::Close-->
+					<button type="button" class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+						<!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+						<span class="svg-icon svg-icon-2x">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+								<rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="currentColor" />
+								<rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="currentColor" />
+							</svg>
+						</span>
+						<!--end::Svg Icon-->
+					</button>
+					<!--end::Close-->
+				</div>
+				<div class="modal-body py-7">
+					<div class="d-flex justify-content-center">
+						<span class="svg-icon svg-icon-5hx mx-auto mt-0 mb-8">
+							<!--begin::Svg Icon | path: icons/Code/Lock-overturning.svg-->
+							<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+								<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+									<rect x="0" y="0" width="24" height="24"/>
+									<path d="M7.38979581,2.8349582 C8.65216735,2.29743306 10.0413491,2 11.5,2 C17.2989899,2 22,6.70101013 22,12.5 C22,18.2989899 17.2989899,23 11.5,23 C5.70101013,23 1,18.2989899 1,12.5 C1,11.5151324 1.13559454,10.5619345 1.38913364,9.65805651 L3.31481075,10.1982117 C3.10672013,10.940064 3,11.7119264 3,12.5 C3,17.1944204 6.80557963,21 11.5,21 C16.1944204,21 20,17.1944204 20,12.5 C20,7.80557963 16.1944204,4 11.5,4 C10.54876,4 9.62236069,4.15592757 8.74872191,4.45446326 L9.93948308,5.87355717 C10.0088058,5.95617272 10.0495583,6.05898805 10.05566,6.16666224 C10.0712834,6.4423623 9.86044965,6.67852665 9.5847496,6.69415008 L4.71777931,6.96995273 C4.66931162,6.97269931 4.62070229,6.96837279 4.57348157,6.95710938 C4.30487471,6.89303938 4.13906482,6.62335149 4.20313482,6.35474463 L5.33163823,1.62361064 C5.35654118,1.51920756 5.41437908,1.4255891 5.49660017,1.35659741 C5.7081375,1.17909652 6.0235153,1.2066885 6.2010162,1.41822583 L7.38979581,2.8349582 Z" fill="currentColor" opacity="0.3"/>
+									<path d="M14.5,11 C15.0522847,11 15.5,11.4477153 15.5,12 L15.5,15 C15.5,15.5522847 15.0522847,16 14.5,16 L9.5,16 C8.94771525,16 8.5,15.5522847 8.5,15 L8.5,12 C8.5,11.4477153 8.94771525,11 9.5,11 L9.5,10.5 C9.5,9.11928813 10.6192881,8 12,8 C13.3807119,8 14.5,9.11928813 14.5,10.5 L14.5,11 Z M12,9 C11.1715729,9 10.5,9.67157288 10.5,10.5 L10.5,11 L13.5,11 L13.5,10.5 C13.5,9.67157288 12.8284271,9 12,9 Z" fill="currentColor"/>
+								</g>
+							</svg><!--end::Svg Icon-->
+						</span>
+					</div>
+	
+					<!--begin::Input group--->
+					<div class="mb-7 fv-row" data-kt-password-meter="true">
+						<!--begin::Label-->
+						<label class="form-label fs-6 fw-semibold mb-2 ms-2">기존 비밀번호</label>
+						<!--end::Label-->
+						<!--begin::Input wrapper-->
+						<div class="position-relative">
+							<input class="form-control form-control-lg form-control-solid" type="password" placeholder="" name="current_password" autocomplete="off" />
+	
+							<span class="btn btn-sm btn-icon position-absolute translate-middle top-50 end-0 me-n2" data-kt-password-meter-control="visibility">
+								<i class="bi bi-eye-slash fs-2"></i>
+	
+								<i class="bi bi-eye fs-2 d-none"></i>
+							</span>
+						</div>
+						<!--end::Input wrapper-->
+						<!--begin::Check Message-->
+						<div class="text-success fw-normal fs-7 mt-2 ms-2" id="pw_success" style="display:none;">
+							비밀번호가 일치합니다.
+						</div>
+						<!--end::Check Message-->
+					</div>
+					<!--end::Input group--->
+	
+					<!--begin::Input group--->
+					<div class="mb-7 fv-row" data-kt-password-meter="true">
+						<!--begin::Label-->
+						<label class="form-label fs-6 fw-semibold mb-2 ms-2">새 비밀번호</label>
+						<!--end::Label-->
+						<!--begin::Input wrapper-->
+						<div class="position-relative">
+							<input class="form-control form-control-lg form-control-solid" type="password" placeholder="" name="new_password" autocomplete="off" />
+	
+							<span class="btn btn-sm btn-icon position-absolute translate-middle top-50 end-0 me-n2" data-kt-password-meter-control="visibility">
+								<i class="bi bi-eye-slash fs-2"></i>
+	
+								<i class="bi bi-eye fs-2 d-none"></i>
+							</span>
+						</div>
+						<!--end::Input wrapper-->
+					</div>
+					<!--end::Input group--->
+	
+					<!--begin::Input group--->
+					<div class="mb-0 fv-row" data-kt-password-meter="true">
+						<!--begin::Label-->
+						<label class="form-label fs-6 fw-semibold mb-2 ms-2">새 비밀번호 확인</label>
+						<!--end::Label-->
+						<!--begin::Input wrapper-->
+						<div class="position-relative">
+							<input class="form-control form-control-lg form-control-solid" type="password" placeholder="" name="new_password_check" autocomplete="off" />
+	
+							<span class="btn btn-sm btn-icon position-absolute translate-middle top-50 end-0 me-n2" data-kt-password-meter-control="visibility">
+								<i class="bi bi-eye-slash fs-2"></i>
+	
+								<i class="bi bi-eye fs-2 d-none"></i>
+							</span>
+						</div>
+						<!--end::Input wrapper-->
+						<!--begin::Check Message-->
+						<div class="text-danger fw-normal fs-7 mt-2 ms-2" id="pw_re_fail" style="display:none;">
+							비밀번호가 일치하지 않습니다.
+						</div>
+						<!--end::Check Message-->
+					</div>
+					<!--end::Input group--->
+				</div>
+				<div class="modal-footer d-flex justify-content-center py-4">
+					<button type="button" class="btn btn-light btn-sm fw-semibold" data-bs-dismiss="modal">취소</button>
+					<button type="button" class="btn btn-primary btn-sm fw-semibold" id="sm_pw_edit_completed">적용</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!--end::Modal (Password Edit)-->
+<!--end::Modals-->
+{% endblock %}
+
+{% block scripts %}
+<!--begin::Alert | Simpler-->
+<script type="text/javascript">
+	window.addEventListener('load',function(){
+
+		const InputCurrentPw = document.querySelector('#sm_pw_edit input[name=current_password]');
+		InputCurrentPw.addEventListener('input', e => {
+			let url = "./mypage";
+			let formData = new FormData();
+			formData.append("csrfmiddlewaretoken",Cookies("csrftoken"));
+			formData.append("type", "checkPw");
+			formData.append("password", e.target.value)
+
+			fetch(url, {
+				method: "POST",
+				cache: 'no-cache',
+				body: formData,
+			}).then((response) => {
+				if (!response.ok || response.status != '200') {
+					throw new Error('연결 실패. 다시 요청하세요.\n' + response.statusText + "(" + response.status + ")");
+				}
+				return response.json();
+			}).then((res) => {
+				if(res.count != '0'){
+					document.getElementById("pw_success").style = "";
+				}else{
+					document.getElementById("pw_success").style = "display:none;";
+				}
+			}).catch((err) => {
+				Swal.fire({
+					text: err,
+					icon: "error",
+					buttonsStyling: false,
+					confirmButtonText: "확인",
+					customClass: {
+						confirmButton: "btn btn-primary"
+					}
+				}).then(function (result) {
+					if (result.isConfirmed) {
+						modalClose();
+					}
+				});
+			});
+		});
+
+		const InputNewPwCheck = document.querySelector('#sm_pw_edit input[name=new_password_check]');
+		InputNewPwCheck.addEventListener('input', e => {
+			let InputNewPw = document.querySelector('#sm_pw_edit input[name=new_password]');
+			if(e.target.value == InputNewPw.value){
+					document.getElementById("pw_re_fail").style = "display:none;";
+			}else{
+					document.getElementById("pw_re_fail").style = "";
+			}
+		});
+	});
+</script>
+<!--end::Alert | Simpler-->
+{% endblock %}

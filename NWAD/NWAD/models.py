@@ -110,6 +110,7 @@ class scen_type(models.Model):
 
 class scen(models.Model):
     scen_no = models.AutoField(db_column='scen_no', primary_key=True)
+    scen_name = models.CharField(db_column="scen_name", null=False, max_length=20)
     member_no = models.ForeignKey(member, related_name="fk_member_scen", on_delete=models.CASCADE, db_column="member_no")
     scen_type = models.ForeignKey(scen_type, related_name="fk_scen_type_scen", on_delete=models.CASCADE, db_column="scen_type")
     api_no = models.ForeignKey(api, related_name="fk_api_scen", on_delete=models.CASCADE, db_column="api_no")

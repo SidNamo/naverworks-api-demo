@@ -1,0 +1,1136 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block contents %}
+<!--begin::Container-->
+<div class="d-flex flex-column flex-column-fluid container-fluid">
+	<!--begin::Toolbar-->
+	<div class="toolbar mb-5 mb-lg-7" id="kt_toolbar">
+		<!--begin::Page title-->
+		<div class="page-title d-flex flex-column me-3">
+			<!--begin::Title-->
+			<h1 class="d-flex text-dark fw-bold my-1 fs-3">Scenario</h1>
+			<!--end::Title-->
+			<!--begin::Breadcrumb-->
+			<ul class="breadcrumb breadcrumb-line fw-semibold text-muted fs-7 my-1">
+				<!--begin::Item-->
+				<li class="breadcrumb-item pe-3">
+					<span class="pe-3">Home</span>
+				</li>
+				<!--end::Item-->
+				<!--begin::Item-->
+				<li class="breadcrumb-item pe-3">
+					<span class="pe-3">SERVICES</span></li>
+				<!--end::Item-->
+				<!--begin::Item-->
+				<li class="breadcrumb-item pe-3">
+					<span class="text-gray-600 pe-3">Scenario</span>
+				</li>
+				<!--end::Item-->
+			</ul>
+			<!--end::Breadcrumb-->
+		</div>
+		<!--end::Page title-->
+	</div>
+	<!--end::Toolbar-->
+	<!--begin::Post-->
+	<div class="content flex-column-fluid" id="kt_content">
+
+		<!--begin::List-->
+		<div class="card mb-5">
+			<!--begin::Card header-->
+			<div class="card-header">
+				<!--begin::Card title-->
+				<div class="card-title m-0">
+					<h3 class="fw-bold m-0">Scenario List</h3>
+				</div>
+				<!--end::Card title-->
+				<!--begin::Action-->
+				<a href="javascript:void(0);" class="btn btn-sm btn-primary align-self-center" data-bs-toggle="modal" data-bs-target="#sm_sc_save" onclick="getScenarioInfo();">Scenario 추가</a>
+				<!-- <a href="./scenarioAdd" class="btn btn-sm btn-primary align-self-center">Scenario 추가</a> -->
+				<!--end::Action-->
+			</div>
+			<!--begin::Card header-->
+			<!--begin::Card body-->
+			<div class="card-body p-0">
+				<!--begin::Table container-->
+				<div class="table-responsive">
+					<!--begin::Table-->
+					<table class="table table-row-bordered align-middle gy-4 gs-9" id="tableScenarioList">
+						<thead class="border-bottom border-gray-200 fs-6 text-gray-500 fw-semibold bg-light bg-opacity-75">
+							<tr>
+								<td width="15%" class="min-w-150px">Template</td>
+								<td width="70%" class="min-w-150px">Title</td>
+								<td width="15%" class="min-w-150px text-end">Actions</td>
+							</tr>
+						</thead>
+						<tbody class="fs-6">
+						</tbody>
+					</table>
+					<!--end::Table-->
+				</div>
+				<!--end::Table container-->
+			</div>
+			<!--end::Card body-->
+		</div>	
+		<!--end::List-->
+
+		<!--begin::Pagination-->
+		<div class="d-flex justify-content-between">
+			<div class="">
+				<!--begin::Select-->
+				<select class="form-select form-select-sm form-check-solid border-0 w-200px fw-semibold" data-control="select2" data-placeholder="페이지당 목록 표시수" data-hide-search="true" name="count">
+					<option value="">페이지당 목록 표시수</option>
+					<option value="10" selected="select">목록 10개 표시</option>
+					<option value="50">목록 50개 표시</option>
+					<option value="100">목록 100개 표시</option>
+				</select>
+				<!--end::Select-->
+			</div>
+			<!--begin::Pages-->
+			<ul class="pagination d-flex flex-nowrap mb-5 mb-xl-10" id="ulPage">
+			</ul>
+			<!--end::Pages-->
+		</div>
+		<!--end::Pagination-->
+
+	</div>
+	<!--end::Post-->
+	<!--begin::Footer-->
+	<div class="footer py-4 d-flex flex-column flex-md-row flex-stack" id="kt_footer">
+		<!--begin::Copyright-->
+		<div class="text-gray-600 order-2 order-md-1">
+			<span class="text-muted fw-semibold me-1">2022&copy;</span>
+			<a href="https://didim365.com" target="_blank" class="text-gray-800 text-hover-primary">Didim365</a>
+		</div>
+		<!--end::Copyright-->
+		<!--begin::Menu-->
+		<ul class="menu menu-gray-600 menu-hover-primary fw-semibold order-1">
+			<li class="menu-item">
+				<a href="#" target="_blank" class="menu-link px-2">이용약관</a>
+			</li>
+			<li class="menu-item">
+				<a href="#" target="_blank" class="menu-link px-2">개인정보처리방침</a>
+			</li>
+		</ul>
+		<!--end::Menu-->
+	</div>
+	<!--end::Footer-->
+</div>
+<!--end::Container-->
+{% endblock %}
+
+{% block modals %}
+<!--begin::Modals-->
+<!--begin::Modal - Scenario Info Save-->
+<div class="modal fade" tabindex="-1" id="sm_sc_save" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+	<div class="modal-dialog modal-lg modal-dialog-centered">
+		<div class="modal-content">
+			<form id="sm_sc_save_form">
+				<div class="modal-header">
+					<h3 class="modal-title fw-bolder">Scenario 추가</h3>
+					<!--begin::Close-->
+					<button type="button" class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+						<!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+						<span class="svg-icon svg-icon-2x">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+								<rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="currentColor" />
+								<rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="currentColor" />
+							</svg>
+						</span>
+						<!--end::Svg Icon-->
+					</button>
+					<!--end::Close-->
+				</div>
+				<div class="modal-body p-12">
+					<div class="w-100">
+						<div class="d-flex flex-column mt-0">
+							<!--begin::Input group-->
+							<div class="fv-row mb-10">
+								<!--begin::Label-->
+								<label class="required fs-6 fw-semibold form-label">Scenario Template</label>
+								<!--end::Label-->
+								<!--begin::Input-->
+								<div class="d-flex align-items-center">
+									<select class="form-select form-select-solid fs-6 fw-semibold" name="scen_type" data-control="select" data-hide-search="true" data-placeholder="Template 선택">
+									</select>
+									<button type="button" class="btn btn-primary text-nowrap ms-4" data-bs-toggle="modal" data-bs-target="#sm_sc_temp_preview">자세히보기</button>
+								</div>
+								<!--end::Input-->
+							</div>
+							<!--end::Input group-->
+	
+							<!--begin::Input group-->
+							<div class="fv-row mb-10">
+								<!--begin::Label-->
+								<label class="required fs-6 fw-semibold form-label">Scenario Name</label>
+								<!--end::Label-->
+								<!--begin::Input-->
+								<input type="text" class="form-control form-control-solid fs-6 fw-normal" name="scen_name" placeholder="Scenario Name 입력" value="" />
+								<!--end::Input-->
+							</div>
+							<!--end::Input group-->
+	
+							<!--begin::Input group-->
+							<div class="fv-row mb-10">
+								<!--begin::Label-->
+								<label class="required fs-6 fw-semibold form-label">Domain Id</label>
+								<!--end::Label-->
+								<!--begin::Input-->
+								<input type="text" class="form-control form-control-solid fs-6 fw-normal" name="domain" placeholder="Domain Id 입력" value="" />
+								<!--end::Input-->
+							</div>
+							<!--end::Input group-->
+	
+							<!--begin::Input group-->
+							<div class="fv-row row">
+								<div class="col-xl-6 mb-10">
+									<!--begin::Label-->
+									<label class="required fs-6 fw-semibold form-label">API 선택</label>
+									<!--end::Label-->
+									<!--begin::Input-->
+									<select class="form-select form-select-solid fs-6 fw-semibold" name="api_no" data-control="select" data-hide-search="true" data-placeholder="API 선택">
+									</select>
+									<!--end::Input-->
+								</div>
+								<div class="col-xl-6 mb-10">
+									<!--begin::Label-->
+									<label class="required fs-6 fw-semibold form-label">Bot 선택</label>
+									<!--end::Label-->
+									<!--begin::Input-->
+									<select class="form-select form-select-solid fs-6 fw-semibold" name="bot_no" data-control="select" data-hide-search="true" data-placeholder="Bot 선택">
+									</select>
+									<!--end::Input-->
+								</div>
+							</div>
+							<!--end::Input group-->
+	
+							<!--begin::Input group-->
+							<div class="fv-row row mb-0">
+								<!--begin::Label-->
+								<label class="required fs-6 fw-semibold form-label">Member 선택</label>
+								<!--End::Label-->
+								<!--begin::Input-->
+								<input type="hidden" class="form-control form-control-solid fs-6 fw-normal"  name="members">
+								<!--end::Input-->
+								<!--begin::List-->
+								<div class="mh-275px scroll-y me-n7 pe-7" id="divMembers">
+								</div>
+								<!--end::List-->
+	
+								<!--begin::Add-->
+								<div class="d-flex align-items-center mt-4">
+									<!--begin::Input group-->
+									<div class="position-relative w-100 me-4">
+										<!--begin::Svg Icon | path: icons/duotune/arrows/arr087.svg-->
+										<span class="svg-icon svg-icon-3 svg-icon-gray-500 position-absolute top-50 translate-middle ms-6">
+											<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<rect opacity="0.5" x="11" y="18" width="12" height="2" rx="1" transform="rotate(-90 11 18)" fill="currentColor"/>
+												<rect x="6" y="11" width="12" height="2" rx="1" fill="currentColor"/>
+											</svg>
+										</span>
+										<!--end::Svg Icon-->
+										<input type="text" class="form-control form-control-solid fs-6 ps-10" name="member_add" value="" placeholder="Member 입력 "onkeyup="if(window.event.keyCode==13){document.querySelector('#sm_sc_save .btnMemberAdd').click()}" />
+									</div>
+									<!--end::Input group-->
+									<!--begin:Action-->
+									<button type="button" class="btn btn-primary text-nowrap btnMemberAdd">추가</button>
+									<!--end:Action-->
+								</div>
+								<!--end::Add-->
+							</div>
+							<!--end::Input group-->
+						</div>
+					</div>
+				</div>
+				<!--begin::Modal footer-->
+				<div class="modal-footer flex-center py-4">
+					<button type="button" class="btn btn btn-light fw-bolder" id="sm_sc_info_cancel">취소</button>
+					<button type="button" class="btn btn btn-primary fw-bolder" id="sm_sc_info_submit">저장</button>
+				</div>
+				<!--end::Modal footer-->
+			</form>
+		</div>
+	</div>
+</div>
+<!--end::Modal - Scenario Info Save-->
+
+<!--begin::Modal - Scenario Info Edit-->
+<div class="modal fade" tabindex="-1" id="sm_sc_edit" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+	<div class="modal-dialog modal-lg modal-dialog-centered">
+		<div class="modal-content">
+			<form id="sm_sc_edit_form">
+				<div class="modal-header">
+					<h3 class="modal-title fw-bolder">Scenario 정보 수정</h3>
+					<input type="hidden" name="scen_no">
+					<!--begin::Close-->
+					<button type="button" class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+						<!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+						<span class="svg-icon svg-icon-2x">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+								<rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="currentColor" />
+								<rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="currentColor" />
+							</svg>
+						</span>
+						<!--end::Svg Icon-->
+					</button>
+					<!--end::Close-->
+				</div>
+				<div class="modal-body p-12">
+					<div class="w-100">
+						<div class="d-flex flex-column mt-0">
+							<!--begin::Input group-->
+							<div class="fv-row mb-10">
+								<!--begin::Label-->
+								<label class="fs-6 fw-semibold form-label">Scenario Template</label>
+								<!--end::Label-->
+								<!--begin::Input-->
+								<div class="d-flex align-items-center">
+									<select class="form-select form-select-solid fs-6 fw-semibold" name="scen_type" data-control="select" data-hide-search="true" data-placeholder="Template 선택">
+									</select>
+									<button type="button" class="btn btn-primary text-nowrap ms-4" data-bs-toggle="modal" data-bs-target="#sm_sc_temp_preview">자세히보기</button>
+								</div>
+								<!--end::Input-->
+							</div>
+							<!--end::Input group-->
+
+							<!--begin::Input group-->
+							<div class="fv-row mb-10">
+								<!--begin::Label-->
+								<label class="fs-6 fw-semibold form-label">Scenario Name</label>
+								<!--end::Label-->
+								<!--begin::Input-->
+								<input type="text" class="form-control form-control-solid fs-6 fw-normal" name="scen_name" placeholder="Scenario Name 입력" value="" />
+								<!--end::Input-->
+							</div>
+							<!--end::Input group-->
+
+							<!--begin::Input group-->
+							<div class="fv-row mb-10">
+								<!--begin::Label-->
+								<label class="fs-6 fw-semibold form-label">Domain Id</label>
+								<!--end::Label-->
+								<!--begin::Input-->
+								<input type="text" class="form-control form-control-solid fs-6 fw-normal" name="domain" placeholder="Domain Id 입력" value="" />
+								<!--end::Input-->
+							</div>
+							<!--end::Input group-->
+
+							<!--begin::Input group-->
+							<div class="fv-row row">
+								<div class="col-xl-6 mb-10">
+									<!--begin::Label-->
+									<label class="fs-6 fw-semibold form-label">API 선택</label>
+									<!--end::Label-->
+									<!--begin::Input-->
+									<select class="form-select form-select-solid fs-6 fw-semibold" name="api_no" data-control="select" data-hide-search="true" data-placeholder="API 선택">
+									</select>
+									<!--end::Input-->
+								</div>
+								<div class="col-xl-6 mb-10">
+									<!--begin::Label-->
+									<label class="fs-6 fw-semibold form-label">Bot 선택</label>
+									<!--end::Label-->
+									<!--begin::Input-->
+									<select class="form-select form-select-solid fs-6 fw-semibold" name="bot_no" data-control="select" data-hide-search="true" data-placeholder="Bot 선택">
+									</select>
+									<!--end::Input-->
+								</div>
+							</div>
+							<!--end::Input group-->
+
+							<!--begin::Input group-->
+							<div class="fv-row row mb-0">
+								<!--begin::Label-->
+								<label class="fs-6 fw-semibold form-label">Member 선택</label>
+								<!--End::Label-->
+								<!--begin::Input-->
+								<input type="hidden" name="members">
+								<!--end::Input-->
+								<!--begin::List-->
+								<div class="mh-275px scroll-y me-n7 pe-7" id="divMembers">
+								</div>
+								<!--end::List-->
+
+								<!--begin::Add-->
+								<div class="d-flex align-items-center mt-4">
+									<!--begin::Input group-->
+									<div class="position-relative w-100 me-4">
+										<!--begin::Svg Icon | path: icons/duotune/arrows/arr087.svg-->
+										<span class="svg-icon svg-icon-3 svg-icon-gray-500 position-absolute top-50 translate-middle ms-6">
+											<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<rect opacity="0.5" x="11" y="18" width="12" height="2" rx="1" transform="rotate(-90 11 18)" fill="currentColor"/>
+												<rect x="6" y="11" width="12" height="2" rx="1" fill="currentColor"/>
+											</svg>
+										</span>
+										<!--end::Svg Icon-->
+										<input type="text" class="form-control form-control-solid fs-6 ps-10" name="member_add" value="" placeholder="Member 입력 "onkeyup="if(window.event.keyCode==13){document.querySelector('#sm_sc_edit .btnMemberAdd').click()}" />
+									</div>
+									<!--end::Input group-->
+									<!--begin:Action-->
+									<button type="button" class="btn btn-primary text-nowrap btnMemberAdd">추가</button>
+									<!--end:Action-->
+								</div>
+								<!--end::Add-->
+							</div>
+							<!--end::Input group-->
+						</div>
+					</div>
+				</div>
+				<!--begin::Modal footer-->
+				<div class="modal-footer flex-center py-4">
+					<button type="button" class="btn btn btn-light fw-bolder" id="sm_sc_info_edit_cancle" >취소</button>
+					<button type="button" class="btn btn btn-primary fw-bolder" id="sm_sc_info_edit_submit">적용</button>
+				</div>
+				<!--end::Modal footer-->
+			</form>
+		</div>
+	</div>
+</div>
+<!--end::Modal - Scenario Info Edit-->
+
+<!--begin::Modal - Scenario Preview-->
+<div class="modal fade" tabindex="-1" id="sm_sc_temp_preview" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title fw-bolder">Scenario Template 정보</h3>
+				<!--begin::Close-->
+				<a data-bs-dismiss="modal" class="btn btn-icon btn-sm btn-active-light-primary ms-2" aria-label="Close">
+					<!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+					<span class="svg-icon svg-icon-2x">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+							<rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="currentColor" />
+							<rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="currentColor" />
+						</svg>
+					</span>
+					<!--end::Svg Icon-->
+				</a>
+				<!--end::Close-->
+			</div>
+			<div class="modal-body bg-light p-9">
+				<div class="w-100">
+					<!--begin::Title-->
+					<div class="d-flex flex-column mb-8">
+						<div class="fs-4 fw-bold text-gray-900 lh-1 mb-3">1:N 보고 BOT 시나리오</div>
+						<div class="fs-6 text-gray-700 fw-normal">
+							여러 개의 대화방 생성없이 Bot을 통해 결재자(관리자)와의 대화를 가능하게 해주는 시나리오 입니다.
+					   </div>
+					</div>
+					<!--end::Title-->
+
+					<div class="fs-6 fw-semibold text-gray-700 mb-4">1. 상황 인지 및 답변 안내</div>
+					<!--begin::Card-->
+					<div class="card mb-8">
+						<!--begin::Topbar-->
+						<div class="d-flex justify-content-between bg-primary rounded-3 rounded-bottom-0 px-2 py-2">
+							<div class="ms-3">
+								<!--begin::Svg Icon | icons/duotune/general/gen052.svg-->
+								<span class="svg-icon svg-icon-white svg-icon-2">
+									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<rect x="10" y="10" width="4" height="4" rx="2" fill="currentColor"/>
+										<rect x="17" y="10" width="4" height="4" rx="2" fill="currentColor"/>
+										<rect x="3" y="10" width="4" height="4" rx="2" fill="currentColor"/>
+									</svg>
+								</span>
+								<!--end::Svg Icon-->
+							</div>
+							<div class="me-3">
+								<!--begin::Svg Icon | icons/duotune/coding/cod004.svg-->
+								<span class="svg-icon svg-icon-white svg-icon-2 me-2">
+									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M19.0687 17.9688H11.0687C10.4687 17.9688 10.0687 18.3687 10.0687 18.9688V19.9688C10.0687 20.5687 10.4687 20.9688 11.0687 20.9688H19.0687C19.6687 20.9688 20.0687 20.5687 20.0687 19.9688V18.9688C20.0687 18.3687 19.6687 17.9688 19.0687 17.9688Z" fill="currentColor"/>
+									</svg>
+								</span>
+								<!--end::Svg Icon-->
+								<!--begin::Svg Icon | path: icons/duotune/general/gen054.svg-->
+								<span class="svg-icon svg-icon-white svg-icon-2 me-1">
+									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path opacity="0.5" d="M18 2H9C7.34315 2 6 3.34315 6 5H8C8 4.44772 8.44772 4 9 4H18C18.5523 4 19 4.44772 19 5V16C19 16.5523 18.5523 17 18 17V19C19.6569 19 21 17.6569 21 16V5C21 3.34315 19.6569 2 18 2Z" fill="currentColor"/>
+										<path fill-rule="evenodd" clip-rule="evenodd" d="M14.7857 7.125H6.21429C5.62255 7.125 5.14286 7.6007 5.14286 8.1875V18.8125C5.14286 19.3993 5.62255 19.875 6.21429 19.875H14.7857C15.3774 19.875 15.8571 19.3993 15.8571 18.8125V8.1875C15.8571 7.6007 15.3774 7.125 14.7857 7.125ZM6.21429 5C4.43908 5 3 6.42709 3 8.1875V18.8125C3 20.5729 4.43909 22 6.21429 22H14.7857C16.5609 22 18 20.5729 18 18.8125V8.1875C18 6.42709 16.5609 5 14.7857 5H6.21429Z" fill="currentColor"/>
+									</svg>
+								</span>
+								<!--end::Svg Icon-->
+								<!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+								<span class="svg-icon svg-icon-white svg-icon-2">
+									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="currentColor"/>
+										<rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="currentColor"/>
+									</svg>
+								</span>
+								<!--end::Svg Icon-->
+							</div>
+						</div>
+						<!--end::Topbar-->
+						<!--begin::Card body-->
+						<div class="card-body pt-0">
+
+							<!--begin::Message(user)-->
+							<div class="d-flex justify-content-end mt-8">
+								<!--begin::Wrapper-->
+								<div class="d-flex flex-column align-items-end">
+									<!--begin::User-->
+									<div class="d-flex align-items-center mb-2">
+										<!--begin::Details-->
+										<div class="me-3">
+											<span class="text-gray-400 fs-8 fw-normal mb-1">5 mins</span>
+											<a href="javascript:void(0);" class="fs-5 fw-bold text-gray-900 text-hover-primary ms-3">홍길동</a>
+										</div>
+										<!--end::Details-->
+										<!--begin::Avatar-->
+										<div class="symbol symbol-50px">
+											<span class="svg-icon svg-icon-primary svg-icon-1">
+												<!--begin::Svg Icon | path: icons/General/User.svg-->
+												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+													<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+														<polygon points="0 0 24 0 24 24 0 24"/>
+														<path d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
+														<path d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z" fill="currentColor" fill-rule="nonzero"/>
+													</g>
+												</svg>
+												<!--end::Svg Icon-->
+											</span>
+										</div>
+										<!--end::Avatar-->
+									</div>
+									<!--end::User-->
+									<!--begin::Text-->
+									<div class="p-5 rounded bg-light text-dark fw-normal mw-lg-400px text-end">
+										병원 좀 다녀오겠습니다.
+									</div>
+									<!--end::Text-->
+								</div>
+								<!--end::Wrapper-->
+							</div>
+							<!--end::Message(user)-->
+
+							<!--begin::Message(bot)-->
+							<div class="d-flex justify-content-start mt-8">
+								<!--begin::Wrapper-->
+								<div class="d-flex flex-column align-items-start">
+									<!--begin::Title-->
+									<div class="d-flex align-items-center mb-2">
+										<!--begin::Avatar-->
+										<div class="symbol symbol-50px">
+											<span class="svg-icon svg-icon-primary svg-icon-1">
+												<!--begin::Svg Icon | path: icons/Communication/Chat-smile.svg-->
+												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+													<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+														<rect x="0" y="0" width="24" height="24"/>
+														<polygon fill="#000000" opacity="0.3" points="5 15 3 21.5 9.5 19.5"/>
+														<path d="M13,2 C18.5228475,2 23,6.4771525 23,12 C23,17.5228475 18.5228475,22 13,22 C7.4771525,22 3,17.5228475 3,12 C3,6.4771525 7.4771525,2 13,2 Z M7.16794971,13.5547002 C8.67758127,15.8191475 10.6456687,17 13,17 C15.3543313,17 17.3224187,15.8191475 18.8320503,13.5547002 C19.1384028,13.0951715 19.0142289,12.4743022 18.5547002,12.1679497 C18.0951715,11.8615972 17.4743022,11.9857711 17.1679497,12.4452998 C16.0109146,14.1808525 14.6456687,15 13,15 C11.3543313,15 9.9890854,14.1808525 8.83205029,12.4452998 C8.52569784,11.9857711 7.90482849,11.8615972 7.4452998,12.1679497 C6.98577112,12.4743022 6.86159725,13.0951715 7.16794971,13.5547002 Z" fill="currentColor"/>
+													</g>
+												</svg>
+												<!--end::Svg Icon-->
+											</span>
+										</div>
+										<!--end::Avatar-->
+										<!--begin::Details-->
+										<div class="ms-3">
+											<a href="javascript:void(0);" class="fs-5 fw-bold text-gray-900 text-hover-primary me-3">보고 Bot</a>
+											<span class="text-gray-400 fs-8 fw-normal mb-1">2 mins</span>
+										</div>
+										<!--end::Details-->
+									</div>
+									<!--end::Title-->
+									<!--begin::Text-->
+									<div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-start">
+										관리자가 메시지를 확인하고 있습니다.<br />
+										잠시만 기다려주세요.
+									</div>
+									<!--end::Text-->
+								</div>
+								<!--end::Wrapper-->
+							</div>
+							<!--end::Message(bot)-->
+						</div>
+						<!--end::Card body-->
+					</div>
+					<!--end::Card-->
+
+					<div class="fs-6 fw-semibold text-gray-700 mb-4">2. 결재자(관리자) 메시지 전달</div>
+					<!--begin::Card-->
+					<div class="card mb-8">
+						<!--begin::Topbar-->
+						<div class="d-flex justify-content-between bg-primary rounded-3 rounded-bottom-0 px-2 py-2">
+							<div class="ms-3">
+								<!--begin::Svg Icon | icons/duotune/general/gen052.svg-->
+								<span class="svg-icon svg-icon-white svg-icon-2">
+									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<rect x="10" y="10" width="4" height="4" rx="2" fill="currentColor"/>
+										<rect x="17" y="10" width="4" height="4" rx="2" fill="currentColor"/>
+										<rect x="3" y="10" width="4" height="4" rx="2" fill="currentColor"/>
+									</svg>
+								</span>
+								<!--end::Svg Icon-->
+							</div>
+							<div class="me-3">
+								<!--begin::Svg Icon | icons/duotune/coding/cod004.svg-->
+								<span class="svg-icon svg-icon-white svg-icon-2 me-2">
+									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M19.0687 17.9688H11.0687C10.4687 17.9688 10.0687 18.3687 10.0687 18.9688V19.9688C10.0687 20.5687 10.4687 20.9688 11.0687 20.9688H19.0687C19.6687 20.9688 20.0687 20.5687 20.0687 19.9688V18.9688C20.0687 18.3687 19.6687 17.9688 19.0687 17.9688Z" fill="currentColor"/>
+									</svg>
+								</span>
+								<!--end::Svg Icon-->
+								<!--begin::Svg Icon | path: icons/duotune/general/gen054.svg-->
+								<span class="svg-icon svg-icon-white svg-icon-2 me-1">
+									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path opacity="0.5" d="M18 2H9C7.34315 2 6 3.34315 6 5H8C8 4.44772 8.44772 4 9 4H18C18.5523 4 19 4.44772 19 5V16C19 16.5523 18.5523 17 18 17V19C19.6569 19 21 17.6569 21 16V5C21 3.34315 19.6569 2 18 2Z" fill="currentColor"/>
+										<path fill-rule="evenodd" clip-rule="evenodd" d="M14.7857 7.125H6.21429C5.62255 7.125 5.14286 7.6007 5.14286 8.1875V18.8125C5.14286 19.3993 5.62255 19.875 6.21429 19.875H14.7857C15.3774 19.875 15.8571 19.3993 15.8571 18.8125V8.1875C15.8571 7.6007 15.3774 7.125 14.7857 7.125ZM6.21429 5C4.43908 5 3 6.42709 3 8.1875V18.8125C3 20.5729 4.43909 22 6.21429 22H14.7857C16.5609 22 18 20.5729 18 18.8125V8.1875C18 6.42709 16.5609 5 14.7857 5H6.21429Z" fill="currentColor"/>
+									</svg>
+								</span>
+								<!--end::Svg Icon-->
+								<!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+								<span class="svg-icon svg-icon-white svg-icon-2">
+									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="currentColor"/>
+										<rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="currentColor"/>
+									</svg>
+								</span>
+								<!--end::Svg Icon-->
+							</div>
+						</div>
+						<!--end::Topbar-->
+						<!--begin::Card body-->
+						<div class="card-body pt-0">
+
+							<!--begin::Message(bot)-->
+							<div class="d-flex justify-content-start mt-8">
+								<!--begin::Wrapper-->
+								<div class="d-flex flex-column align-items-start">
+									<!--begin::Title-->
+									<div class="d-flex align-items-center mb-2">
+										<!--begin::Avatar-->
+										<div class="symbol symbol-50px">
+											<span class="svg-icon svg-icon-primary svg-icon-1">
+												<!--begin::Svg Icon | path: icons/Communication/Chat-smile.svg-->
+												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+													<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+														<rect x="0" y="0" width="24" height="24"/>
+														<polygon fill="#000000" opacity="0.3" points="5 15 3 21.5 9.5 19.5"/>
+														<path d="M13,2 C18.5228475,2 23,6.4771525 23,12 C23,17.5228475 18.5228475,22 13,22 C7.4771525,22 3,17.5228475 3,12 C3,6.4771525 7.4771525,2 13,2 Z M7.16794971,13.5547002 C8.67758127,15.8191475 10.6456687,17 13,17 C15.3543313,17 17.3224187,15.8191475 18.8320503,13.5547002 C19.1384028,13.0951715 19.0142289,12.4743022 18.5547002,12.1679497 C18.0951715,11.8615972 17.4743022,11.9857711 17.1679497,12.4452998 C16.0109146,14.1808525 14.6456687,15 13,15 C11.3543313,15 9.9890854,14.1808525 8.83205029,12.4452998 C8.52569784,11.9857711 7.90482849,11.8615972 7.4452998,12.1679497 C6.98577112,12.4743022 6.86159725,13.0951715 7.16794971,13.5547002 Z" fill="currentColor"/>
+													</g>
+												</svg>
+												<!--end::Svg Icon-->
+											</span>
+										</div>
+										<!--end::Avatar-->
+										<!--begin::Details-->
+										<div class="ms-3">
+											<a href="javascript:void(0);" class="fs-5 fw-bold text-gray-900 text-hover-primary me-3">보고 Bot</a>
+											<span class="text-gray-400 fs-8 fw-normal mb-1">2 mins</span>
+										</div>
+										<!--end::Details-->
+									</div>
+									<!--end::Title-->
+									<!--begin::Text-->
+									<div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-start">
+										홍길동 / 병원 좀 다녀오겠습니다.<br />
+										<!--begin::URL Area-->
+										<div class="mt-5">
+											<a href="javascript:void(0);" class="btn btn-primary btn-sm rounded-1">메시지 연결</a>
+										</div>
+										<!--end::URL Area-->
+									</div>
+									<!--end::Text-->
+								</div>
+								<!--end::Wrapper-->
+							</div>
+							<!--end::Message(bot)-->
+						</div>
+						<!--end::Card body-->
+					</div>
+					<!--end::Card-->
+
+					<div class="fs-6 fw-semibold text-gray-700 mb-4">3. 대화방 연결 및 답변 확인</div>
+					<!--begin::Card-->
+					<div class="card mb-0">
+						<!--begin::Topbar-->
+						<div class="d-flex justify-content-between bg-primary rounded-3 rounded-bottom-0 px-2 py-2">
+							<div class="ms-3">
+								<!--begin::Svg Icon | icons/duotune/general/gen052.svg-->
+								<span class="svg-icon svg-icon-white svg-icon-2">
+									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<rect x="10" y="10" width="4" height="4" rx="2" fill="currentColor"/>
+										<rect x="17" y="10" width="4" height="4" rx="2" fill="currentColor"/>
+										<rect x="3" y="10" width="4" height="4" rx="2" fill="currentColor"/>
+									</svg>
+								</span>
+								<!--end::Svg Icon-->
+							</div>
+							<div class="me-3">
+								<!--begin::Svg Icon | icons/duotune/coding/cod004.svg-->
+								<span class="svg-icon svg-icon-white svg-icon-2 me-2">
+									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M19.0687 17.9688H11.0687C10.4687 17.9688 10.0687 18.3687 10.0687 18.9688V19.9688C10.0687 20.5687 10.4687 20.9688 11.0687 20.9688H19.0687C19.6687 20.9688 20.0687 20.5687 20.0687 19.9688V18.9688C20.0687 18.3687 19.6687 17.9688 19.0687 17.9688Z" fill="currentColor"/>
+									</svg>
+								</span>
+								<!--end::Svg Icon-->
+								<!--begin::Svg Icon | path: icons/duotune/general/gen054.svg-->
+								<span class="svg-icon svg-icon-white svg-icon-2 me-1">
+									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path opacity="0.5" d="M18 2H9C7.34315 2 6 3.34315 6 5H8C8 4.44772 8.44772 4 9 4H18C18.5523 4 19 4.44772 19 5V16C19 16.5523 18.5523 17 18 17V19C19.6569 19 21 17.6569 21 16V5C21 3.34315 19.6569 2 18 2Z" fill="currentColor"/>
+										<path fill-rule="evenodd" clip-rule="evenodd" d="M14.7857 7.125H6.21429C5.62255 7.125 5.14286 7.6007 5.14286 8.1875V18.8125C5.14286 19.3993 5.62255 19.875 6.21429 19.875H14.7857C15.3774 19.875 15.8571 19.3993 15.8571 18.8125V8.1875C15.8571 7.6007 15.3774 7.125 14.7857 7.125ZM6.21429 5C4.43908 5 3 6.42709 3 8.1875V18.8125C3 20.5729 4.43909 22 6.21429 22H14.7857C16.5609 22 18 20.5729 18 18.8125V8.1875C18 6.42709 16.5609 5 14.7857 5H6.21429Z" fill="currentColor"/>
+									</svg>
+								</span>
+								<!--end::Svg Icon-->
+								<!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+								<span class="svg-icon svg-icon-white svg-icon-2">
+									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="currentColor"/>
+										<rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="currentColor"/>
+									</svg>
+								</span>
+								<!--end::Svg Icon-->
+							</div>
+						</div>
+						<!--end::Topbar-->
+						<!--begin::Card body-->
+						<div class="card-body pt-0">
+
+							<!--begin::Message(bot)-->
+							<div class="d-flex justify-content-start mt-8">
+								<!--begin::Wrapper-->
+								<div class="d-flex flex-column align-items-start">
+									<!--begin::Title-->
+									<div class="d-flex align-items-center mb-2">
+										<!--begin::Avatar-->
+										<div class="symbol symbol-50px">
+											<span class="svg-icon svg-icon-primary svg-icon-1">
+												<!--begin::Svg Icon | path: icons/Communication/Chat-smile.svg-->
+												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+													<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+														<rect x="0" y="0" width="24" height="24"/>
+														<polygon fill="#000000" opacity="0.3" points="5 15 3 21.5 9.5 19.5"/>
+														<path d="M13,2 C18.5228475,2 23,6.4771525 23,12 C23,17.5228475 18.5228475,22 13,22 C7.4771525,22 3,17.5228475 3,12 C3,6.4771525 7.4771525,2 13,2 Z M7.16794971,13.5547002 C8.67758127,15.8191475 10.6456687,17 13,17 C15.3543313,17 17.3224187,15.8191475 18.8320503,13.5547002 C19.1384028,13.0951715 19.0142289,12.4743022 18.5547002,12.1679497 C18.0951715,11.8615972 17.4743022,11.9857711 17.1679497,12.4452998 C16.0109146,14.1808525 14.6456687,15 13,15 C11.3543313,15 9.9890854,14.1808525 8.83205029,12.4452998 C8.52569784,11.9857711 7.90482849,11.8615972 7.4452998,12.1679497 C6.98577112,12.4743022 6.86159725,13.0951715 7.16794971,13.5547002 Z" fill="currentColor"/>
+													</g>
+												</svg>
+												<!--end::Svg Icon-->
+											</span>
+										</div>
+										<!--end::Avatar-->
+										<!--begin::Details-->
+										<div class="ms-3">
+											<a href="javascript:void(0);" class="fs-5 fw-bold text-gray-900 text-hover-primary me-3">보고 Bot</a>
+											<span class="text-gray-400 fs-8 fw-normal mb-1">2 mins</span>
+										</div>
+										<!--end::Details-->
+									</div>
+									<!--end::Title-->
+									<!--begin::Text-->
+									<div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-start">
+										홍길동님과의 대화가 시작되었습니다.
+									</div>
+									<!--end::Text-->
+								</div>
+								<!--end::Wrapper-->
+							</div>
+							<!--end::Message(bot)-->
+
+							<!--begin::Message(user)-->
+							<div class="d-flex justify-content-end mt-8">
+								<!--begin::Wrapper-->
+								<div class="d-flex flex-column align-items-end">
+									<!--begin::User-->
+									<div class="d-flex align-items-center mb-2">
+										<!--begin::Details-->
+										<div class="me-3">
+											<span class="text-gray-400 fs-8 fw-normal mb-1">5 mins</span>
+											<a href="javascript:void(0);" class="fs-5 fw-bold text-gray-900 text-hover-primary ms-3">관리자1</a>
+										</div>
+										<!--end::Details-->
+										<!--begin::Avatar-->
+										<div class="symbol symbol-50px">
+											<span class="svg-icon svg-icon-primary svg-icon-1">
+												<!--begin::Svg Icon | path: icons/General/User.svg-->
+												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+													<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+														<polygon points="0 0 24 0 24 24 0 24"/>
+														<path d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
+														<path d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z" fill="currentColor" fill-rule="nonzero"/>
+													</g>
+												</svg>
+												<!--end::Svg Icon-->
+											</span>
+										</div>
+										<!--end::Avatar-->
+									</div>
+									<!--end::User-->
+									<!--begin::Text-->
+									<div class="p-5 rounded bg-light text-dark fw-normal mw-lg-400px text-end">
+										홍길동 주임, 어디 많이 아파..?
+									</div>
+									<!--end::Text-->
+								</div>
+								<!--end::Wrapper-->
+							</div>
+							<!--end::Message(user)-->
+						</div>
+						<!--end::Card body-->
+					</div>
+					<!--end::Card-->
+				</div>
+			</div>
+			<!--begin::Modal footer-->
+			<div class="modal-footer flex-center py-4">
+				<a data-bs-dismiss="modal" class="btn btn-sm btn-dark fw-bolder">확인</a>
+			</div>
+			<!--end::Modal footer-->
+		</div>
+	</div>
+</div>
+<!--end::Modal - Scenario Preview-->
+<!--end::Modals-->
+{% endblock %}
+
+{% block scripts %}
+<!--begin::Alert | Simpler-->
+<script type="text/javascript">
+	window.addEventListener('load',function(){
+		getScenarioList();
+
+		document.querySelector("select[name=count]").onchange = function(e){
+			getScenarioList(document.querySelector("#ulPage li.active a").dataset.selectedPage);
+		};
+	});
+
+
+	const getScenarioList = function(page=1) {
+		let url = "./scenarioList";
+		let formData = new FormData();
+		formData.append("csrfmiddlewaretoken", Cookies("csrftoken"));
+		formData.append("type", "getList");
+		formData.append("page", page);
+		formData.append("count", document.querySelector("select[name=count]").value)
+
+		fetch(url, {
+			method: "POST",
+			cache: 'no-cache',
+			body: formData,
+		}).then((response) => {
+			if (!response.ok || response.status != '200') {
+				throw new Error('연결 실패. 다시 요청하세요.\n' + response.statusText + "(" + response.status + ")");
+			}
+			return response.json();
+		}).then((res) => {
+			if(res.flag == 0){
+				// 페이징 처리
+				{
+					let ulPage = document.getElementById("ulPage");
+					let pageCount = 10;
+					let now = res.data.now;
+					let total = res.data.max;
+					let min = Math.floor((now-1)/pageCount) * pageCount + 1;
+					let max = min + 9 > total ? total : min + 9;
+
+					if(res.data.data.length == 0){
+						getScenarioList(now-1);
+						return;
+					}
+
+					ulPage.innerHTML="";
+					if (Math.floor((now-1)/pageCount)>0){
+						ulPage.innerHTML+=`
+							<li class="page-item previous">
+								<a href="#" class="page-link" onclick="getScenarioList(` + (min-1) + `);">
+									<i class="previous"></i>
+								</a>
+							</li>`;
+					}
+					for (let i = min; i <= max ; i++){
+						if(i == now){
+							ulPage.innerHTML+=`
+								<li class="page-item active">
+									<a href="#" class="page-link" data-selected-page="` + i + `">` + i + `</a>
+								</li>`;
+						}else{
+							ulPage.innerHTML+=`
+								<li class="page-item">
+									<a href="#" class="page-link" onclick="getScenarioList(` + i + `);" data-selected-page="` + i + `">` + i + `</a>
+								</li>`;
+						}
+					}
+					if (Math.floor((now-1)/pageCount)*pageCount < Math.floor((total-1)/pageCount)*pageCount){
+						ulPage.innerHTML+=`
+							<li class="page-item next">
+								<a href="#" class="page-link" onclick="getScenarioList(` + (max + 1) + `);">
+									<i class="next"></i>
+								</a>
+							</li>`;
+					}
+				}
+
+				// 데이터
+				{
+					let tbody = document.querySelector("#tableScenarioList tbody");
+					tbody.innerHTML = "";
+					for (let i = 0; i < res.data.data.length; i++) {
+						tbody.innerHTML+=`
+							<!--begin::Table row-->
+							<tr>
+								<td class="fw-semibold text-gray-600">` + res.data.data[i].scen_type__title + `</td>
+								<td class="fw-semibold text-gray-600">` + res.data.data[i].scen_name + `</td>
+								<td class="text-end">
+									<a href="javascript:void(0);" class="btn btn-sm btn-light btn-active-light-primary me-2" data-bs-toggle="modal" data-bs-target="#sm_sc_edit" onclick="getScenarioInfo(` + res.data.data[i].scen_no + `);">Edit</a>
+									<a href="javascript:void(0);" class="btn btn-sm btn-light-danger btn-active-danger" id="sm_sc_del_confirm" onclick="removeScenario(` + res.data.data[i].scen_no + `);">Delete</a>
+								</td>
+							</tr>
+							<!--end::Table row-->
+						`;
+					}
+				}
+			}else{
+				throw new Error(res.result_msg);
+			}
+		}).catch((err) => {
+			Swal.fire({
+				text: err,
+				icon: "error",
+				buttonsStyling: false,
+				confirmButtonText: "확인",
+				customClass: {
+					confirmButton: "btn btn-primary"
+				}
+			}).then(function (result) {
+				if (result.isConfirmed) {
+					modalClose();
+				}
+			});
+		});
+	}
+
+	const removeScenario = function(scen_no) {
+		Swal.fire({
+			html: '<strong class="fs-4">Scenario 삭제 확인</strong><br /><span class="fs-6">선택하신 Scenario 를 삭제하시겠습니까?</span>',
+			icon: "error",
+			buttonsStyling: false,
+			showCancelButton: true,
+			confirmButtonText: '<a class="text-white">삭제</a>',
+			cancelButtonText: '<a class="text-gray-500">취소</a>',
+			customClass: {
+				confirmButton: "btn btn-danger px-5 py-2",
+				cancelButton: "btn btn-light px-5 py-2"
+			}
+		}).then(e => {
+			if(e.isConfirmed){
+				let url = "./scenarioList";
+				let formData = new FormData();
+				formData.append("csrfmiddlewaretoken", Cookies("csrftoken"));
+				formData.append("type", "rmScen");
+				formData.append("scen_no", scen_no);
+
+				fetch(url, {
+					method: "POST",
+					cache: 'no-cache',
+					body: formData,
+				}).then((response) => {
+					if (!response.ok || response.status != '200') {
+						throw new Error('연결 실패. 다시 요청하세요.\n' + response.statusText + "(" + response.status + ")");
+					}
+					return response.json();
+				}).then((res) => {
+					if(res.flag == 0){
+						getScenarioList(document.querySelector("#ulPage li.active a").dataset.selectedPage);
+					}else{
+						throw new Error(res.result_msg);
+					}
+				}).catch((err) => {
+					Swal.fire({
+						text: err,
+						icon: "error",
+						buttonsStyling: false,
+						confirmButtonText: "확인",
+						customClass: {
+							confirmButton: "btn btn-primary"
+						}
+					}).then(function (result) {
+						if (result.isConfirmed) {
+							modalClose();
+						}
+					});
+				});
+			}
+		});
+	}
+
+	const getScenarioInfo = function(scen_no="") {
+		let url = "./scenarioList";
+		let formData = new FormData();
+		formData.append("csrfmiddlewaretoken", Cookies("csrftoken"));
+		formData.append("type", "getInfo");
+		formData.append("scen_no", scen_no);
+
+		fetch(url, {
+			method: "POST",
+			cache: 'no-cache',
+			body: formData,
+		}).then((response) => {
+			if (!response.ok || response.status != '200') {
+				throw new Error('연결 실패. 다시 요청하세요.\n' + response.statusText + "(" + response.status + ")");
+			}
+			return response.json();
+		}).then((res) => {
+			if(res.flag == 0){
+				if(scen_no == ""){
+					let modal = document.getElementById('sm_sc_save');
+
+
+					let template = modal.querySelector('select[name=scen_type]');
+					template.innerHTML = "";
+						template.innerHTML += `<option value="">Scenario Template Select</option>`;
+					for(let i = 0; i < res.scen_type_data.data.length; i++) {
+						template.innerHTML += `<option value="` + res.scen_type_data.data[i].scen_type + `">` + res.scen_type_data.data[i].title + `</option>`;
+					}
+
+					let api = modal.querySelector('select[name=api_no]');
+					api.innerHTML = "";
+					api.innerHTML += `<option value="">API Select</option>`;
+					for(let i = 0; i < res.api_data.data.length; i++) {
+						api.innerHTML += `<option value="` + res.api_data.data[i].api_no + `">` + res.api_data.data[i].api_name + `</option>`;
+					}
+
+					let bot = modal.querySelector('select[name=bot_no]');
+					bot.innerHTML = "";
+					bot.innerHTML += `<option value="">Bot Select</option>`;
+					for(let i = 0; i < res.bot_data.data.length; i++) {
+						bot.innerHTML += `<option value="` + res.bot_data.data[i].bot_no + `">` + res.bot_data.data[i].bot_name + `</option>`;
+					}
+				} else {
+					let modal = document.getElementById('sm_sc_edit');
+					modal.querySelector('input[name=scen_name]').value = res.scen_data.scen_name;
+					modal.querySelector('input[name=domain]').value = res.scen_data.domain;
+					modal.querySelector('input[name=scen_no]').value=scen_no;
+
+					let template = modal.querySelector('select[name=scen_type]');
+					template.innerHTML = "";
+					for(let i = 0; i < res.scen_type_data.data.length; i++) {
+						template.innerHTML += `<option value="` + res.scen_type_data.data[i].scen_type + `" ` + (res.scen_type_data.data[i].scen_type == res.scen_data.scen_type_id ? ` selected ` : ``) + `>` + res.scen_type_data.data[i].title + `</option>`;
+					}
+
+					let api = modal.querySelector('select[name=api_no]');
+					api.innerHTML = "";
+					for(let i = 0; i < res.api_data.data.length; i++) {
+						api.innerHTML += `<option value="` + res.api_data.data[i].api_no + `" ` + (res.api_data.data[i].api_no == res.scen_data.api_no_id ? ` selected ` : ``) + `>` + res.api_data.data[i].api_name + `</option>`;
+					}
+
+					let bot = modal.querySelector('select[name=bot_no]');
+					bot.innerHTML = "";
+					for(let i = 0; i < res.bot_data.data.length; i++) {
+						bot.innerHTML += `<option value="` + res.bot_data.data[i].bot_no + `" ` + (res.bot_data.data[i].bot_no == res.scen_data.bot_no_id ? ` selected ` : ``) + `>` + res.bot_data.data[i].bot_name + `</option>`;
+					}
+
+					let divMembers = modal.querySelector('#divMembers');
+					let members = res.scen_data.members.split(',');
+					divMembers.innerHTML = "";
+					for(let i = 0; i < members.length; i++){
+						settingMmebers(divMembers, members[i]);
+					}
+				}
+
+			}else{
+				throw new Error(res.result_msg);
+			}
+		}).catch((err) => {
+			Swal.fire({
+				text: err,
+				icon: "error",
+				buttonsStyling: false,
+				confirmButtonText: "확인",
+				customClass: {
+					confirmButton: "btn btn-primary"
+				}
+			}).then(function (result) {
+				if (result.isConfirmed) {
+					modalClose();
+				}
+			});
+		});
+	}
+
+
+	var memberIdx = 0;
+	const settingMmebers = function(div, value) {
+		div.innerHTML += `
+			<!--begin::Member-->
+			<div class="d-flex flex-stack py-4 border border-top-0 border-left-0 border-right-0 border-dashed" data-member="` + value + `" data-member-idx="` + memberIdx + `">
+				<div class="d-flex align-items-center">
+					<!--begin::Avatar-->
+					<div class="symbol symbol-35px">
+						<!--begin::Svg Icon | path: icons/duotune/communication/com006.svg-->
+						<span class="svg-icon svg-icon-muted svg-icon-3x">
+							<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path opacity="0.3" d="M16.5 9C16.5 13.125 13.125 16.5 9 16.5C4.875 16.5 1.5 13.125 1.5 9C1.5 4.875 4.875 1.5 9 1.5C13.125 1.5 16.5 4.875 16.5 9Z" fill="currentColor"/>
+								<path d="M9 16.5C10.95 16.5 12.75 15.75 14.025 14.55C13.425 12.675 11.4 11.25 9 11.25C6.6 11.25 4.57499 12.675 3.97499 14.55C5.24999 15.75 7.05 16.5 9 16.5Z" fill="currentColor"/>
+								<rect x="7" y="6" width="4" height="4" rx="2" fill="currentColor"/>
+							</svg>
+						</span>
+						<!--end::Svg Icon-->
+					</div>
+					<!--end::Avatar-->
+					<!--begin::Details-->
+					<div class="ms-6">
+						<a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">` + value + `</a>
+						<!-- <div class="fs-7 fw-normal text-muted">설명</div> -->
+					</div>
+					<!--end::Details-->
+				</div>
+				<!--begin::Menu-->
+				<div class="min-w-100px text-end">
+					<!--begin::Delete-->
+					<a href="#" class="btn btn-icon btn-flex btn-active-light-danger w-30px h-30px" onclick="btnMemberRemove(this,'` + memberIdx++ + `');">
+						<!--begin::Svg Icon | path: icons/duotune/abstract/abs012.svg-->
+						<span class="svg-icon svg-icon-1 svg-icon-danger">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+								<path opacity="0.3" d="M6.7 19.4L5.3 18C4.9 17.6 4.9 17 5.3 16.6L16.6 5.3C17 4.9 17.6 4.9 18 5.3L19.4 6.7C19.8 7.1 19.8 7.7 19.4 8.1L8.1 19.4C7.8 19.8 7.1 19.8 6.7 19.4Z" fill="currentColor"/>
+								<path d="M19.5 18L18.1 19.4C17.7 19.8 17.1 19.8 16.7 19.4L5.40001 8.1C5.00001 7.7 5.00001 7.1 5.40001 6.7L6.80001 5.3C7.20001 4.9 7.80001 4.9 8.20001 5.3L19.5 16.6C19.9 16.9 19.9 17.6 19.5 18Z" fill="currentColor"/>
+							</svg>
+						</span>
+						<!--end::Svg Icon-->
+					</a>
+					<!--end::Delete-->
+				</div>
+				<!--end::Menu-->
+			</div>
+			<!--end::Member-->
+		`;
+	}
+
+	const btnMemberRemove = function(e, memberIdx) {
+		let modal = e.closest('.modal');
+		document.querySelector(`div[data-member-idx='` + memberIdx++ + `']`).remove()
+		setInputMembers(modal);
+	}
+
+	const btnMemberAdd = document.querySelectorAll("button.btnMemberAdd");
+	for(let i = 0; i < btnMemberAdd.length; i++){
+		btnMemberAdd[i].addEventListener('click',e => {
+			let modal = e.target.closest(".modal");
+			let divMembers = modal.querySelector('#divMembers');
+			let inputMember = modal.querySelector("input[name=member_add]");
+			if(inputMember.value.trim() == "") return false;
+			settingMmebers(divMembers, inputMember.value);
+			inputMember.value = "";
+			setInputMembers(modal);
+		});
+	}
+
+	const setInputMembers = function (modal){
+		
+		let members = modal.querySelector('input[name=members]');
+		let divMembers = modal.querySelector('#divMembers');
+		members.value="";
+		for(let i = 0; i<divMembers.children.length; i++){
+			if(i!=0) members.value += ",";
+			members.value += divMembers.children[i].dataset.member;
+		}
+		if(members.parentElement.querySelector('.invalid-feedback') != null){
+			if(members.value != "") {
+				members.parentElement.querySelector('.invalid-feedback').style="display:none;";
+			}else{
+				members.parentElement.querySelector('.invalid-feedback').style="";
+			}
+		}
+	}
+</script>
+<!--end::Alert | Simpler-->
+{% endblock %}

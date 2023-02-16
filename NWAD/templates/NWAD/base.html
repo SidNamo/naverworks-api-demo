@@ -20,10 +20,6 @@
         <link href="{% static 'assets/css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
         <!--end::Global Stylesheets Bundle-->
         <link href="{% static 'assets/css/custom.css' %}" rel="stylesheet" type="text/css" />
-        <script src="{% static 'assets/js/common.js' %}"></script>
-
-        {% block scripts %}
-        {% endblock %}
     </head>
     <!--end::Head-->
     <!--begin::Body-->
@@ -42,7 +38,7 @@
                             <!--begin::Brand-->
                             <div class="d-flex align-items-center me-5">
                                 <!--begin::Logo-->
-                                <a href="api-bot-list.html">
+                                <a href="./">
                                     <img alt="Logo" src="{% static 'assets/media/logos/DAS-logo.svg' %}" class="h-25px h-lg-25px" />
                                 </a>
                                 <!--end::Logo-->
@@ -50,6 +46,67 @@
                             <!--end::Brand-->
                             <!--begin::Topbar-->
                             <div class="d-flex align-items-center flex-shrink-0">
+                                <!--begin::Docs button-->
+                                <div class="d-flex align-items-center">	
+                                    <a href="#" class="btn btn-icon btn-color-white btn-active-light px-6 fs-6 w-auto" data-kt-menu-trigger="hover" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
+                                        <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/kt-products/docs/metronic/html/releases/2022-12-26-231111/core/html/src/media/icons/duotune/arrows/arr036.svg-->
+                                        <span class="svg-icon svg-icon-muted svg-icon-2 mb-1 me-3"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path opacity="0.3" d="M17 6H3C2.4 6 2 6.4 2 7V21C2 21.6 2.4 22 3 22H17C17.6 22 18 21.6 18 21V7C18 6.4 17.6 6 17 6Z" fill="currentColor"></path>
+                                        <path d="M17.8 4.79999L9.3 13.3C8.9 13.7 8.9 14.3 9.3 14.7C9.5 14.9 9.80001 15 10 15C10.2 15 10.5 14.9 10.7 14.7L19.2 6.20001L17.8 4.79999Z" fill="currentColor"></path>
+                                        <path opacity="0.3" d="M22 9.09998V3C22 2.4 21.6 2 21 2H14.9L22 9.09998Z" fill="currentColor"></path>
+                                        </svg>
+                                        </span>
+                                        <!--end::Svg Icon-->
+                                        바로가기
+                                    </a>
+                                    <!--begin::Menu toggle-->
+                                    <!--begin::Menu-->
+                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-title-gray-700 menu-icon-muted menu-active-bg menu-state-color fw-semibold py-4 fs-base w-auto" data-kt-menu="true">
+                                        <!--begin::Menu item-->
+                                        <div class="menu-item px-3 my-0">
+                                            <a href="https://www.didim365.com" class="menu-link px-3 py-2">
+                                                <span class="menu-icon" data-kt-element="icon">
+                                                    <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/kt-products/docs/metronic/html/releases/2022-12-26-231111/core/html/src/media/icons/duotune/general/gen005.svg-->
+                                                    <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path opacity="0.3" d="M19 22H5C4.4 22 4 21.6 4 21V3C4 2.4 4.4 2 5 2H14L20 8V21C20 21.6 19.6 22 19 22ZM12.5 18C12.5 17.4 12.6 17.5 12 17.5H8.5C7.9 17.5 8 17.4 8 18C8 18.6 7.9 18.5 8.5 18.5L12 18C12.6 18 12.5 18.6 12.5 18ZM16.5 13C16.5 12.4 16.6 12.5 16 12.5H8.5C7.9 12.5 8 12.4 8 13C8 13.6 7.9 13.5 8.5 13.5H15.5C16.1 13.5 16.5 13.6 16.5 13ZM12.5 8C12.5 7.4 12.6 7.5 12 7.5H8C7.4 7.5 7.5 7.4 7.5 8C7.5 8.6 7.4 8.5 8 8.5H12C12.6 8.5 12.5 8.6 12.5 8Z" fill="currentColor"></path>
+                                                        <rect x="7" y="17" width="6" height="2" rx="1" fill="currentColor"></rect>
+                                                        <rect x="7" y="12" width="10" height="2" rx="1" fill="currentColor"></rect>
+                                                        <rect x="7" y="7" width="6" height="2" rx="1" fill="currentColor"></rect>
+                                                        <path d="M15 8H20L14 2V7C14 7.6 14.4 8 15 8Z" fill="currentColor"></path>
+                                                    </svg>
+                                                    </span>
+                                                    <!--end::Svg Icon-->		
+                                                </span>
+                                                <span class="menu-title">Didim365</span>
+                                            </a>
+                                        </div>
+                                        <!--end::Menu item-->
+                                        <!--begin::Menu item-->
+                                        <div class="menu-item px-3 my-0">
+                                            <a href="https://developers.worksmobile.com/" class="menu-link px-3 py-2">
+                                                <span class="menu-icon" data-kt-element="icon">
+                                                    <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/kt-products/docs/metronic/html/releases/2022-12-26-231111/core/html/src/media/icons/duotune/general/gen005.svg-->
+                                                    <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path opacity="0.3" d="M19 22H5C4.4 22 4 21.6 4 21V3C4 2.4 4.4 2 5 2H14L20 8V21C20 21.6 19.6 22 19 22ZM12.5 18C12.5 17.4 12.6 17.5 12 17.5H8.5C7.9 17.5 8 17.4 8 18C8 18.6 7.9 18.5 8.5 18.5L12 18C12.6 18 12.5 18.6 12.5 18ZM16.5 13C16.5 12.4 16.6 12.5 16 12.5H8.5C7.9 12.5 8 12.4 8 13C8 13.6 7.9 13.5 8.5 13.5H15.5C16.1 13.5 16.5 13.6 16.5 13ZM12.5 8C12.5 7.4 12.6 7.5 12 7.5H8C7.4 7.5 7.5 7.4 7.5 8C7.5 8.6 7.4 8.5 8 8.5H12C12.6 8.5 12.5 8.6 12.5 8Z" fill="currentColor"></path>
+                                                        <rect x="7" y="17" width="6" height="2" rx="1" fill="currentColor"></rect>
+                                                        <rect x="7" y="12" width="10" height="2" rx="1" fill="currentColor"></rect>
+                                                        <rect x="7" y="7" width="6" height="2" rx="1" fill="currentColor"></rect>
+                                                        <path d="M15 8H20L14 2V7C14 7.6 14.4 8 15 8Z" fill="currentColor"></path>
+                                                    </svg>
+                                                    </span>
+                                                    <!--end::Svg Icon-->		
+                                                </span>
+                                                <span class="menu-title">Naver Works Documnet</span>
+                                            </a>
+                                        </div>
+                                        <!--end::Menu item-->
+                                    </div>
+                                    <!--end::Menu-->
+                                </div>
+                                <!--end::Docs button-->
+                                <!--begin::Separator-->
+                                <span class="h-20px h-lg-30px border-gray-700 border-start ms-2 me-3"></span>
+                                <!--end::Separator-->
                                 <!--begin::User-->
                                 <div class="d-flex align-items-center ms-1" id="kt_header_user_menu_toggle">
                                     <!--begin::User info-->
@@ -78,12 +135,12 @@
                                     <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-color fw-semibold py-4 fs-6 w-250px" data-kt-menu="true">
                                         <!--begin::Menu item-->
                                         <div class="menu-item px-5 my-1">
-                                            <a href="my-page.html" class="menu-link px-5">My Page</a>
+                                            <a href="./mypage" class="menu-link px-5">My Page</a>
                                         </div>
                                         <!--end::Menu item-->
                                         <!--begin::Menu item-->
                                         <div class="menu-item px-5">
-                                            <a href="index.html" class="menu-link px-5">Log Out</a>
+                                            <a href="./logout" class="menu-link px-5">Log Out</a>
                                         </div>
                                         <!--end::Menu item-->
                                     </div>
@@ -119,7 +176,7 @@
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a href="./apiBotList" class="menu-link active">
+                                            <a href="./apiBotList" class="menu-link">
                                                 <span class="menu-icon">
                                                     <!--begin::Svg Icon | path: icons/duotune/general/gen025.svg-->
                                                     <span class="svg-icon svg-icon-2">
@@ -142,7 +199,7 @@
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a href="bot-message.html" class="menu-link">
+                                            <a href="./botMessage" class="menu-link">
                                                 <span class="menu-icon">
                                                     <!--begin::Svg Icon | path:/icons/duotune/communication/com012.svg-->
                                                     <span class="svg-icon svg-icon-2">
@@ -164,7 +221,7 @@
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a href="scenario-list.html" class="menu-link">
+                                            <a href="./scenarioList" class="menu-link">
                                                 <span class="menu-icon">
                                                     <!--begin::Svg Icon | path: icons/duotune/general/gen025.svg-->
                                                     <span class="svg-icon svg-icon-2">
@@ -192,7 +249,7 @@
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a href="my-page.html" class="menu-link">
+                                            <a href="./mypage" class="menu-link">
                                                 <span class="menu-icon">
                                                     <!--begin::Svg Icon | path: icons/duotune/general/gen025.svg-->
                                                     <span class="svg-icon svg-icon-2">
@@ -263,6 +320,9 @@
         <!--begin::Global Javascript Bundle(mandatory for all pages)-->
         <script src="{% static 'assets/plugins/global/plugins.bundle.js' %}"></script>
         <script src="{% static 'assets/js/scripts.bundle.js' %}"></script>
+        <script src="{% static 'assets/js/common.js' %}"></script>
+        {% block scripts %}
+        {% endblock %}
         <!--end::Global Javascript Bundle-->
         <!--begin::Custom Javascript(used for this page only)-->
         <script src="{% static 'assets/js/custom/api-modal-coustom.js' %}"></script>

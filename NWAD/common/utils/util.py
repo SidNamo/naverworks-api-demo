@@ -111,14 +111,18 @@ db objects 를 페이징 처리하여 object 형태로 변경
 def objectToPaging(data, now=1, count=10):
     res = {}
     res["now"] = now
-    res["max"] = 1 if count == 0 else data.count() // count + 1
+    res["max"] = 1 if count == 0 else (data.count() - 1) // count + 1
     res["count"] = count
     dataList = []
     for idx, val in enumerate(data):
         if idx >= count*(now-1) and (True if count == 0 else idx < count*now):
-            val.__dict__.pop('_state')
-            val.__dict__['idx'] = idx
-            dataList.append(val.__dict__)
+            if type(val) == type(dict()):
+                val["idx"] = idx
+                dataList.append(val)
+            else:
+                val.__dict__.pop('_state')
+                val.__dict__['idx'] = idx
+                dataList.append(val.__dict__)
     res["data"] = dataList
     return res
 
@@ -251,10 +255,12 @@ def getAccessToken(apiNo, type="access_token"):
             ).first()
             tokenReg(result)
             accessToken = result["access_token"]
+        else:
+            raise Exception(result["error_description"])
 
     return accessToken
 
-def messageObjToJson(type, content="", contents=[], text="", data="", header="", body="", footer=""):
+def messageObjToJson(type, content="", contents=[], text="", data="", header="", body="", footer="", color="#ffffff", uri="", padding="0px"):
     if type == "flex":
         res = {
             "type": "flex",
@@ -281,7 +287,7 @@ def messageObjToJson(type, content="", contents=[], text="", data="", header="",
             "type": "box",
             "layout": "vertical",
             "contents": contents,
-            "paddingAll": "0px",
+            "paddingAll": padding,
         }
     elif type == "text":
         res = {
@@ -299,6 +305,21 @@ def messageObjToJson(type, content="", contents=[], text="", data="", header="",
                 "type": "postback",
                 "label": text,
                 "data": data
+            }
+        }
+    elif type == "boxButtonLinkCustom":
+        res = messageObjToJson(type="box", contents=[messageObjToJson(type="buttonLinkCustom", color=color, text=text, uri=uri)], padding=padding)
+    elif type == "buttonLinkCustom":
+        res = {
+            "type": "button",
+            "style": "primary",
+            "color": color,
+            "height": "sm",
+            "paddingAll": "20px",
+            "action": {
+                "type": "uri",
+                "label": text[0:20],
+                "uri": uri
             }
         }
     elif type == "separator":
@@ -376,8 +397,16 @@ def makeMessageBtnTemplate(contents):
         footer = messageObjToJson(type="box")
         footerContent = []
         for fc in content["footer"]:
-            footerContent.append(messageObjToJson(type="separator"))
-            footerContent.append(messageObjToJson(type="button", text=fc["text"], data=fc["data"]))
+            if(fc.get('separator') != None):
+                footerContent.append(messageObjToJson(type="separator"))
+            footerContent.append(messageObjToJson(
+                type = fc.get('type') if fc.get('type') != None else 'button',
+                text = fc.get('text') if fc.get('text') != None else '',
+                data = fc.get('data') if fc.get('data') != None else '',
+                color = fc.get('color') if fc.get('color') != None else '',
+                uri = fc.get('uri') if fc.get('uri') != None else '',
+                padding = fc.get('padding') if fc.get('padding') != None else '',
+            ))
         footer["contents"] = footerContent
         bubble["footer"] = footer
 

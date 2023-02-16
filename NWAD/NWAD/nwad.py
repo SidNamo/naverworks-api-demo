@@ -1,3 +1,4 @@
+from itertools import chain
 import requests
 import json
 import re
@@ -62,6 +63,7 @@ def login(request):
                 memberInfo["name"] = memberSearchData.name
                 memberInfo["email"] = memberSearchData.email
                 memberInfo["id"] = memberSearchData.id
+                memberInfo["corp_name"] = memberSearchData.corp_name
                 request.session["memberInfo"] = memberInfo
                 msg = ""
                 msg += "유저 로그인(" + request.POST["id"] + ")"
@@ -177,15 +179,457 @@ def joinIdCheck(request):
                 context["result_msg"] = "이미 등록된 id 입니다."
         return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
 
+def mypage(request):
+    if 'memberInfo' not in request.session:
+        return redirect('login')
+    
+    if request.method == "GET":
+        context = {
+            'id': request.session["memberInfo"]["id"],
+            'name': request.session["memberInfo"]["name"],
+            'email': request.session["memberInfo"]["email"],
+            'corp_name': request.session["memberInfo"]["corp_name"],
+        }
+        return render(request, 'NWAD/mypage.html', context)
+    elif request.method == "POST":
+        if request.POST["type"] == "saveInfo":
+            context = {}
+            context["flag"] = "0"
+            context["result_msg"] = "success"
+            checkList = ['id', 'corp_name', 'name', 'email']
+            replaceList = ['아이디를', '업체명을', '관리자 이름을' ,'이메일을']
+            for idx, val in enumerate(checkList):
+                if (request.POST[val] == None or request.POST[val] == ""):
+                    context["flag"] = "2"
+                    context["result_msg"] = replaceList[idx] + " 입력하세요"
+                    break
+
+            if (context["flag"] == "0"):
+                memberSearchData = member.objects.filter(
+                    member_no=request.session["memberInfo"]["member_no"]
+                ).first()
+                if memberSearchData is not None:
+                    memberSearchData.id = request.POST["id"]
+                    memberSearchData.corp_name = request.POST["corp_name"]
+                    memberSearchData.name = request.POST["name"]
+                    memberSearchData.email = request.POST["email"]
+                    memberSearchData.save()
+
+                    memberInfo = request.session["memberInfo"]
+                    memberInfo["id"] = memberSearchData.id
+                    memberInfo["corp_name"] = memberSearchData.corp_name
+                    memberInfo["name"] = memberSearchData.name
+                    memberInfo["email"] = memberSearchData.email
+                    request.session["memberInfo"] = memberInfo
+                    msg = ""
+                    msg += "유저 정보수정( 회원번호 : " + str(request.session["memberInfo"]["member_no"]) + " )"
+                    util.insertLog(request, msg + "    " +
+                                util.jsonToStr(request.POST.dict()))
+            return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
+        elif request.POST["type"] == "checkPw":
+            context = {}
+            context["flag"] = "0"
+            context["result_msg"] = "success"
+            memberSearchData = member.objects.filter(
+                member_no=request.session["memberInfo"]["member_no"],
+                password=util.sha256encode(request.POST["password"])
+            ).all()
+            context["count"] = str(len(memberSearchData))
+            return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
+        elif request.POST["type"] == "savePw":
+            context = {}
+            context["flag"] = "0"
+            context["result_msg"] = "success"
+            checkList = ['current_password', 'new_password', 'new_password_check']
+            replaceList = ['기존 비밀번호를', '새 비밀번호를', '새 비밀번호 확인을']
+            for idx, val in enumerate(checkList):
+                if (request.POST[val] == None or request.POST[val] == ""):
+                    context["flag"] = "2"
+                    context["result_msg"] = replaceList[idx] + " 입력하세요"
+                    break
+
+            if (context["flag"] == "0"):
+                memberSearchData = member.objects.filter(
+                    member_no=request.session["memberInfo"]["member_no"],
+                    password=util.sha256encode(request.POST["current_password"])
+                ).all()
+                if len(memberSearchData) == 0:
+                    context["flag"] = "2"
+                    context["result_msg"] = "기존 비밀번호가 다릅니다"
+
+            if (context["flag"] == "0"):
+                if request.POST["new_password"] != request.POST["new_password_check"]:
+                    context["flag"] = "2"
+                    context["result_msg"] = "비밀번호가 일치하지 않습니다"
+
+            if (context["flag"] == "0"):
+                memberSearchData = member.objects.filter(
+                    member_no=request.session["memberInfo"]["member_no"]
+                ).first()
+                if memberSearchData is not None:
+                    memberSearchData.password = util.sha256encode(request.POST["new_password"])
+                    memberSearchData.save()
+                    msg = ""
+                    msg += "유저 비밀번호 수정( 회원번호 : " + str(request.session["memberInfo"]["member_no"]) + " )"
+                    util.insertLog(request, msg + "    " +
+                                util.jsonToStr(request.POST.dict()))
+            return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
 # endregion
 
+
+def botMessage(request):
+    if 'memberInfo' not in request.session:
+        return redirect('login')
+    
+    if request.method == "GET":
+        context = {
+            'name': request.session["memberInfo"]["name"],
+            'api_no': request.GET.get('api_no'),
+            'bot_no': request.GET.get('bot_no')
+        }
+        return render(request, 'NWAD/bot-message.html', context)
+    elif request.method == "POST":
+        if request.POST["type"] == "getDefaultData":
+            context = {}
+            context["flag"] = "0"
+            context["result_msg"] = "success"
+            try:
+                apiData = api.objects.filter(
+                    member_no=request.session["memberInfo"]["member_no"]).all()
+                context["api_data"] = util.objectToPaging(apiData, 1, 0)
+                botData = bot.objects.filter(
+                    member_no=request.session["memberInfo"]["member_no"]).all()
+                context["bot_data"] = util.objectToPaging(botData, 1, 0)
+            except Exception as err:
+                context["flag"] = "2"
+                context["result_msg"] = err.args[0]
+            return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
+        if request.POST["type"] == "sendMessage":
+            context = {}
+            context["flag"] = "0"
+            context["result_msg"] = "success"
+            # 파라미터 유효성 검사
+            apiData = api.objects.filter(
+                member_no=request.session["memberInfo"]["member_no"],
+                api_no=request.POST["api_no"]
+            ).first()
+            if apiData is None:
+                context["flag"] = "4"
+                context["result_msg"] = "잘못된 API NO 입니다."
+            
+            if context["flag"] == "0":
+                botData = bot.objects.filter(
+                    member_no=request.session["memberInfo"]["member_no"],
+                    bot_no=request.POST["bot_no"]
+                ).first()
+                if botData is None:
+                    context["flag"] = "4"
+                    context["result_msg"] = "잘못된 BOT NO 입니다."
+            
+            if context["flag"] == "0":
+                if(request.POST["message_type"] == "textUrl" and not request.POST["url"].startswith('http')):
+                    context["flag"] = "4"
+                    context["result_msg"] = "프로토콜을 입력해주세요."
+
+
+            if (context["flag"] == "0"):
+                try:
+                    # 멤버 확인 모든 멤버가 정상적인 멤버인지
+                    members = request.POST["member"].replace(" " , "").split(',')
+                    for member in members:
+                        res = getUserInfo(apiData.api_no, botData.bot_no, member)
+                        result = util.strToJson(res.text)  # 인증 완료 후 응답 값
+                        if res.status_code != 200 and res.status_code != 201:
+                            context["flag"] = "2"
+                            context["result_msg"] = "Member Id 가 존재하지 않습니다."
+                            break
+                    if context["flag"] == "0":
+                        # 컨텐츠 제작
+                        btn = []
+                        if(request.POST["message_type"] == "textUrl"):
+                            btn.append({"type":"boxButtonLinkCustom","color":request.POST["btn_color"],"text":request.POST["btn_text"],"uri":request.POST["url"],"padding":"10px"})
+                        content = util.simpleTemplate(request.POST["message"], button=btn)
+
+                        for member in members:
+                            # 메시지 전송
+                            res = sendMessage(
+                                api_no=apiData.api_no, 
+                                bot_no=botData.bot_no, 
+                                content=content, 
+                                user_id=member
+                            )
+                            result = util.strToJson(res.text)  # 인증 완료 후 응답 값
+                            if res.status_code != 200 and res.status_code != 201:
+                                context["flag"] = "2"
+                                context["result_msg"] = result["description"]
+                                break
+
+                except Exception as err:
+                    context["flag"] = "2"
+                    context["result_msg"] = err.args[0]
+            util.insertLog(
+                request, context["result_msg"] + "    " + util.jsonToStr(request.POST.dict()))
+            return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
+
+
+def scenarioList(request):
+    if 'memberInfo' not in request.session:
+        return redirect('login')
+    
+    if request.method == "GET":
+        context = {
+            'name': request.session["memberInfo"]["name"],
+        }
+        return render(request, 'NWAD/scenario-list.html', context)
+    elif request.method == "POST":
+        if request.POST["type"] == "getList":
+            context = {}
+            context["flag"] = "0"
+            context["result_msg"] = "success"
+            try:
+                scenSearchData = scen.objects.filter(
+                    member_no=request.session["memberInfo"]["member_no"],
+                    status=1
+                ).values('scen_no', 'scen_name', 'scen_type__title')
+                context["data"] = util.objectToPaging(scenSearchData, int(request.POST["page"]), int(request.POST["count"]))
+            except Exception as err:
+                context["flag"] = "2"
+                context["result_msg"] = err.args[0]
+            return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
+        elif request.POST["type"] == "rmScen":
+            context = {}
+            context["flag"] = "0"
+            context["result_msg"] = "success"
+            try:
+                scenSearchData = scen.objects.filter(
+                    scen_no=request.POST["scen_no"],
+                    member_no=request.session["memberInfo"]["member_no"],
+                    status=1
+                ).first()
+                scenSearchData.status=9
+                scenSearchData.save()
+            except Exception as err:
+                context["flag"] = "2"
+                context["result_msg"] = err.args[0]
+            return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
+        elif request.POST["type"] == "getInfo":
+            context = {}
+            context["flag"] = "0"
+            context["result_msg"] = "success"
+            try:
+                if request.POST["scen_no"] != "":
+                    scenData = scen.objects.filter(
+                        scen_no=request.POST["scen_no"],
+                        member_no=request.session["memberInfo"]["member_no"],
+                        status=1
+                    ).first()
+                    context["scen_data"] = util.objectToDict(scenData)
+                apiData = api.objects.filter(
+                    member_no=request.session["memberInfo"]["member_no"]).all()
+                context["api_data"] = util.objectToPaging(apiData, 1, 0)
+                botData = bot.objects.filter(
+                    member_no=request.session["memberInfo"]["member_no"]).all()
+                context["bot_data"] = util.objectToPaging(botData, 1, 0)
+                scenTypeData = scen_type.objects.all()
+                context["scen_type_data"] = util.objectToPaging(scenTypeData, 1, 0)
+            except Exception as err:
+                context["flag"] = "2"
+                context["result_msg"] = err.args[0]
+            return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
+        elif request.POST["type"] == "regScen":
+            context = {}
+            context["flag"] = "0"
+            context["result_msg"] = "success"
+            try:
+                checkList = ['scen_type', 'scen_name', 'domain', 'api_no', 'bot_no', 'members']
+                replaceList = ['Scenario Template 를 선택하세요', 'Scenario Name 을 입력하세요', 'Domain Id 를 입력하세요', 'API 를 선택하세요' ,'Bot 을 선택하세요', 'Member 를 입력하세요']
+                for idx, val in enumerate(checkList):
+                    if (val == 'id' and request.POST['type'] == 'id'):
+                        continue
+                    if (request.POST[val] == None or request.POST[val] == ""):
+                        raise Exception(replaceList[idx])
+
+                # 파라미터 유효성 검사
+                apiData = api.objects.filter(
+                    member_no=request.session["memberInfo"]["member_no"],
+                    api_no=request.POST["api_no"]
+                ).first()
+                if apiData is None:
+                    context["flag"] = "4"
+                    context["result_msg"] = "잘못된 API NO 입니다."
+                
+                if context["flag"] == "0":
+                    botData = bot.objects.filter(
+                        member_no=request.session["memberInfo"]["member_no"],
+                        bot_no=request.POST["bot_no"]
+                    ).first()
+                    if botData is None:
+                        context["flag"] = "4"
+                        context["result_msg"] = "잘못된 BOT NO 입니다."
+                
+                # 중복 데이터 조회
+                if context["flag"] == "0":
+                    scenData = scen.objects.filter(
+                        member_no=request.session["memberInfo"]["member_no"],
+                        domain=request.POST["domain"],
+                        status=1
+                    ).first()
+                    if scenData is not None:
+                        context["flag"] = "3"
+                        context["result_msg"] = "중복된 Domain Id 입니다."
+
+
+                if (context["flag"] == "0"):
+                    res = createChannel(
+                        api_no=apiData.api_no, 
+                        bot_no=botData.bot_no,
+                        members=re.sub(r"\s", "", request.POST["members"]),
+                        title="익명 보고 시나리오 결재자",
+                    )
+                    result = util.strToJson(res.text)  # 인증 완료 후 응답 값
+                    if res.status_code != 200 and res.status_code != 201:
+                        context["flag"] = "2"
+                        context["result_msg"] = result["description"]
+                    else:
+                        channelId = result["channelId"]
+                        res = getChannelMembers(
+                            api_no=apiData.api_no, 
+                            bot_no=botData.bot_no, 
+                            channel_id=channelId
+                        )
+                        result = util.strToJson(res.text)  # 인증 완료 후 응답 값
+                        if res.status_code != 200 and res.status_code != 201:
+                            raise Exception(result["description"])
+                        else:
+                            members = ",".join(result["members"])
+                        # DB 저장
+                        scenData = scen.objects.create(
+                            scen_type = scen_type.objects.filter(scen_type=request.POST["scen_type"]).first(),
+                            scen_name = request.POST["scen_name"],
+                            api_no = apiData,
+                            bot_no = botData,
+                            domain = request.POST["domain"],
+                            channel = channelId,
+                            members = members,
+                            member_no = member.objects.filter(member_no=request.session["memberInfo"]["member_no"]).first()
+                        )
+                        text = "익명 보고 시나리오 결재자 단톡방입니다."
+                        # 메시지 전송
+                        res = sendMessage(
+                            api_no=scenData.api_no.api_no, 
+                            bot_no=scenData.bot_no.bot_no, 
+                            content=util.simpleTemplate(text), 
+                            channel_id=scenData.channel
+                        )
+                        result = util.strToJson(res.text)  # 인증 완료 후 응답 값
+            except Exception as err:
+                context["flag"] = "2"
+                context["result_msg"] = err.args[0]
+            util.insertLog(
+                request, context["result_msg"] + "    " + util.jsonToStr(request.POST.dict()))
+            return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
+        elif request.POST["type"] == "updScen":
+            context = {}
+            context["flag"] = "0"
+            context["result_msg"] = "success"
+            try:
+                checkList = ['scen_type', 'scen_name', 'domain', 'api_no', 'bot_no', 'members']
+                replaceList = ['Scenario Template 를 선택하세요', 'Scenario Name 을 입력하세요', 'Domain Id 를 입력하세요', 'API 를 선택하세요' ,'Bot 을 선택하세요', 'Member 를 입력하세요']
+                for idx, val in enumerate(checkList):
+                    if (val == 'id' and request.POST['type'] == 'id'):
+                        continue
+                    if (request.POST[val] == None or request.POST[val] == ""):
+                        raise Exception(replaceList[idx])
+
+                # 파라미터 유효성 검사
+                apiData = api.objects.filter(
+                    member_no=request.session["memberInfo"]["member_no"],
+                    api_no=request.POST["api_no"]
+                ).first()
+                if apiData is None:
+                    context["flag"] = "4"
+                    context["result_msg"] = "잘못된 API NO 입니다."
+                
+                if context["flag"] == "0":
+                    botData = bot.objects.filter(
+                        member_no=request.session["memberInfo"]["member_no"],
+                        bot_no=request.POST["bot_no"]
+                    ).first()
+                    if botData is None:
+                        context["flag"] = "4"
+                        context["result_msg"] = "잘못된 BOT NO 입니다."
+                
+                # 중복 데이터 조회
+                if context["flag"] == "0":
+                    scenData = scen.objects.filter(
+                        member_no=request.session["memberInfo"]["member_no"],
+                        domain=request.POST["domain"],
+                        status=1
+                    ).exclude(scen_no=request.POST["scen_no"]).first()
+                    if scenData is not None:
+                        context["flag"] = "3"
+                        context["result_msg"] = "중복된 Domain Id 입니다."
+                if (context["flag"] == "0"):
+                    res = createChannel(
+                        api_no=apiData.api_no, 
+                        bot_no=botData.bot_no,
+                        members=re.sub(r"\s", "", request.POST["members"]),
+                        title="익명 보고 시나리오 결재자",
+                    )
+                    result = util.strToJson(res.text)  # 인증 완료 후 응답 값
+                    if res.status_code != 200 and res.status_code != 201:
+                        context["flag"] = "2"
+                        context["result_msg"] = result["description"]
+                    else:
+                        channelId = result["channelId"]
+                        res = getChannelMembers(
+                            api_no=apiData.api_no, 
+                            bot_no=botData.bot_no, 
+                            channel_id=channelId
+                        )
+                        result = util.strToJson(res.text)  # 인증 완료 후 응답 값
+                        if res.status_code != 200 and res.status_code != 201:
+                            raise Exception(result["description"])
+                        else:
+                            members = ",".join(result["members"])
+                        # DB 저장
+                        scenData = scen.objects.filter(
+                            member_no = request.session["memberInfo"]["member_no"],
+                            scen_no = request.POST["scen_no"]
+                        ).first()
+
+                        scenData.scen_type = scen_type.objects.filter(scen_type=request.POST["scen_type"]).first()
+                        scenData.scen_name = request.POST["scen_name"]
+                        scenData.api_no = apiData
+                        scenData.bot_no = botData
+                        scenData.domain = request.POST["domain"]
+                        scenData.channel = channelId
+                        scenData.members = request.POST["members"]
+                        scenData.save()
+
+                        text = "익명 보고 시나리오 결재자 단톡방입니다."
+                        # 메시지 전송
+                        res = sendMessage(
+                            api_no=scenData.api_no.api_no, 
+                            bot_no=scenData.bot_no.bot_no, 
+                            content=util.simpleTemplate(text), 
+                            channel_id=scenData.channel
+                        )
+                        result = util.strToJson(res.text)  # 인증 완료 후 응답 값
+                    
+            except Exception as err:
+                context["flag"] = "2"
+                context["result_msg"] = err.args[0]
+            util.insertLog(
+                request, context["result_msg"] + "    " + util.jsonToStr(request.POST.dict()))
+            return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
 
 def apiBotList(request):
     if 'memberInfo' in request.session:
         context = {
-            'name': request.session["memberInfo"]["name"]
+            'name': request.session["memberInfo"]["name"],
         }
-        return render(request, 'NWAD/api_bot_list.html', context)
+        return render(request, 'NWAD/api-bot-list.html', context)
     else:
         return redirect('login')
 
@@ -479,7 +923,7 @@ def botReg(request):
 
         if (context["flag"] == "0"):
             # AccessToken 조회
-            apidata["access_token"] = util.getAccessToken(request.POST["api_no"])
+            apidata["access_token"] = util.getAccessTokenRe(request.POST["api_no"])
             if apidata["access_token"] == "":
                 context["flag"] = "5"
                 context["result_msg"] = "access_token을 조회 할 수 없습니다."
@@ -805,7 +1249,7 @@ def botResponse(request):
                                         text = sender["name"]+"님으로부터 전달된 메시지 \n\n"
                                         text += "\"" + sender["message"] + "\""
                                         btn = []
-                                        btn.append({"text":"대화 종료","data":"{'action':'finishChat','conn':'"+str(scenConnData.conn_no)+"','scen':'"+str(scenConnData.scen_no.scen_no)+"'}"})
+                                        btn.append({"type":"button","text":"대화 종료","data":"{'action':'finishChat','conn':'"+str(scenConnData.conn_no)+"','scen':'"+str(scenConnData.scen_no.scen_no)+"'}","separator":""})
                                         # 메시지 전송
                                         res = sendMessage(
                                             api_no=scenData.api_no.api_no, 
@@ -817,7 +1261,7 @@ def botResponse(request):
 
                                         text = "요청중인 대화가 있습니다.\n취소 후 진행해주세요."
                                         btn = []
-                                        btn.append({"text":"대화 취소","data":"{'action':'cancleChat','conn':'"+str(scenConnData.conn_no)+"','scen':'"+str(scenConnData.scen_no.scen_no)+"'}"})
+                                        btn.append({"type":"button","text":"대화 취소","data":"{'action':'cancleChat','conn':'"+str(scenConnData.conn_no)+"','scen':'"+str(scenConnData.scen_no.scen_no)+"'}","separator":""})
 
                                         # 메시지 전송
                                         res = sendMessage(
@@ -833,7 +1277,7 @@ def botResponse(request):
                                         text = "담당자로부터 전달된 메시지 \n\n"
                                         text += "\"" + sender["message"] + "\""
                                         btn = []
-                                        btn.append({"text":"대화 종료","data":"{'action':'finishChat','conn':'"+str(scenConnData.conn_no)+"','scen':'"+str(scenConnData.scen_no.scen_no)+"'}"})
+                                        btn.append({"type":"button","text":"대화 종료","data":"{'action':'finishChat','conn':'"+str(scenConnData.conn_no)+"','scen':'"+str(scenConnData.scen_no.scen_no)+"'}","separator":""})
 
                                         # 메시지 전송
                                         res = sendMessage(
@@ -865,10 +1309,10 @@ def botResponse(request):
                                             name = result["userName"]["lastName"] + result["userName"]["firstName"]
                                             text = name + "님으로부터 메시지가 도착하였습니다.\n선택해주세요.\n요청일자: "+str(connData.reg_date.strftime("%Y-%m-%d %H:%M:%S"))
                                             btn = []
-                                            btn.append({"text":"대화 시작", "data":"{'action':'startChat','conn':'"+str(connData.conn_no)+"','scen':'"+str(connData.scen_no.scen_no)+"'}"})
-                                            btn.append({"text":"전달된 메시지 보기", "data":"{'action':'showMessage','conn':'"+str(connData.conn_no)+"','scen':'"+str(connData.scen_no.scen_no)+"'}"})
-                                            btn.append({"text":"대기 메시지 전송", "data":"{'action':'sendWait','conn':'"+str(connData.conn_no)+"','scen':'"+str(connData.scen_no.scen_no)+"'}"})
-                                            btn.append({"text":"대화 취소", "data":"{'action':'cancleChat','conn':'"+str(connData.conn_no)+"','scen':'"+str(connData.scen_no.scen_no)+"'}"})
+                                            btn.append({"type":"button","text":"대화 시작", "data":"{'action':'startChat','conn':'"+str(connData.conn_no)+"','scen':'"+str(connData.scen_no.scen_no)+"'}","separator":""})
+                                            btn.append({"type":"button","text":"전달된 메시지 보기", "data":"{'action':'showMessage','conn':'"+str(connData.conn_no)+"','scen':'"+str(connData.scen_no.scen_no)+"'}","separator":""})
+                                            btn.append({"type":"button","text":"대기 메시지 전송", "data":"{'action':'sendWait','conn':'"+str(connData.conn_no)+"','scen':'"+str(connData.scen_no.scen_no)+"'}","separator":""})
+                                            btn.append({"type":"button","text":"대화 취소", "data":"{'action':'cancleChat','conn':'"+str(connData.conn_no)+"','scen':'"+str(connData.scen_no.scen_no)+"'}","separator":""})
                                             content = util.strToJson(util.simpleTemplate(text, button=btn))
                                             contents["contents"]["contents"].append(content["contents"]["contents"][0])
                                             if contents["altText"] == "":
@@ -887,7 +1331,7 @@ def botResponse(request):
                                         #보고자에게 메시지 전송
                                         text = "담당자에게 메시지 전달 하였습니다.\n수락 할 때까지 기다려 주세요."
                                         btn = []
-                                        btn.append({"text":"대화 취소", "data":"{'action':'cancleChat','conn':'"+str(scenConnData.conn_no)+"','scen':'"+str(scenConnData.scen_no.scen_no)+"'}"})
+                                        btn.append({"type":"button","text":"대화 취소", "data":"{'action':'cancleChat','conn':'"+str(scenConnData.conn_no)+"','scen':'"+str(scenConnData.scen_no.scen_no)+"'}","separator":""})
 
                                         # 메시지 전송
                                         res = sendMessage(
@@ -919,7 +1363,7 @@ def botResponse(request):
                                     # 보고자에게 메시지 전송
                                     text = "담당자와 대화를 시작합니다.\n전달할 메시지를 입력해주세요."
                                     btn = []
-                                    btn.append({"text":"대화 종료","data":"{'action':'finishChat','conn':'"+str(scenConnData.conn_no)+"','scen':'"+str(scenConnData.scen_no.scen_no)+"'}"})
+                                    btn.append({"type":"button","text":"대화 종료","data":"{'action':'finishChat','conn':'"+str(scenConnData.conn_no)+"','scen':'"+str(scenConnData.scen_no.scen_no)+"'}","separator":""})
                                     # 메시지 전송
                                     res = sendMessage(
                                         api_no=scenData.api_no.api_no, 
@@ -930,7 +1374,7 @@ def botResponse(request):
                                     # 결재자에게 메시지 전송
                                     text = reporter["name"] + "님과 대화를 시작합니다.\n전달할 메시지를 입력해주세요."
                                     btn = []
-                                    btn.append({"text":"대화 종료","data":"{'action':'finishChat','conn':'"+str(scenConnData.conn_no)+"','scen':'"+str(scenConnData.scen_no.scen_no)+"'}"})
+                                    btn.append({"type":"button","text":"대화 종료","data":"{'action':'finishChat','conn':'"+str(scenConnData.conn_no)+"','scen':'"+str(scenConnData.scen_no.scen_no)+"'}","separator":""})
 
                                     # 메시지 전송
                                     res = sendMessage(
@@ -1139,15 +1583,6 @@ def botResponse(request):
         util.insertLog(request, err.args[0])
     util.insertLog(request, util.jsonToStr(req))
     return
-
-
-
-
-
-
-
-
-
 
 
 @csrf_exempt
