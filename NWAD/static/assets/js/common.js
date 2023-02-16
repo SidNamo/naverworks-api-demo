@@ -1,10 +1,32 @@
-window.addEventListener('load',function(){
-    let menus = document.querySelectorAll('div[class=menu-item] a')
-    for(let i = 0; i< menus.length; i++){
-        if(location.href.replace("#","") == location.origin + "/" && i == 0) menus[i].classList.add("active");
-        else if(location.href.replace("#","") == menus[i].href) menus[i].classList.add("active");
+
+//===========================================================================================
+// 메뉴 체크 
+//===========================================================================================
+if(location.pathname != '/login') {
+    const activeUrls = {
+        '/apiBotList' : [
+            '/apiBotList',
+            '/'
+        ],
+        '/scenarioList' : [
+            '/scenarioList',
+            '/scenarioAdd'
+        ]
     }
-});
+    
+    let key = '';
+    for(let k in activeUrls){
+        for(let i = 0; i < activeUrls[k].length; i++){
+            if(activeUrls[k][i] == location.pathname){
+                key = k;
+                break;
+            }
+        }
+        if(key != '') break; 
+    }
+    if(key == '') key = location.pathname;
+    document.querySelector(`#kt_aside a[href='.` + key + `']`).classList.add('active');
+}
 
 //===========================================================================================
 //쿠키

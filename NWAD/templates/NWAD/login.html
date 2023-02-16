@@ -388,6 +388,12 @@
 						document.getElementById("idRemember").checked = true;
 					}
 				}
+				document.querySelector('input[name=id]').addEventListener('keyup', e=>{
+					if(e.keyCode==13) document.querySelector('input[name=password]').focus();
+				});
+				document.querySelector('input[name=password]').addEventListener('keyup', e=>{
+					if(e.keyCode==13) document.querySelector('#login_send').click();
+				});
 			}
 
 			const BtnSend = document.getElementById('sm_info_send');

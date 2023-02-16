@@ -436,98 +436,6 @@ def scenarioList(request):
                 context["flag"] = "2"
                 context["result_msg"] = err.args[0]
             return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
-        elif request.POST["type"] == "regScen":
-            context = {}
-            context["flag"] = "0"
-            context["result_msg"] = "success"
-            try:
-                checkList = ['scen_type', 'scen_name', 'domain', 'api_no', 'bot_no', 'members']
-                replaceList = ['Scenario Template 를 선택하세요', 'Scenario Name 을 입력하세요', 'Domain Id 를 입력하세요', 'API 를 선택하세요' ,'Bot 을 선택하세요', 'Member 를 입력하세요']
-                for idx, val in enumerate(checkList):
-                    if (val == 'id' and request.POST['type'] == 'id'):
-                        continue
-                    if (request.POST[val] == None or request.POST[val] == ""):
-                        raise Exception(replaceList[idx])
-
-                # 파라미터 유효성 검사
-                apiData = api.objects.filter(
-                    member_no=request.session["memberInfo"]["member_no"],
-                    api_no=request.POST["api_no"]
-                ).first()
-                if apiData is None:
-                    context["flag"] = "4"
-                    context["result_msg"] = "잘못된 API NO 입니다."
-                
-                if context["flag"] == "0":
-                    botData = bot.objects.filter(
-                        member_no=request.session["memberInfo"]["member_no"],
-                        bot_no=request.POST["bot_no"]
-                    ).first()
-                    if botData is None:
-                        context["flag"] = "4"
-                        context["result_msg"] = "잘못된 BOT NO 입니다."
-                
-                # 중복 데이터 조회
-                if context["flag"] == "0":
-                    scenData = scen.objects.filter(
-                        member_no=request.session["memberInfo"]["member_no"],
-                        domain=request.POST["domain"],
-                        status=1
-                    ).first()
-                    if scenData is not None:
-                        context["flag"] = "3"
-                        context["result_msg"] = "중복된 Domain Id 입니다."
-
-
-                if (context["flag"] == "0"):
-                    res = createChannel(
-                        api_no=apiData.api_no, 
-                        bot_no=botData.bot_no,
-                        members=re.sub(r"\s", "", request.POST["members"]),
-                        title="익명 보고 시나리오 결재자",
-                    )
-                    result = util.strToJson(res.text)  # 인증 완료 후 응답 값
-                    if res.status_code != 200 and res.status_code != 201:
-                        context["flag"] = "2"
-                        context["result_msg"] = result["description"]
-                    else:
-                        channelId = result["channelId"]
-                        res = getChannelMembers(
-                            api_no=apiData.api_no, 
-                            bot_no=botData.bot_no, 
-                            channel_id=channelId
-                        )
-                        result = util.strToJson(res.text)  # 인증 완료 후 응답 값
-                        if res.status_code != 200 and res.status_code != 201:
-                            raise Exception(result["description"])
-                        else:
-                            members = ",".join(result["members"])
-                        # DB 저장
-                        scenData = scen.objects.create(
-                            scen_type = scen_type.objects.filter(scen_type=request.POST["scen_type"]).first(),
-                            scen_name = request.POST["scen_name"],
-                            api_no = apiData,
-                            bot_no = botData,
-                            domain = request.POST["domain"],
-                            channel = channelId,
-                            members = members,
-                            member_no = member.objects.filter(member_no=request.session["memberInfo"]["member_no"]).first()
-                        )
-                        text = "익명 보고 시나리오 결재자 단톡방입니다."
-                        # 메시지 전송
-                        res = sendMessage(
-                            api_no=scenData.api_no.api_no, 
-                            bot_no=scenData.bot_no.bot_no, 
-                            content=util.simpleTemplate(text), 
-                            channel_id=scenData.channel
-                        )
-                        result = util.strToJson(res.text)  # 인증 완료 후 응답 값
-            except Exception as err:
-                context["flag"] = "2"
-                context["result_msg"] = err.args[0]
-            util.insertLog(
-                request, context["result_msg"] + "    " + util.jsonToStr(request.POST.dict()))
-            return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
         elif request.POST["type"] == "updScen":
             context = {}
             context["flag"] = "0"
@@ -623,6 +531,128 @@ def scenarioList(request):
             util.insertLog(
                 request, context["result_msg"] + "    " + util.jsonToStr(request.POST.dict()))
             return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
+
+
+def scenarioAdd(request):
+    if 'memberInfo' not in request.session:
+        return redirect('login')
+    
+    if request.method == "GET":
+        context = {
+            'name': request.session["memberInfo"]["name"],
+        }
+        return render(request, 'NWAD/scenario-add.html', context)
+    elif request.method == "POST":
+        if request.POST["type"] == "getApiBot":
+            context = {}
+            context["flag"] = "0"
+            context["result_msg"] = "success"
+            try:
+                apiData = api.objects.filter(
+                    member_no=request.session["memberInfo"]["member_no"]
+                )
+                context["api_data"] = util.objectToPaging(apiData, 1, 0)
+                botData = bot.objects.filter(
+                    member_no=request.session["memberInfo"]["member_no"]
+                )
+                context["bot_data"] = util.objectToPaging(botData, 1, 0)
+            except Exception as err:
+                context["flag"] = "2"
+                context["result_msg"] = err.args[0]
+            return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
+        elif request.POST["type"] == "regScen":
+            context = {}
+            context["flag"] = "0"
+            context["result_msg"] = "success"
+            try:
+                checkList = ['scen_type', 'scen_name', 'domain', 'api_no', 'bot_no', 'members']
+                replaceList = ['Scenario Template 를 선택하세요', 'Scenario Name 을 입력하세요', 'Domain Id 를 입력하세요', 'API 를 선택하세요' ,'Bot 을 선택하세요', 'Member 를 입력하세요']
+                for idx, val in enumerate(checkList):
+                    if (val == 'id' and request.POST['type'] == 'id'):
+                        continue
+                    if (request.POST[val] == None or request.POST[val] == ""):
+                        raise Exception(replaceList[idx])
+
+                # 파라미터 유효성 검사
+                apiData = api.objects.filter(
+                    member_no=request.session["memberInfo"]["member_no"],
+                    api_no=request.POST["api_no"]
+                ).first()
+                if apiData is None:
+                    context["flag"] = "4"
+                    context["result_msg"] = "잘못된 API NO 입니다."
+                
+                if context["flag"] == "0":
+                    botData = bot.objects.filter(
+                        member_no=request.session["memberInfo"]["member_no"],
+                        bot_no=request.POST["bot_no"]
+                    ).first()
+                    if botData is None:
+                        context["flag"] = "4"
+                        context["result_msg"] = "잘못된 BOT NO 입니다."
+                
+                # 중복 데이터 조회
+                if context["flag"] == "0":
+                    scenData = scen.objects.filter(
+                        member_no=request.session["memberInfo"]["member_no"],
+                        domain=request.POST["domain"],
+                        status=1
+                    ).first()
+                    if scenData is not None:
+                        context["flag"] = "3"
+                        context["result_msg"] = "중복된 Domain Id 입니다."
+
+
+                if (context["flag"] == "0"):
+                    res = createChannel(
+                        api_no=apiData.api_no, 
+                        bot_no=botData.bot_no,
+                        members=re.sub(r"\s", "", request.POST["members"]),
+                        title="익명 보고 시나리오 결재자",
+                    )
+                    result = util.strToJson(res.text)  # 인증 완료 후 응답 값
+                    if res.status_code != 200 and res.status_code != 201:
+                        context["flag"] = "2"
+                        context["result_msg"] = result["description"]
+                    else:
+                        channelId = result["channelId"]
+                        res = getChannelMembers(
+                            api_no=apiData.api_no, 
+                            bot_no=botData.bot_no, 
+                            channel_id=channelId
+                        )
+                        result = util.strToJson(res.text)  # 인증 완료 후 응답 값
+                        if res.status_code != 200 and res.status_code != 201:
+                            raise Exception(result["description"])
+                        else:
+                            members = ",".join(result["members"])
+                        # DB 저장
+                        scenData = scen.objects.create(
+                            scen_type = scen_type.objects.filter(scen_type=request.POST["scen_type"]).first(),
+                            scen_name = request.POST["scen_name"],
+                            api_no = apiData,
+                            bot_no = botData,
+                            domain = request.POST["domain"],
+                            channel = channelId,
+                            members = members,
+                            member_no = member.objects.filter(member_no=request.session["memberInfo"]["member_no"]).first()
+                        )
+                        text = "익명 보고 시나리오 결재자 단톡방입니다."
+                        # 메시지 전송
+                        res = sendMessage(
+                            api_no=scenData.api_no.api_no, 
+                            bot_no=scenData.bot_no.bot_no, 
+                            content=util.simpleTemplate(text), 
+                            channel_id=scenData.channel
+                        )
+                        result = util.strToJson(res.text)  # 인증 완료 후 응답 값
+            except Exception as err:
+                context["flag"] = "2"
+                context["result_msg"] = err.args[0]
+            util.insertLog(
+                request, context["result_msg"] + "    " + util.jsonToStr(request.POST.dict()))
+            return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
+
 
 def apiBotList(request):
     if 'memberInfo' in request.session:

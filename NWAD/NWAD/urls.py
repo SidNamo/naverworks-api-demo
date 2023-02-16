@@ -17,6 +17,7 @@ urlpatterns = [
     path('mypage', nwad.mypage, name="mypage"),
     path('botMessage', nwad.botMessage, name="botMessage"),
     path('scenarioList', nwad.scenarioList, name="scenarioList"),
+    path('scenarioAdd', nwad.scenarioAdd, name="scenarioAdd"),
 
     path('apiList', nwad.apiList, name="apiList"),
     path('api/apiReg', nwad.apiReg, name="api/apiReg"),

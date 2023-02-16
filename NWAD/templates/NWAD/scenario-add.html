@@ -34,65 +34,266 @@
 	</div>
 	<!--end::Toolbar-->
 	<!--begin::Post-->
-	<div class="content flex-column-fluid" id="kt_content">
+	<div class="content flex-column-fluid div-sc-step" id="kt_content">
 
-		<!--begin::List-->
-		<div class="card mb-5">
+		<!--begin::Card (Step 1)-->
+		<div class="card mb-5" id="sc_step_1">
 			<!--begin::Card header-->
 			<div class="card-header">
 				<!--begin::Card title-->
 				<div class="card-title m-0">
-					<h3 class="fw-bold m-0">Scenario List</h3>
+					<h3 class="fw-bold m-0">Scenario 추가 <span class="badge badge-light fw-semibold">STEP 1</span></h3>
 				</div>
 				<!--end::Card title-->
-				<!--begin::Action-->
-				<a href="./scenarioAdd" class="btn btn-sm btn-primary align-self-center">Scenario 추가</a>
-				<!--end::Action-->
 			</div>
 			<!--begin::Card header-->
 			<!--begin::Card body-->
-			<div class="card-body p-0">
-				<!--begin::Table container-->
-				<div class="table-responsive">
-					<!--begin::Table-->
-					<table class="table table-row-bordered align-middle gy-4 gs-9" id="tableScenarioList">
-						<thead class="border-bottom border-gray-200 fs-6 text-gray-500 fw-semibold bg-light bg-opacity-75">
-							<tr>
-								<td width="15%" class="min-w-150px">Template</td>
-								<td width="70%" class="min-w-150px">Title</td>
-								<td width="15%" class="min-w-150px text-end">Actions</td>
-							</tr>
-						</thead>
-						<tbody class="fs-6">
-						</tbody>
-					</table>
-					<!--end::Table-->
+			<div class="card-body mb-0">
+				<!--begin::Stepper-->
+				<div class="stepper stepper-links d-flex flex-column">
+					<!--begin::Nav-->
+					<div class="stepper-nav justify-content-start m-0 py-2">
+						<!--begin::Step 1-->
+						<div class="stepper-item me-5 me-md-15 current" data-kt-stepper-element="nav">
+							<h3 class="stepper-title">Scenario Template 선택</h3>
+						</div>
+						<!--end::Step 1-->
+						<!--begin::Step 2-->
+						<div class="stepper-item me-5 me-md-15" data-kt-stepper-element="nav">
+							<h3 class="stepper-title">Scenario 정보</h3>
+						</div>
+						<!--end::Step 2-->
+					</div>
+					<!--end::Nav-->
+					<!--begin::Form-->
+					<form class="mx-auto w-100 mw-600px pt-15 pb-5" novalidate="novalidate">
+						<!--begin::Step 1-->
+						<div class="current" data-kt-stepper-element="content">
+							<!--begin::Wrapper-->
+							<div class="w-100">
+								<!--begin::Heading-->
+								<div class="mt-3 mb-9">
+									<!--begin::Title-->
+									<h3 class="mb-3 required">Template 선택</h3>
+									<!--end::Title-->
+									<!--begin::Description-->
+									<div class="fs-6 text-muted fw-normal">
+											등록된 Template을 통해 간편하게 Scenario 를 등록할 수 있습니다.
+									</div>
+									<!--end::Description-->
+								</div>
+								<!--end::Heading-->
+								<!--begin::Input group-->
+								<div class="fv-row mb-6" data-kt-buttons="true" id="divScenType">
+
+									<!--begin::Option-->
+									<label class="btn btn-custom btn-active-light-primary border border-gray-300 border-dashed border-active-primary position-relative d-flex text-start p-6 mb-5 active">
+										<!--begin::Radio-->
+										<div class="position-absolute end-0 form-check form-check-custom form-check-solid form-check-primary me-6">
+											<input class="form-check-input" type="radio" name="scen_type" value="1" checked/>
+										</div>
+										<!--end::Radio-->
+										<!--begin::Label-->
+										<span class="d-flex mb-2">
+											<!--begin::Icon-->
+											<!--begin::Svg Icon | path: icons/duotune/communication/com007.svg-->
+											<span class="svg-icon svg-icon-3hx">
+												<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<path opacity="0.3" d="M8 8C8 7.4 8.4 7 9 7H16V3C16 2.4 15.6 2 15 2H3C2.4 2 2 2.4 2 3V13C2 13.6 2.4 14 3 14H5V16.1C5 16.8 5.79999 17.1 6.29999 16.6L8 14.9V8Z" fill="currentColor"/>
+													<path d="M22 8V18C22 18.6 21.6 19 21 19H19V21.1C19 21.8 18.2 22.1 17.7 21.6L15 18.9H9C8.4 18.9 8 18.5 8 17.9V7.90002C8 7.30002 8.4 6.90002 9 6.90002H21C21.6 7.00002 22 7.4 22 8ZM19 11C19 10.4 18.6 10 18 10H12C11.4 10 11 10.4 11 11C11 11.6 11.4 12 12 12H18C18.6 12 19 11.6 19 11ZM17 15C17 14.4 16.6 14 16 14H12C11.4 14 11 14.4 11 15C11 15.6 11.4 16 12 16H16C16.6 16 17 15.6 17 15Z" fill="currentColor"/>
+												</svg>
+											</span>
+											<!--end::Svg Icon-->
+											<!--end::Icon-->
+											<!--begin::Info-->
+											<div class="ms-4">
+												<div class="fs-2 fw-bolder text-gray-900 mb-2 pe-10">1:N 보고 BOT 시나리오</div>
+												<div class="fs-6 fw-normal text-muted mb-1">시나리오에 대한 간략한 설명입니다.</div>
+												<div class="mt-6">
+													<button type="button" class="btn btn-sm btn-primary px-4 py-2 me-2" data-bs-toggle="modal" data-bs-target="#sm_sc_1_temp_preview">자세히 보기</button>
+												</div>
+											</div>
+											<!--end::Info-->
+										</span>
+										<!--end::Label-->
+									</label>
+									<!--end::Option-->
+									
+								</div>
+								<!--end::Input group-->
+							</div>
+							<!--end::Wrapper-->
+						</div>
+						<!--end::Step 1-->
+					</form>
+					<!--end::Form-->
 				</div>
-				<!--end::Table container-->
+				<!--end::Stepper-->
 			</div>
 			<!--end::Card body-->
-		</div>	
-		<!--end::List-->
-
-		<!--begin::Pagination-->
-		<div class="d-flex justify-content-between">
-			<div class="">
-				<!--begin::Select-->
-				<select class="form-select form-select-sm form-check-solid border-0 w-200px fw-semibold" data-control="select2" data-placeholder="페이지당 목록 표시수" data-hide-search="true" name="count">
-					<option value="">페이지당 목록 표시수</option>
-					<option value="10" selected="select">목록 10개 표시</option>
-					<option value="50">목록 50개 표시</option>
-					<option value="100">목록 100개 표시</option>
-				</select>
-				<!--end::Select-->
+			<!--begin::Actions-->
+			<div class="card-footer d-flex justify-content-between py-6 px-9">
+				<a href="./scenarioList" class="btn btn-light btn-active-light-primary me-2">취소</a>
+				<a href="javascript:void(0);" class="btn btn-primary btn-step-change" id="sm_bot_msg_send" data-step="2">다음</a>
 			</div>
-			<!--begin::Pages-->
-			<ul class="pagination d-flex flex-nowrap mb-5 mb-xl-10" id="ulPage">
-			</ul>
-			<!--end::Pages-->
-		</div>
-		<!--end::Pagination-->
+			<!--end::Actions-->
+		</div>	
+		<!--end::Card (Step 1)-->
 
+		<!--begin::Card (Step 2)-->
+		<div class="card mb-5" id="sc_step_2" style="display:none;">
+			<!--begin::Card header-->
+			<div class="card-header">
+				<!--begin::Card title-->
+				<div class="card-title m-0">
+					<h3 class="fw-bold m-0">Scenario 추가 <span class="badge badge-light fw-semibold">STEP 2</span></h3>
+				</div>
+				<!--end::Card title-->
+			</div>
+			<!--begin::Card header-->
+			<!--begin::Card body-->
+			<div class="card-body mb-0">
+				<!--begin::Stepper-->
+				<div class="stepper stepper-links d-flex flex-column">
+					<!--begin::Nav-->
+					<div class="stepper-nav justify-content-start m-0 py-2">
+						<!--begin::Step 1-->
+						<div class="stepper-item me-5 me-md-15 completed" data-kt-stepper-element="nav">
+							<h3 class="stepper-title">Scenario Template 선택</h3>
+						</div>
+						<!--end::Step 1-->
+						<!--begin::Step 2-->
+						<div class="stepper-item me-5 me-md-15 current" data-kt-stepper-element="nav">
+							<h3 class="stepper-title">Scenario 정보</h3>
+						</div>
+						<!--end::Step 2-->
+					</div>
+					<!--end::Nav-->
+					<div class="mx-auto w-100 mw-600px pt-15 pb-5" novalidate="novalidate" >
+						<!--begin::Step 2-->
+						<div class="current" data-kt-stepper-element="content">
+							<!--begin::Wrapper-->
+							<div class="w-100">
+								<!--begin::Heading-->
+								<div class="mt-3 mb-9">
+									<!--begin::Title-->
+									<h3 class="mb-3">Scenario 정보 입력</h3>
+									<!--end::Title-->
+									<!--begin::Description-->
+									<div class="fs-6 text-muted fw-normal">
+											Scenario에 대한 정보와 구성원을 선택해주세요.
+									</div>
+									<!--end::Description-->
+								</div>
+								<!--end::Heading-->
+	
+								<div class="d-flex flex-column mt-6">
+									<!--begin::Form-->
+									<form style="display:none;" id="form_scen_type_1">
+										<!--begin::Input-->
+										<input type="hidden" name="scen_type" value="1">
+										<!--end::Input-->
+			
+										<!--begin::Input group-->
+										<div class="fv-row mb-10">
+											<!--begin::Label-->
+											<label class="fs-6 fw-semibold form-label">Scenario Name</label>
+											<!--end::Label-->
+											<!--begin::Input-->
+											<input type="text" class="form-control form-control-solid fs-6 fw-normal" name="scen_name" placeholder="Scenario Name 입력" value="" />
+											<!--end::Input-->
+										</div>
+										<!--end::Input group-->
+			
+										<!--begin::Input group-->
+										<div class="fv-row mb-10">
+											<!--begin::Label-->
+											<label class="fs-6 fw-semibold form-label">Domain Id</label>
+											<!--end::Label-->
+											<!--begin::Input-->
+											<input type="text" class="form-control form-control-solid fs-6 fw-normal" name="domain" placeholder="Domain Id 입력" value="" />
+											<!--end::Input-->
+										</div>
+										<!--end::Input group-->
+			
+										<!--begin::Input group-->
+										<div class="fv-row row">
+											<div class="col-xl-6 mb-10">
+												<!--begin::Label-->
+												<label class="fs-6 fw-semibold form-label">API 선택</label>
+												<!--end::Label-->
+												<!--begin::Input-->
+												<select class="form-select form-select-solid fs-6 fw-semibold" name="api_no" data-control="select" data-hide-search="true" data-placeholder="API 선택">
+												</select>
+												<!--end::Input-->
+											</div>
+											<div class="col-xl-6 mb-10">
+												<!--begin::Label-->
+												<label class="fs-6 fw-semibold form-label">Bot 선택</label>
+												<!--end::Label-->
+												<!--begin::Input-->
+												<select class="form-select form-select-solid fs-6 fw-semibold" name="bot_no" data-control="select" data-hide-search="true" data-placeholder="Bot 선택">
+												</select>
+												<!--end::Input-->
+											</div>
+										</div>
+										<!--end::Input group-->
+			
+										<!--begin::Input group-->
+										<div class="fv-row row mb-0">
+											<!--begin::Label-->
+											<label class="fs-6 fw-semibold form-label">Member 선택</label>
+											<!--End::Label-->
+											<!--begin::Input-->
+											<input type="hidden" name="members">
+											<!--end::Input-->
+											<!--begin::List-->
+											<div class="mh-275px scroll-y me-n7 pe-7" id="divMembers">
+											</div>
+											<!--end::List-->
+			
+											<!--begin::Add-->
+											<div class="d-flex align-items-center mt-4">
+												<!--begin::Input group-->
+												<div class="position-relative w-100 me-4">
+													<!--begin::Svg Icon | path: icons/duotune/arrows/arr087.svg-->
+													<span class="svg-icon svg-icon-3 svg-icon-gray-500 position-absolute top-50 translate-middle ms-6">
+														<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+															<rect opacity="0.5" x="11" y="18" width="12" height="2" rx="1" transform="rotate(-90 11 18)" fill="currentColor"/>
+															<rect x="6" y="11" width="12" height="2" rx="1" fill="currentColor"/>
+														</svg>
+													</span>
+													<!--end::Svg Icon-->
+													<input type="text" class="form-control form-control-solid fs-6 ps-10" name="member_add" value="" placeholder="Member 입력 "onkeyup="if(window.event.keyCode==13){activeForm.querySelector('.btnMemberAdd').click()}" />
+												</div>
+												<!--end::Input group-->
+												<!--begin:Action-->
+												<button type="button" class="btn btn-primary text-nowrap btnMemberAdd">추가</button>
+												<!--end:Action-->
+											</div>
+											<!--end::Add-->
+										</div>
+										<!--end::Input group-->
+									</form>
+									<!--end::Form-->
+								</div>
+							</div>
+							<!--end::Wrapper-->
+						</div>
+						<!--end::Step 2-->
+					</div>
+				</div>
+				<!--end::Stepper-->
+			</div>
+			<!--end::Card body-->
+			<!--begin::Actions-->
+			<div class="card-footer d-flex justify-content-between py-6 px-9">
+				<a href="javascript:void(0);" class="btn btn-light btn-active-light-primary me-2 btn-step-change" data-step="1">이전</a>
+				<a href="javascript:void(0);" class="btn btn-primary" id="sm_member_add_completed">확인</a>
+			</div>
+			<!--end::Actions-->
+		</div>	
+		<!--end::Card (Step 2)-->
 	</div>
 	<!--end::Post-->
 	<!--begin::Footer-->
@@ -121,148 +322,14 @@
 
 {% block modals %}
 <!--begin::Modals-->
-<!--begin::Modal - Scenario Info Edit-->
-<div class="modal fade" tabindex="-1" id="sm_sc_edit" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
-	<div class="modal-dialog modal-lg modal-dialog-centered">
-		<div class="modal-content">
-			<form id="sm_sc_edit_form">
-				<div class="modal-header">
-					<h3 class="modal-title fw-bolder">Scenario 정보 수정</h3>
-					<input type="hidden" name="scen_no">
-					<!--begin::Close-->
-					<button type="button" class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
-						<!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
-						<span class="svg-icon svg-icon-2x">
-							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-								<rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="currentColor" />
-								<rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="currentColor" />
-							</svg>
-						</span>
-						<!--end::Svg Icon-->
-					</button>
-					<!--end::Close-->
-				</div>
-				<div class="modal-body p-12">
-					<div class="w-100">
-						<div class="d-flex flex-column mt-0">
-							<!--begin::Input group-->
-							<div class="fv-row mb-10">
-								<!--begin::Label-->
-								<label class="fs-6 fw-semibold form-label">Scenario Template</label>
-								<!--end::Label-->
-								<!--begin::Input-->
-								<div class="d-flex align-items-center">
-									<select class="form-select form-select-solid fs-6 fw-semibold" name="scen_type" data-control="select" data-hide-search="true" data-placeholder="Template 선택">
-									</select>
-									<button type="button" class="btn btn-primary text-nowrap ms-4" data-bs-toggle="modal" data-bs-target="#sm_sc_temp_preview">자세히보기</button>
-								</div>
-								<!--end::Input-->
-							</div>
-							<!--end::Input group-->
-
-							<!--begin::Input group-->
-							<div class="fv-row mb-10">
-								<!--begin::Label-->
-								<label class="fs-6 fw-semibold form-label">Scenario Name</label>
-								<!--end::Label-->
-								<!--begin::Input-->
-								<input type="text" class="form-control form-control-solid fs-6 fw-normal" name="scen_name" placeholder="Scenario Name 입력" value="" />
-								<!--end::Input-->
-							</div>
-							<!--end::Input group-->
-
-							<!--begin::Input group-->
-							<div class="fv-row mb-10">
-								<!--begin::Label-->
-								<label class="fs-6 fw-semibold form-label">Domain Id</label>
-								<!--end::Label-->
-								<!--begin::Input-->
-								<input type="text" class="form-control form-control-solid fs-6 fw-normal" name="domain" placeholder="Domain Id 입력" value="" />
-								<!--end::Input-->
-							</div>
-							<!--end::Input group-->
-
-							<!--begin::Input group-->
-							<div class="fv-row row">
-								<div class="col-xl-6 mb-10">
-									<!--begin::Label-->
-									<label class="fs-6 fw-semibold form-label">API 선택</label>
-									<!--end::Label-->
-									<!--begin::Input-->
-									<select class="form-select form-select-solid fs-6 fw-semibold" name="api_no" data-control="select" data-hide-search="true" data-placeholder="API 선택">
-									</select>
-									<!--end::Input-->
-								</div>
-								<div class="col-xl-6 mb-10">
-									<!--begin::Label-->
-									<label class="fs-6 fw-semibold form-label">Bot 선택</label>
-									<!--end::Label-->
-									<!--begin::Input-->
-									<select class="form-select form-select-solid fs-6 fw-semibold" name="bot_no" data-control="select" data-hide-search="true" data-placeholder="Bot 선택">
-									</select>
-									<!--end::Input-->
-								</div>
-							</div>
-							<!--end::Input group-->
-
-							<!--begin::Input group-->
-							<div class="fv-row row mb-0">
-								<!--begin::Label-->
-								<label class="fs-6 fw-semibold form-label">Member 선택</label>
-								<!--End::Label-->
-								<!--begin::Input-->
-								<input type="hidden" name="members">
-								<!--end::Input-->
-								<!--begin::List-->
-								<div class="mh-275px scroll-y me-n7 pe-7" id="divMembers">
-								</div>
-								<!--end::List-->
-
-								<!--begin::Add-->
-								<div class="d-flex align-items-center mt-4">
-									<!--begin::Input group-->
-									<div class="position-relative w-100 me-4">
-										<!--begin::Svg Icon | path: icons/duotune/arrows/arr087.svg-->
-										<span class="svg-icon svg-icon-3 svg-icon-gray-500 position-absolute top-50 translate-middle ms-6">
-											<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-												<rect opacity="0.5" x="11" y="18" width="12" height="2" rx="1" transform="rotate(-90 11 18)" fill="currentColor"/>
-												<rect x="6" y="11" width="12" height="2" rx="1" fill="currentColor"/>
-											</svg>
-										</span>
-										<!--end::Svg Icon-->
-										<input type="text" class="form-control form-control-solid fs-6 ps-10" name="member_add" value="" placeholder="Member 입력 "onkeyup="if(window.event.keyCode==13){document.querySelector('#sm_sc_edit .btnMemberAdd').click()}" />
-									</div>
-									<!--end::Input group-->
-									<!--begin:Action-->
-									<button type="button" class="btn btn-primary text-nowrap btnMemberAdd">추가</button>
-									<!--end:Action-->
-								</div>
-								<!--end::Add-->
-							</div>
-							<!--end::Input group-->
-						</div>
-					</div>
-				</div>
-				<!--begin::Modal footer-->
-				<div class="modal-footer flex-center py-4">
-					<button type="button" class="btn btn btn-light fw-bolder" id="sm_sc_info_edit_cancle" >취소</button>
-					<button type="button" class="btn btn btn-primary fw-bolder" id="sm_sc_info_edit_submit">적용</button>
-				</div>
-				<!--end::Modal footer-->
-			</form>
-		</div>
-	</div>
-</div>
-<!--end::Modal - Scenario Info Edit-->
-
 <!--begin::Modal - Scenario Preview-->
-<div class="modal fade" tabindex="-1" id="sm_sc_temp_preview" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+<div class="modal fade" tabindex="-1" id="sm_sc_1_temp_preview">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h3 class="modal-title fw-bolder">Scenario Template 정보</h3>
 				<!--begin::Close-->
-				<a href="#sm_sc_edit" data-bs-toggle="modal" class="btn btn-icon btn-sm btn-active-light-primary ms-2" aria-label="Close">
+				<button type="button" class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
 					<!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
 					<span class="svg-icon svg-icon-2x">
 						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -271,7 +338,7 @@
 						</svg>
 					</span>
 					<!--end::Svg Icon-->
-				</a>
+				</button>
 				<!--end::Close-->
 			</div>
 			<div class="modal-body bg-light p-9">
@@ -281,7 +348,7 @@
 						<div class="fs-4 fw-bold text-gray-900 lh-1 mb-3">1:N 보고 BOT 시나리오</div>
 						<div class="fs-6 text-gray-700 fw-normal">
 							여러 개의 대화방 생성없이 Bot을 통해 결재자(관리자)와의 대화를 가능하게 해주는 시나리오 입니다.
-					   </div>
+						</div>
 					</div>
 					<!--end::Title-->
 
@@ -639,7 +706,7 @@
 			</div>
 			<!--begin::Modal footer-->
 			<div class="modal-footer flex-center py-4">
-				<a href="#sm_sc_edit" data-bs-toggle="modal" class="btn btn-sm btn-dark fw-bolder">확인</a>
+				<button type="button" class="btn btn-sm btn-dark fw-bolder" data-bs-dismiss="modal">확인</button>
 			</div>
 			<!--end::Modal footer-->
 		</div>
@@ -652,179 +719,56 @@
 {% block scripts %}
 <!--begin::Alert | Simpler-->
 <script type="text/javascript">
+	var activeForm;
+
 	window.addEventListener('load',function(){
-		getScenarioList();
-
-		document.querySelector("select[name=count]").onchange = function(e){
-			getScenarioList(document.querySelector("#ulPage li.active a").dataset.selectedPage);
-		};
-	});
-
-
-	const getScenarioList = function(page=1) {
-		let url = "./scenarioList";
-		let formData = new FormData();
-		formData.append("csrfmiddlewaretoken", Cookies("csrftoken"));
-		formData.append("type", "getList");
-		formData.append("page", page);
-		formData.append("count", document.querySelector("select[name=count]").value)
-
-		fetch(url, {
-			method: "POST",
-			cache: 'no-cache',
-			body: formData,
-		}).then((response) => {
-			if (!response.ok || response.status != '200') {
-				throw new Error('연결 실패. 다시 요청하세요.\n' + response.statusText + "(" + response.status + ")");
-			}
-			return response.json();
-		}).then((res) => {
-			if(res.flag == 0){
-				// 페이징 처리
-				{
-					let ulPage = document.getElementById("ulPage");
-					let pageCount = 10;
-					let now = res.data.now;
-					let total = res.data.max;
-					let min = Math.floor((now-1)/pageCount) * pageCount + 1;
-					let max = min + 9 > total ? total : min + 9;
-
-					if(res.data.data.length == 0){
-						getScenarioList(now-1);
-						return;
-					}
-
-					ulPage.innerHTML="";
-					if (Math.floor((now-1)/pageCount)>0){
-						ulPage.innerHTML+=`
-							<li class="page-item previous">
-								<a href="#" class="page-link" onclick="getScenarioList(` + (min-1) + `);">
-									<i class="previous"></i>
-								</a>
-							</li>`;
-					}
-					for (let i = min; i <= max ; i++){
-						if(i == now){
-							ulPage.innerHTML+=`
-								<li class="page-item active">
-									<a href="#" class="page-link" data-selected-page="` + i + `">` + i + `</a>
-								</li>`;
-						}else{
-							ulPage.innerHTML+=`
-								<li class="page-item">
-									<a href="#" class="page-link" onclick="getScenarioList(` + i + `);" data-selected-page="` + i + `">` + i + `</a>
-								</li>`;
-						}
-					}
-					if (Math.floor((now-1)/pageCount)*pageCount < Math.floor((total-1)/pageCount)*pageCount){
-						ulPage.innerHTML+=`
-							<li class="page-item next">
-								<a href="#" class="page-link" onclick="getScenarioList(` + (max + 1) + `);">
-									<i class="next"></i>
-								</a>
-							</li>`;
-					}
-				}
-
-				// 데이터
-				{
-					let tbody = document.querySelector("#tableScenarioList tbody");
-					tbody.innerHTML = "";
-					for (let i = 0; i < res.data.data.length; i++) {
-						tbody.innerHTML+=`
-							<!--begin::Table row-->
-							<tr>
-								<td class="fw-semibold text-gray-600">` + res.data.data[i].scen_type__title + `</td>
-								<td class="fw-semibold text-gray-600">` + res.data.data[i].scen_name + `</td>
-								<td class="text-end">
-									<a href="javascript:void(0);" class="btn btn-sm btn-light btn-active-light-primary me-2" data-bs-toggle="modal" data-bs-target="#sm_sc_edit" onclick="getScenarioInfo(` + res.data.data[i].scen_no + `);">Edit</a>
-									<a href="javascript:void(0);" class="btn btn-sm btn-light-danger btn-active-danger" id="sm_sc_del_confirm" onclick="removeScenario(` + res.data.data[i].scen_no + `);">Delete</a>
-								</td>
-							</tr>
-							<!--end::Table row-->
-						`;
-					}
-				}
-			}else{
-				throw new Error(res.result_msg);
-			}
-		}).catch((err) => {
-			Swal.fire({
-				text: err,
-				icon: "error",
-				buttonsStyling: false,
-				confirmButtonText: "확인",
-				customClass: {
-					confirmButton: "btn btn-primary"
-				}
-			}).then(function (result) {
-				if (result.isConfirmed) {
-					modalClose();
-				}
+		let btnStepChange = document.querySelectorAll('a.btn-step-change');
+		for(let i = 0; i < btnStepChange.length; i++) {
+			btnStepChange[i].addEventListener('click',(e) => {
+				e.preventDefault();
+				BtnStepChange(e.target);
 			});
-		});
-	}
+		}
+	});
+	
 
-	const removeScenario = function(scen_no) {
-		Swal.fire({
-			html: '<strong class="fs-4">Scenario 삭제 확인</strong><br /><span class="fs-6">선택하신 Scenario 를 삭제하시겠습니까?</span>',
-			icon: "error",
-			buttonsStyling: false,
-			showCancelButton: true,
-			confirmButtonText: '<a class="text-white">삭제</a>',
-			cancelButtonText: '<a class="text-gray-500">취소</a>',
-			customClass: {
-				confirmButton: "btn btn-danger px-5 py-2",
-				cancelButton: "btn btn-light px-5 py-2"
+	const BtnStepChange = function(e) {
+		if(e.dataset.step == "1"){
+			document.querySelector('div.div-sc-step div#sc_step_1').style="";
+			document.querySelector('div.div-sc-step div#sc_step_2').style="display:none;";
+			if(activeForm != null){
+				activeForm.style="display:none;";
+				activeForm.classList.remove('active');
 			}
-		}).then(e => {
-			if(e.isConfirmed){
-				let url = "./scenarioList";
-				let formData = new FormData();
-				formData.append("csrfmiddlewaretoken", Cookies("csrftoken"));
-				formData.append("type", "rmScen");
-				formData.append("scen_no", scen_no);
-
-				fetch(url, {
-					method: "POST",
-					cache: 'no-cache',
-					body: formData,
-				}).then((response) => {
-					if (!response.ok || response.status != '200') {
-						throw new Error('연결 실패. 다시 요청하세요.\n' + response.statusText + "(" + response.status + ")");
+		} else if (e.dataset.step == "2"){
+			let scen_type = document.querySelector('#sc_step_1 input[name=scen_type]:checked');
+			if(scen_type == null || scen_type.value == ""){
+				Swal.fire({
+					text: "Template를 선택해주세요.",
+					icon: "error",
+					buttonsStyling: false,
+					confirmButtonText: "다시",
+					customClass: {
+						confirmButton: "btn btn-primary"
 					}
-					return response.json();
-				}).then((res) => {
-					if(res.flag == 0){
-						getScenarioList(document.querySelector("#ulPage li.active a").dataset.selectedPage);
-					}else{
-						throw new Error(res.result_msg);
-					}
-				}).catch((err) => {
-					Swal.fire({
-						text: err,
-						icon: "error",
-						buttonsStyling: false,
-						confirmButtonText: "확인",
-						customClass: {
-							confirmButton: "btn btn-primary"
-						}
-					}).then(function (result) {
-						if (result.isConfirmed) {
-							modalClose();
-						}
-					});
 				});
+				return;
+			}else{
+				document.querySelector('div.div-sc-step div#sc_step_1').style="display:none;";
+				document.querySelector('div.div-sc-step div#sc_step_2').style="";
+				activeForm = document.querySelector(`input[type=hidden][name=scen_type][value='` + scen_type.value + `']`).closest('form');
+				activeForm.style="";
+				activeForm.classList.add('active');
+				getScenarioInfo();
 			}
-		});
+		}
 	}
 
-	const getScenarioInfo = function(scen_no="") {
-		let url = "./scenarioList";
+	const getScenarioInfo = function() {
+		let url = "./scenarioAdd";
 		let formData = new FormData();
 		formData.append("csrfmiddlewaretoken", Cookies("csrftoken"));
-		formData.append("type", "getInfo");
-		formData.append("scen_no", scen_no);
+		formData.append("type", "getApiBot");
 
 		fetch(url, {
 			method: "POST",
@@ -837,63 +781,19 @@
 			return response.json();
 		}).then((res) => {
 			if(res.flag == 0){
-				if(scen_no == ""){
-					let modal = document.getElementById('sm_sc_save');
-
-
-					let template = modal.querySelector('select[name=scen_type]');
-					template.innerHTML = "";
-						template.innerHTML += `<option value="">Scenario Template Select</option>`;
-					for(let i = 0; i < res.scen_type_data.data.length; i++) {
-						template.innerHTML += `<option value="` + res.scen_type_data.data[i].scen_type + `">` + res.scen_type_data.data[i].title + `</option>`;
-					}
-
-					let api = modal.querySelector('select[name=api_no]');
-					api.innerHTML = "";
-					api.innerHTML += `<option value="">API Select</option>`;
-					for(let i = 0; i < res.api_data.data.length; i++) {
-						api.innerHTML += `<option value="` + res.api_data.data[i].api_no + `">` + res.api_data.data[i].api_name + `</option>`;
-					}
-
-					let bot = modal.querySelector('select[name=bot_no]');
-					bot.innerHTML = "";
-					bot.innerHTML += `<option value="">Bot Select</option>`;
-					for(let i = 0; i < res.bot_data.data.length; i++) {
-						bot.innerHTML += `<option value="` + res.bot_data.data[i].bot_no + `">` + res.bot_data.data[i].bot_name + `</option>`;
-					}
-				} else {
-					let modal = document.getElementById('sm_sc_edit');
-					modal.querySelector('input[name=scen_name]').value = res.scen_data.scen_name;
-					modal.querySelector('input[name=domain]').value = res.scen_data.domain;
-					modal.querySelector('input[name=scen_no]').value=scen_no;
-
-					let template = modal.querySelector('select[name=scen_type]');
-					template.innerHTML = "";
-					for(let i = 0; i < res.scen_type_data.data.length; i++) {
-						template.innerHTML += `<option value="` + res.scen_type_data.data[i].scen_type + `" ` + (res.scen_type_data.data[i].scen_type == res.scen_data.scen_type_id ? ` selected ` : ``) + `>` + res.scen_type_data.data[i].title + `</option>`;
-					}
-
-					let api = modal.querySelector('select[name=api_no]');
-					api.innerHTML = "";
-					for(let i = 0; i < res.api_data.data.length; i++) {
-						api.innerHTML += `<option value="` + res.api_data.data[i].api_no + `" ` + (res.api_data.data[i].api_no == res.scen_data.api_no_id ? ` selected ` : ``) + `>` + res.api_data.data[i].api_name + `</option>`;
-					}
-
-					let bot = modal.querySelector('select[name=bot_no]');
-					bot.innerHTML = "";
-					for(let i = 0; i < res.bot_data.data.length; i++) {
-						bot.innerHTML += `<option value="` + res.bot_data.data[i].bot_no + `" ` + (res.bot_data.data[i].bot_no == res.scen_data.bot_no_id ? ` selected ` : ``) + `>` + res.bot_data.data[i].bot_name + `</option>`;
-					}
-
-					let divMembers = modal.querySelector('#divMembers');
-					let members = res.scen_data.members.split(',');
-					divMembers.innerHTML = "";
-					for(let i = 0; i < members.length; i++){
-						settingMmebers(divMembers, members[i]);
-					}
-					modal.querySelector('input[name=members]').value=res.scen_data.members;
+				let api = activeForm.querySelector('select[name=api_no]');
+				api.innerHTML = "";
+				api.innerHTML += `<option value="">API Select</option>`;
+				for(let i = 0; i < res.api_data.data.length; i++) {
+					api.innerHTML += `<option value="` + res.api_data.data[i].api_no + `">` + res.api_data.data[i].api_name + `</option>`;
 				}
 
+				let bot = activeForm.querySelector('select[name=bot_no]');
+				bot.innerHTML = "";
+				bot.innerHTML += `<option value="">Bot Select</option>`;
+				for(let i = 0; i < res.bot_data.data.length; i++) {
+					bot.innerHTML += `<option value="` + res.bot_data.data[i].bot_no + `">` + res.bot_data.data[i].bot_name + `</option>`;
+				}
 			}else{
 				throw new Error(res.result_msg);
 			}
@@ -936,7 +836,7 @@
 					<!--end::Avatar-->
 					<!--begin::Details-->
 					<div class="ms-6">
-						<a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">` + value + `</a>
+						<a href="javascript:void(0);" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">` + value + `</a>
 						<!-- <div class="fs-7 fw-normal text-muted">설명</div> -->
 					</div>
 					<!--end::Details-->
@@ -944,7 +844,7 @@
 				<!--begin::Menu-->
 				<div class="min-w-100px text-end">
 					<!--begin::Delete-->
-					<a href="#" class="btn btn-icon btn-flex btn-active-light-danger w-30px h-30px" onclick="btnMemberRemove(this,'` + memberIdx++ + `');">
+					<a href="javascript:void(0);" class="btn btn-icon btn-flex btn-active-light-danger w-30px h-30px" onclick="btnMemberRemove(this,'` + memberIdx++ + `');">
 						<!--begin::Svg Icon | path: icons/duotune/abstract/abs012.svg-->
 						<span class="svg-icon svg-icon-1 svg-icon-danger">
 							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -970,18 +870,17 @@
 
 	const btnMemberAdd = document.querySelector("button.btnMemberAdd");
 	btnMemberAdd.addEventListener('click',e => {
-		let modal = e.target.closest(".modal");
-		let divMembers = modal.querySelector('#divMembers');
-		let inputMember = modal.querySelector("input[name=member_add]");
+		let divMembers = activeForm.querySelector('#divMembers');
+		let inputMember = activeForm.querySelector("input[name=member_add]");
 		if(inputMember.value.trim() == "") return false;
 		settingMmebers(divMembers, inputMember.value);
 		inputMember.value = "";
-		setInputMembers(modal);
+		setInputMembers();
 	});
 
-	const setInputMembers = function (modal){
-		let members = modal.querySelector('input[name=members]');
-		let divMembers = modal.querySelector('#divMembers');
+	const setInputMembers = function (){
+		let members = activeForm.querySelector('input[name=members]');
+		let divMembers = activeForm.querySelector('#divMembers');
 		members.value="";
 		for(let i = 0; i<divMembers.children.length; i++){
 			if(i!=0) members.value += ",";
@@ -995,6 +894,194 @@
 			}
 		}
 	}
+
+</script>
+
+<script>
+//////////////////////////////////////
+////////////Scenario Add Modal////////////
+//////////////////////////////////////
+
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!************************************************************!*\
+  !*** ../demo14/src/js/custom/utilities/modals/new-card.js ***!
+  \************************************************************/
+
+
+// Class definition
+var FormScenAdd_1 = function () {
+	var submitButton;
+	var validator;
+	var divStep;
+	var form;
+
+	// Handle form validation and submittion
+	var handleForm = function() {
+		// Stepper custom navigation
+
+		// Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
+		validator = FormValidation.formValidation(
+			form,
+			{
+				fields: {
+					'scen_name': {
+						validators: {
+							notEmpty: {
+								message: 'Scenario Name은 필수값입니다.'
+							}
+						}
+					},
+					'domain': {
+						validators: {
+							notEmpty: {
+								message: 'Domain Id는 필수값입니다.'
+							}
+						}
+					},
+					'api_no': {
+						validators: {
+							notEmpty: {
+								message: 'API는 필수값입니다.'
+							}
+						}
+					},
+					'bot_no': {
+						validators: {
+							notEmpty: {
+								message: 'Bot은 필수값입니다.'
+							}
+						}
+					},
+					'members': {
+						validators: {
+							notEmpty: {
+								message: 'Member는 필수값입니다.'
+							}
+						}
+					}
+				},
+				plugins: {
+					trigger: new FormValidation.plugins.Trigger(),
+					bootstrap: new FormValidation.plugins.Bootstrap5({
+						rowSelector: '.fv-row',
+                        eleInvalidClass: '',
+                        eleValidClass: ''
+					})
+				}
+			}
+		);
+
+		// Action buttons
+		submitButton.addEventListener('click', function (e) {
+			e.preventDefault();
+
+			// Validate form before submit
+			if (validator) {
+				validator.validate().then(function (status) {
+					//console.log('validated!');
+
+					if (status == 'Valid') {
+						submitButton.setAttribute('data-kt-indicator', 'on');
+						// Disable button to avoid multiple click 
+						submitButton.disabled = true;
+
+						// submitButton.removeAttribute('data-kt-indicator');
+						// // Enable button
+						// submitButton.disabled = false;
+
+						let url = "./scenarioAdd";
+						let formData = new FormData(form);
+						formData.append("csrfmiddlewaretoken", Cookies("csrftoken"));
+						formData.append("type", "regScen");
+				
+				
+						fetch(url, {
+							method: "POST",
+							cache: 'no-cache',
+							body: formData,
+						}).then((response) => {
+							if (!response.ok || response.status != '200') {
+								throw new Error('연결 실패. 다시 요청하세요.\n' + response.statusText + "(" + response.status + ")");
+							}
+							return response.json();
+						}).then((res) => {
+							submitButton.removeAttribute('data-kt-indicator');
+							// Enable button
+							submitButton.disabled = false;
+							if(res.flag == 0){
+								Swal.fire({
+									html: `<strong class="fs-4">Scenario 저장 확인</strong><br /><span class="fs-6">Scenario 저장이 정상적으로 완료되었습니다.</span>`,
+									icon: "success",
+									buttonsStyling: false,
+									confirmButtonText: "확인",
+									customClass: {
+										confirmButton: "btn btn-primary px-5 py-2",
+									}
+								}).then(e=>{
+									location.href='./scenarioList'
+								});
+							}else{
+								throw new Error(res.result_msg);
+							}
+						}).catch((err) => {
+							Swal.fire({
+								text: err,
+								icon: "error",
+								buttonsStyling: false,
+								confirmButtonText: "확인",
+								customClass: {
+									confirmButton: "btn btn-primary"
+								}
+							});
+						});
+					} else {
+						// Show error popuo. For more info check the plugin's official documentation: https://sweetalert2.github.io/
+						Swal.fire({
+							text: "필드값을 다시 확인해주세요",
+							icon: "error",
+							buttonsStyling: false,
+							confirmButtonText: "다시 확인하기",
+							customClass: {
+								confirmButton: "btn btn-primary"
+							}
+						});
+					}
+				});
+			}
+		});
+	}
+
+	return {
+		// Public functions
+		init: function () {
+			// Elements
+			divStep = document.querySelector('#sc_step_2');
+			if (!divStep) {
+				return;
+			}
+
+			form = divStep.querySelector('#form_scen_type_1');
+			if (!form) {
+				return;
+			}
+
+			submitButton = divStep.querySelector('#sm_member_add_completed');
+
+			handleForm();
+		}
+	};
+}();
+
+// On document ready
+KTUtil.onDOMContentLoaded(function () {
+	FormScenAdd_1.init();
+});
+/******/ })()
+;
+//# sourceMappingURL=create-api-key.js.map
+
 </script>
 <!--end::Alert | Simpler-->
 {% endblock %}
