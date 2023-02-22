@@ -112,6 +112,7 @@ def join(request):
                     password=util.sha256encode(request.POST["password"]),
                     name=request.POST["name"],
                     email=request.POST["email"],
+                    status=1
                 )
             except Exception as err:
                 context["flag"] = "9"
