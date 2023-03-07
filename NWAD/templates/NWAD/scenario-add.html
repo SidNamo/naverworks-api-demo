@@ -1,4 +1,5 @@
 {% extends './base.html' %}
+
 {% load static %}
 
 {% block contents %}
@@ -197,7 +198,7 @@
 										<!--begin::Input group-->
 										<div class="fv-row mb-10">
 											<!--begin::Label-->
-											<label class="fs-6 fw-semibold form-label">Scenario Name</label>
+											<label class="required fs-6 fw-semibold form-label">Scenario Name</label>
 											<!--end::Label-->
 											<!--begin::Input-->
 											<input type="text" class="form-control form-control-solid fs-6 fw-normal" name="scen_name" placeholder="Scenario Name 입력" value="" />
@@ -208,10 +209,12 @@
 										<!--begin::Input group-->
 										<div class="fv-row mb-10">
 											<!--begin::Label-->
-											<label class="fs-6 fw-semibold form-label">Domain Id</label>
+											<label class="required fs-6 fw-semibold form-label">Domain Id</label>
+											&nbsp;<i class="fa fa-question-circle form-control-solid" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#ex-modal-nw-domainid"></i>
 											<!--end::Label-->
 											<!--begin::Input-->
 											<input type="text" class="form-control form-control-solid fs-6 fw-normal" name="domain" placeholder="Domain Id 입력" value="" />
+											
 											<!--end::Input-->
 										</div>
 										<!--end::Input group-->
@@ -220,19 +223,19 @@
 										<div class="fv-row row">
 											<div class="col-xl-6 mb-10">
 												<!--begin::Label-->
-												<label class="fs-6 fw-semibold form-label">API 선택</label>
+												<label class="required fs-6 fw-semibold form-label">API 선택</label>
 												<!--end::Label-->
 												<!--begin::Input-->
-												<select class="form-select form-select-solid fs-6 fw-semibold" name="api_no" data-control="select" data-hide-search="true" data-placeholder="API 선택">
+												<select class="form-select form-select-solid fs-6 fw-semibold" name="api_no" data-control="select2" data-hide-search="true" data-placeholder="API 선택">
 												</select>
 												<!--end::Input-->
 											</div>
 											<div class="col-xl-6 mb-10">
 												<!--begin::Label-->
-												<label class="fs-6 fw-semibold form-label">Bot 선택</label>
+												<label class="required fs-6 fw-semibold form-label">Bot 선택</label>
 												<!--end::Label-->
 												<!--begin::Input-->
-												<select class="form-select form-select-solid fs-6 fw-semibold" name="bot_no" data-control="select" data-hide-search="true" data-placeholder="Bot 선택">
+												<select class="form-select form-select-solid fs-6 fw-semibold" name="bot_no" data-control="select2" data-hide-search="true" data-placeholder="Bot 선택">
 												</select>
 												<!--end::Input-->
 											</div>
@@ -240,9 +243,10 @@
 										<!--end::Input group-->
 			
 										<!--begin::Input group-->
-										<div class="fv-row row mb-0">
+										<div class="fv-row  mb-0">
 											<!--begin::Label-->
-											<label class="fs-6 fw-semibold form-label">Member 선택</label>
+											<label class="required fs-6 fw-semibold form-label">Member Id</label>
+											&nbsp;<i class="fa fa-question-circle form-control-solid" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#ex-modal-nw-memberid"></i>
 											<!--End::Label-->
 											<!--begin::Input-->
 											<input type="hidden" name="members">
@@ -272,6 +276,7 @@
 												<!--end:Action-->
 											</div>
 											<!--end::Add-->
+											<div class="fw-normal fs-7 mt-2 ms-2 text-gray-600" >※ 보고 받을 회원의 Naver Works Id를 입력 후 추가 버튼을 클릭해주세요.</div>
 										</div>
 										<!--end::Input group-->
 									</form>
@@ -300,7 +305,7 @@
 	<div class="footer py-4 d-flex flex-column flex-md-row flex-stack" id="kt_footer">
 		<!--begin::Copyright-->
 		<div class="text-gray-600 order-2 order-md-1">
-			<span class="text-muted fw-semibold me-1">2022&copy;</span>
+			<span class="text-muted fw-semibold me-1">2023&copy;</span>
 			<a href="https://didim365.com" target="_blank" class="text-gray-800 text-hover-primary">Didim365</a>
 		</div>
 		<!--end::Copyright-->
@@ -349,359 +354,446 @@
 						<div class="fs-6 text-gray-700 fw-normal">
 							여러 개의 대화방 생성없이 Bot을 통해 결재자(관리자)와의 대화를 가능하게 해주는 시나리오 입니다.
 						</div>
+						<br/>
+						<div class="text-danger fs-6 fw-normal">
+							※ 주의<br/>
+							1. 해당 시나리오 생성 시 모든 사용자에게 바로 적용됩니다.<br/>
+							2. 해당 시나리오 생성 시 담당자 그룹방이 자동으로 생성됩니다.
+						</div>
 					</div>
 					<!--end::Title-->
-
-					<div class="fs-6 fw-semibold text-gray-700 mb-4">1. 상황 인지 및 답변 안내</div>
-					<!--begin::Card-->
-					<div class="card mb-8">
-						<!--begin::Topbar-->
-						<div class="d-flex justify-content-between bg-primary rounded-3 rounded-bottom-0 px-2 py-2">
-							<div class="ms-3">
-								<!--begin::Svg Icon | icons/duotune/general/gen052.svg-->
-								<span class="svg-icon svg-icon-white svg-icon-2">
-									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-										<rect x="10" y="10" width="4" height="4" rx="2" fill="currentColor"/>
-										<rect x="17" y="10" width="4" height="4" rx="2" fill="currentColor"/>
-										<rect x="3" y="10" width="4" height="4" rx="2" fill="currentColor"/>
-									</svg>
-								</span>
-								<!--end::Svg Icon-->
-							</div>
-							<div class="me-3">
-								<!--begin::Svg Icon | icons/duotune/coding/cod004.svg-->
-								<span class="svg-icon svg-icon-white svg-icon-2 me-2">
-									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-										<path d="M19.0687 17.9688H11.0687C10.4687 17.9688 10.0687 18.3687 10.0687 18.9688V19.9688C10.0687 20.5687 10.4687 20.9688 11.0687 20.9688H19.0687C19.6687 20.9688 20.0687 20.5687 20.0687 19.9688V18.9688C20.0687 18.3687 19.6687 17.9688 19.0687 17.9688Z" fill="currentColor"/>
-									</svg>
-								</span>
-								<!--end::Svg Icon-->
-								<!--begin::Svg Icon | path: icons/duotune/general/gen054.svg-->
-								<span class="svg-icon svg-icon-white svg-icon-2 me-1">
-									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-										<path opacity="0.5" d="M18 2H9C7.34315 2 6 3.34315 6 5H8C8 4.44772 8.44772 4 9 4H18C18.5523 4 19 4.44772 19 5V16C19 16.5523 18.5523 17 18 17V19C19.6569 19 21 17.6569 21 16V5C21 3.34315 19.6569 2 18 2Z" fill="currentColor"/>
-										<path fill-rule="evenodd" clip-rule="evenodd" d="M14.7857 7.125H6.21429C5.62255 7.125 5.14286 7.6007 5.14286 8.1875V18.8125C5.14286 19.3993 5.62255 19.875 6.21429 19.875H14.7857C15.3774 19.875 15.8571 19.3993 15.8571 18.8125V8.1875C15.8571 7.6007 15.3774 7.125 14.7857 7.125ZM6.21429 5C4.43908 5 3 6.42709 3 8.1875V18.8125C3 20.5729 4.43909 22 6.21429 22H14.7857C16.5609 22 18 20.5729 18 18.8125V8.1875C18 6.42709 16.5609 5 14.7857 5H6.21429Z" fill="currentColor"/>
-									</svg>
-								</span>
-								<!--end::Svg Icon-->
-								<!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
-								<span class="svg-icon svg-icon-white svg-icon-2">
-									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-										<rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="currentColor"/>
-										<rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="currentColor"/>
-									</svg>
-								</span>
-								<!--end::Svg Icon-->
-							</div>
-						</div>
-						<!--end::Topbar-->
-						<!--begin::Card body-->
-						<div class="card-body pt-0">
-
-							<!--begin::Message(user)-->
-							<div class="d-flex justify-content-end mt-8">
-								<!--begin::Wrapper-->
-								<div class="d-flex flex-column align-items-end">
-									<!--begin::User-->
-									<div class="d-flex align-items-center mb-2">
-										<!--begin::Details-->
-										<div class="me-3">
-											<span class="text-gray-400 fs-8 fw-normal mb-1">5 mins</span>
-											<a href="javascript:void(0);" class="fs-5 fw-bold text-gray-900 text-hover-primary ms-3">홍길동</a>
-										</div>
-										<!--end::Details-->
-										<!--begin::Avatar-->
-										<div class="symbol symbol-50px">
-											<span class="svg-icon svg-icon-primary svg-icon-1">
-												<!--begin::Svg Icon | path: icons/General/User.svg-->
-												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-													<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-														<polygon points="0 0 24 0 24 24 0 24"/>
-														<path d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
-														<path d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z" fill="currentColor" fill-rule="nonzero"/>
-													</g>
-												</svg>
-												<!--end::Svg Icon-->
-											</span>
-										</div>
-										<!--end::Avatar-->
-									</div>
-									<!--end::User-->
-									<!--begin::Text-->
-									<div class="p-5 rounded bg-light text-dark fw-normal mw-lg-400px text-end">
-										병원 좀 다녀오겠습니다.
-									</div>
-									<!--end::Text-->
+					<span class="scen_modal_tab" data-scen_teb="1" style="">
+						<div class="fs-6 fw-semibold text-gray-700 mb-4">1. 상황 인지 및 답변 안내</div>
+						<!--begin::Card-->
+						<div class="card mb-8">
+							<!--begin::Topbar-->
+							<div class="d-flex justify-content-between bg-primary rounded-3 rounded-bottom-0 px-2 py-2">
+								<div class="ms-3">
+									<span class="" style="color:white;">보고 Bot</span>
+									<!--begin::Svg Icon | icons/duotune/general/gen052.svg-->
+									<!-- <span class="svg-icon svg-icon-white svg-icon-2">
+										<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<rect x="10" y="10" width="4" height="4" rx="2" fill="currentColor"/>
+											<rect x="17" y="10" width="4" height="4" rx="2" fill="currentColor"/>
+											<rect x="3" y="10" width="4" height="4" rx="2" fill="currentColor"/>
+										</svg>
+									</span> -->
+									<!--end::Svg Icon-->
 								</div>
-								<!--end::Wrapper-->
-							</div>
-							<!--end::Message(user)-->
-
-							<!--begin::Message(bot)-->
-							<div class="d-flex justify-content-start mt-8">
-								<!--begin::Wrapper-->
-								<div class="d-flex flex-column align-items-start">
-									<!--begin::Title-->
-									<div class="d-flex align-items-center mb-2">
-										<!--begin::Avatar-->
-										<div class="symbol symbol-50px">
-											<span class="svg-icon svg-icon-primary svg-icon-1">
-												<!--begin::Svg Icon | path: icons/Communication/Chat-smile.svg-->
-												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-													<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-														<rect x="0" y="0" width="24" height="24"/>
-														<polygon fill="#000000" opacity="0.3" points="5 15 3 21.5 9.5 19.5"/>
-														<path d="M13,2 C18.5228475,2 23,6.4771525 23,12 C23,17.5228475 18.5228475,22 13,22 C7.4771525,22 3,17.5228475 3,12 C3,6.4771525 7.4771525,2 13,2 Z M7.16794971,13.5547002 C8.67758127,15.8191475 10.6456687,17 13,17 C15.3543313,17 17.3224187,15.8191475 18.8320503,13.5547002 C19.1384028,13.0951715 19.0142289,12.4743022 18.5547002,12.1679497 C18.0951715,11.8615972 17.4743022,11.9857711 17.1679497,12.4452998 C16.0109146,14.1808525 14.6456687,15 13,15 C11.3543313,15 9.9890854,14.1808525 8.83205029,12.4452998 C8.52569784,11.9857711 7.90482849,11.8615972 7.4452998,12.1679497 C6.98577112,12.4743022 6.86159725,13.0951715 7.16794971,13.5547002 Z" fill="currentColor"/>
-													</g>
-												</svg>
-												<!--end::Svg Icon-->
-											</span>
-										</div>
-										<!--end::Avatar-->
-										<!--begin::Details-->
-										<div class="ms-3">
-											<a href="javascript:void(0);" class="fs-5 fw-bold text-gray-900 text-hover-primary me-3">보고 Bot</a>
-											<span class="text-gray-400 fs-8 fw-normal mb-1">2 mins</span>
-										</div>
-										<!--end::Details-->
-									</div>
-									<!--end::Title-->
-									<!--begin::Text-->
-									<div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-start">
-										관리자가 메시지를 확인하고 있습니다.<br />
-										잠시만 기다려주세요.
-									</div>
-									<!--end::Text-->
+								<div class="me-3">
+									<!--begin::Svg Icon | icons/duotune/coding/cod004.svg-->
+									<span class="svg-icon svg-icon-white svg-icon-2 me-2">
+										<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path d="M19.0687 17.9688H11.0687C10.4687 17.9688 10.0687 18.3687 10.0687 18.9688V19.9688C10.0687 20.5687 10.4687 20.9688 11.0687 20.9688H19.0687C19.6687 20.9688 20.0687 20.5687 20.0687 19.9688V18.9688C20.0687 18.3687 19.6687 17.9688 19.0687 17.9688Z" fill="currentColor"/>
+										</svg>
+									</span>
+									<!--end::Svg Icon-->
+									<!--begin::Svg Icon | path: icons/duotune/general/gen054.svg-->
+									<span class="svg-icon svg-icon-white svg-icon-2 me-1">
+										<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path opacity="0.5" d="M18 2H9C7.34315 2 6 3.34315 6 5H8C8 4.44772 8.44772 4 9 4H18C18.5523 4 19 4.44772 19 5V16C19 16.5523 18.5523 17 18 17V19C19.6569 19 21 17.6569 21 16V5C21 3.34315 19.6569 2 18 2Z" fill="currentColor"/>
+											<path fill-rule="evenodd" clip-rule="evenodd" d="M14.7857 7.125H6.21429C5.62255 7.125 5.14286 7.6007 5.14286 8.1875V18.8125C5.14286 19.3993 5.62255 19.875 6.21429 19.875H14.7857C15.3774 19.875 15.8571 19.3993 15.8571 18.8125V8.1875C15.8571 7.6007 15.3774 7.125 14.7857 7.125ZM6.21429 5C4.43908 5 3 6.42709 3 8.1875V18.8125C3 20.5729 4.43909 22 6.21429 22H14.7857C16.5609 22 18 20.5729 18 18.8125V8.1875C18 6.42709 16.5609 5 14.7857 5H6.21429Z" fill="currentColor"/>
+										</svg>
+									</span>
+									<!--end::Svg Icon-->
+									<!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+									<span class="svg-icon svg-icon-white svg-icon-2">
+										<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="currentColor"/>
+											<rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="currentColor"/>
+										</svg>
+									</span>
+									<!--end::Svg Icon-->
 								</div>
-								<!--end::Wrapper-->
 							</div>
-							<!--end::Message(bot)-->
-						</div>
-						<!--end::Card body-->
-					</div>
-					<!--end::Card-->
-
-					<div class="fs-6 fw-semibold text-gray-700 mb-4">2. 결재자(관리자) 메시지 전달</div>
-					<!--begin::Card-->
-					<div class="card mb-8">
-						<!--begin::Topbar-->
-						<div class="d-flex justify-content-between bg-primary rounded-3 rounded-bottom-0 px-2 py-2">
-							<div class="ms-3">
-								<!--begin::Svg Icon | icons/duotune/general/gen052.svg-->
-								<span class="svg-icon svg-icon-white svg-icon-2">
-									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-										<rect x="10" y="10" width="4" height="4" rx="2" fill="currentColor"/>
-										<rect x="17" y="10" width="4" height="4" rx="2" fill="currentColor"/>
-										<rect x="3" y="10" width="4" height="4" rx="2" fill="currentColor"/>
-									</svg>
-								</span>
-								<!--end::Svg Icon-->
-							</div>
-							<div class="me-3">
-								<!--begin::Svg Icon | icons/duotune/coding/cod004.svg-->
-								<span class="svg-icon svg-icon-white svg-icon-2 me-2">
-									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-										<path d="M19.0687 17.9688H11.0687C10.4687 17.9688 10.0687 18.3687 10.0687 18.9688V19.9688C10.0687 20.5687 10.4687 20.9688 11.0687 20.9688H19.0687C19.6687 20.9688 20.0687 20.5687 20.0687 19.9688V18.9688C20.0687 18.3687 19.6687 17.9688 19.0687 17.9688Z" fill="currentColor"/>
-									</svg>
-								</span>
-								<!--end::Svg Icon-->
-								<!--begin::Svg Icon | path: icons/duotune/general/gen054.svg-->
-								<span class="svg-icon svg-icon-white svg-icon-2 me-1">
-									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-										<path opacity="0.5" d="M18 2H9C7.34315 2 6 3.34315 6 5H8C8 4.44772 8.44772 4 9 4H18C18.5523 4 19 4.44772 19 5V16C19 16.5523 18.5523 17 18 17V19C19.6569 19 21 17.6569 21 16V5C21 3.34315 19.6569 2 18 2Z" fill="currentColor"/>
-										<path fill-rule="evenodd" clip-rule="evenodd" d="M14.7857 7.125H6.21429C5.62255 7.125 5.14286 7.6007 5.14286 8.1875V18.8125C5.14286 19.3993 5.62255 19.875 6.21429 19.875H14.7857C15.3774 19.875 15.8571 19.3993 15.8571 18.8125V8.1875C15.8571 7.6007 15.3774 7.125 14.7857 7.125ZM6.21429 5C4.43908 5 3 6.42709 3 8.1875V18.8125C3 20.5729 4.43909 22 6.21429 22H14.7857C16.5609 22 18 20.5729 18 18.8125V8.1875C18 6.42709 16.5609 5 14.7857 5H6.21429Z" fill="currentColor"/>
-									</svg>
-								</span>
-								<!--end::Svg Icon-->
-								<!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
-								<span class="svg-icon svg-icon-white svg-icon-2">
-									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-										<rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="currentColor"/>
-										<rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="currentColor"/>
-									</svg>
-								</span>
-								<!--end::Svg Icon-->
-							</div>
-						</div>
-						<!--end::Topbar-->
-						<!--begin::Card body-->
-						<div class="card-body pt-0">
-
-							<!--begin::Message(bot)-->
-							<div class="d-flex justify-content-start mt-8">
-								<!--begin::Wrapper-->
-								<div class="d-flex flex-column align-items-start">
-									<!--begin::Title-->
-									<div class="d-flex align-items-center mb-2">
-										<!--begin::Avatar-->
-										<div class="symbol symbol-50px">
-											<span class="svg-icon svg-icon-primary svg-icon-1">
-												<!--begin::Svg Icon | path: icons/Communication/Chat-smile.svg-->
-												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-													<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-														<rect x="0" y="0" width="24" height="24"/>
-														<polygon fill="#000000" opacity="0.3" points="5 15 3 21.5 9.5 19.5"/>
-														<path d="M13,2 C18.5228475,2 23,6.4771525 23,12 C23,17.5228475 18.5228475,22 13,22 C7.4771525,22 3,17.5228475 3,12 C3,6.4771525 7.4771525,2 13,2 Z M7.16794971,13.5547002 C8.67758127,15.8191475 10.6456687,17 13,17 C15.3543313,17 17.3224187,15.8191475 18.8320503,13.5547002 C19.1384028,13.0951715 19.0142289,12.4743022 18.5547002,12.1679497 C18.0951715,11.8615972 17.4743022,11.9857711 17.1679497,12.4452998 C16.0109146,14.1808525 14.6456687,15 13,15 C11.3543313,15 9.9890854,14.1808525 8.83205029,12.4452998 C8.52569784,11.9857711 7.90482849,11.8615972 7.4452998,12.1679497 C6.98577112,12.4743022 6.86159725,13.0951715 7.16794971,13.5547002 Z" fill="currentColor"/>
-													</g>
-												</svg>
-												<!--end::Svg Icon-->
-											</span>
+							<!--end::Topbar-->
+							<!--begin::Card body-->
+							<div class="card-body pt-0">
+	
+								<!--begin::Message(user)-->
+								<div class="d-flex justify-content-end mt-8">
+									<!--begin::Wrapper-->
+									<div class="d-flex flex-column align-items-end">
+										<!--begin::User-->
+										<div class="d-flex align-items-center mb-2">
+											<!--begin::Details-->
+											<div class="me-3">
+												<span class="text-gray-400 fs-8 fw-normal mb-1">5 mins</span>
+												<a href="javascript:void(0);" class="fs-5 fw-bold text-gray-900 text-hover-primary ms-3">홍길동</a>
+											</div>
+											<!--end::Details-->
+											<!--begin::Avatar-->
+											<div class="symbol symbol-50px">
+												<span class="svg-icon svg-icon-primary svg-icon-1">
+													<!--begin::Svg Icon | path: icons/General/User.svg-->
+													<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+														<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+															<polygon points="0 0 24 0 24 24 0 24"/>
+															<path d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
+															<path d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z" fill="currentColor" fill-rule="nonzero"/>
+														</g>
+													</svg>
+													<!--end::Svg Icon-->
+												</span>
+											</div>
+											<!--end::Avatar-->
 										</div>
-										<!--end::Avatar-->
-										<!--begin::Details-->
-										<div class="ms-3">
-											<a href="javascript:void(0);" class="fs-5 fw-bold text-gray-900 text-hover-primary me-3">보고 Bot</a>
-											<span class="text-gray-400 fs-8 fw-normal mb-1">2 mins</span>
+										<!--end::User-->
+										<!--begin::Text-->
+										<div class="p-5 rounded bg-light text-dark fw-normal mw-lg-400px text-end">
+											병원 좀 다녀오겠습니다.
 										</div>
-										<!--end::Details-->
+										<!--end::Text-->
 									</div>
-									<!--end::Title-->
-									<!--begin::Text-->
-									<div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-start">
-										홍길동 / 병원 좀 다녀오겠습니다.<br />
-										<!--begin::URL Area-->
-										<div class="mt-5">
-											<a href="javascript:void(0);" class="btn btn-primary btn-sm rounded-1">메시지 연결</a>
-										</div>
-										<!--end::URL Area-->
-									</div>
-									<!--end::Text-->
+									<!--end::Wrapper-->
 								</div>
-								<!--end::Wrapper-->
-							</div>
-							<!--end::Message(bot)-->
-						</div>
-						<!--end::Card body-->
-					</div>
-					<!--end::Card-->
-
-					<div class="fs-6 fw-semibold text-gray-700 mb-4">3. 대화방 연결 및 답변 확인</div>
-					<!--begin::Card-->
-					<div class="card mb-0">
-						<!--begin::Topbar-->
-						<div class="d-flex justify-content-between bg-primary rounded-3 rounded-bottom-0 px-2 py-2">
-							<div class="ms-3">
-								<!--begin::Svg Icon | icons/duotune/general/gen052.svg-->
-								<span class="svg-icon svg-icon-white svg-icon-2">
-									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-										<rect x="10" y="10" width="4" height="4" rx="2" fill="currentColor"/>
-										<rect x="17" y="10" width="4" height="4" rx="2" fill="currentColor"/>
-										<rect x="3" y="10" width="4" height="4" rx="2" fill="currentColor"/>
-									</svg>
-								</span>
-								<!--end::Svg Icon-->
-							</div>
-							<div class="me-3">
-								<!--begin::Svg Icon | icons/duotune/coding/cod004.svg-->
-								<span class="svg-icon svg-icon-white svg-icon-2 me-2">
-									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-										<path d="M19.0687 17.9688H11.0687C10.4687 17.9688 10.0687 18.3687 10.0687 18.9688V19.9688C10.0687 20.5687 10.4687 20.9688 11.0687 20.9688H19.0687C19.6687 20.9688 20.0687 20.5687 20.0687 19.9688V18.9688C20.0687 18.3687 19.6687 17.9688 19.0687 17.9688Z" fill="currentColor"/>
-									</svg>
-								</span>
-								<!--end::Svg Icon-->
-								<!--begin::Svg Icon | path: icons/duotune/general/gen054.svg-->
-								<span class="svg-icon svg-icon-white svg-icon-2 me-1">
-									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-										<path opacity="0.5" d="M18 2H9C7.34315 2 6 3.34315 6 5H8C8 4.44772 8.44772 4 9 4H18C18.5523 4 19 4.44772 19 5V16C19 16.5523 18.5523 17 18 17V19C19.6569 19 21 17.6569 21 16V5C21 3.34315 19.6569 2 18 2Z" fill="currentColor"/>
-										<path fill-rule="evenodd" clip-rule="evenodd" d="M14.7857 7.125H6.21429C5.62255 7.125 5.14286 7.6007 5.14286 8.1875V18.8125C5.14286 19.3993 5.62255 19.875 6.21429 19.875H14.7857C15.3774 19.875 15.8571 19.3993 15.8571 18.8125V8.1875C15.8571 7.6007 15.3774 7.125 14.7857 7.125ZM6.21429 5C4.43908 5 3 6.42709 3 8.1875V18.8125C3 20.5729 4.43909 22 6.21429 22H14.7857C16.5609 22 18 20.5729 18 18.8125V8.1875C18 6.42709 16.5609 5 14.7857 5H6.21429Z" fill="currentColor"/>
-									</svg>
-								</span>
-								<!--end::Svg Icon-->
-								<!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
-								<span class="svg-icon svg-icon-white svg-icon-2">
-									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-										<rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="currentColor"/>
-										<rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="currentColor"/>
-									</svg>
-								</span>
-								<!--end::Svg Icon-->
-							</div>
-						</div>
-						<!--end::Topbar-->
-						<!--begin::Card body-->
-						<div class="card-body pt-0">
-
-							<!--begin::Message(bot)-->
-							<div class="d-flex justify-content-start mt-8">
-								<!--begin::Wrapper-->
-								<div class="d-flex flex-column align-items-start">
-									<!--begin::Title-->
-									<div class="d-flex align-items-center mb-2">
-										<!--begin::Avatar-->
-										<div class="symbol symbol-50px">
-											<span class="svg-icon svg-icon-primary svg-icon-1">
-												<!--begin::Svg Icon | path: icons/Communication/Chat-smile.svg-->
-												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-													<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-														<rect x="0" y="0" width="24" height="24"/>
-														<polygon fill="#000000" opacity="0.3" points="5 15 3 21.5 9.5 19.5"/>
-														<path d="M13,2 C18.5228475,2 23,6.4771525 23,12 C23,17.5228475 18.5228475,22 13,22 C7.4771525,22 3,17.5228475 3,12 C3,6.4771525 7.4771525,2 13,2 Z M7.16794971,13.5547002 C8.67758127,15.8191475 10.6456687,17 13,17 C15.3543313,17 17.3224187,15.8191475 18.8320503,13.5547002 C19.1384028,13.0951715 19.0142289,12.4743022 18.5547002,12.1679497 C18.0951715,11.8615972 17.4743022,11.9857711 17.1679497,12.4452998 C16.0109146,14.1808525 14.6456687,15 13,15 C11.3543313,15 9.9890854,14.1808525 8.83205029,12.4452998 C8.52569784,11.9857711 7.90482849,11.8615972 7.4452998,12.1679497 C6.98577112,12.4743022 6.86159725,13.0951715 7.16794971,13.5547002 Z" fill="currentColor"/>
-													</g>
-												</svg>
-												<!--end::Svg Icon-->
-											</span>
+								<!--end::Message(user)-->
+	
+								<!--begin::Message(bot)-->
+								<div class="d-flex justify-content-start mt-8">
+									<!--begin::Wrapper-->
+									<div class="d-flex flex-column align-items-start">
+										<!--begin::Title-->
+										<div class="d-flex align-items-center mb-2">
+											<!--begin::Avatar-->
+											<div class="symbol symbol-50px">
+												<span class="svg-icon svg-icon-primary svg-icon-1">
+													<!--begin::Svg Icon | path: icons/Communication/Chat-smile.svg-->
+													<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+														<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+															<rect x="0" y="0" width="24" height="24"/>
+															<polygon fill="#000000" opacity="0.3" points="5 15 3 21.5 9.5 19.5"/>
+															<path d="M13,2 C18.5228475,2 23,6.4771525 23,12 C23,17.5228475 18.5228475,22 13,22 C7.4771525,22 3,17.5228475 3,12 C3,6.4771525 7.4771525,2 13,2 Z M7.16794971,13.5547002 C8.67758127,15.8191475 10.6456687,17 13,17 C15.3543313,17 17.3224187,15.8191475 18.8320503,13.5547002 C19.1384028,13.0951715 19.0142289,12.4743022 18.5547002,12.1679497 C18.0951715,11.8615972 17.4743022,11.9857711 17.1679497,12.4452998 C16.0109146,14.1808525 14.6456687,15 13,15 C11.3543313,15 9.9890854,14.1808525 8.83205029,12.4452998 C8.52569784,11.9857711 7.90482849,11.8615972 7.4452998,12.1679497 C6.98577112,12.4743022 6.86159725,13.0951715 7.16794971,13.5547002 Z" fill="currentColor"/>
+														</g>
+													</svg>
+													<!--end::Svg Icon-->
+												</span>
+											</div>
+											<!--end::Avatar-->
+											<!--begin::Details-->
+											<div class="ms-3">
+												<a href="javascript:void(0);" class="fs-5 fw-bold text-gray-900 text-hover-primary me-3">보고 Bot</a>
+												<span class="text-gray-400 fs-8 fw-normal mb-1">2 mins</span>
+											</div>
+											<!--end::Details-->
 										</div>
-										<!--end::Avatar-->
-										<!--begin::Details-->
-										<div class="ms-3">
-											<a href="javascript:void(0);" class="fs-5 fw-bold text-gray-900 text-hover-primary me-3">보고 Bot</a>
-											<span class="text-gray-400 fs-8 fw-normal mb-1">2 mins</span>
+										<!--end::Title-->
+										<!--begin::Text-->
+										<div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-start">
+											담당자에게 메시지를 전달 하였습니다.<br/>잠시만 기다려 주세요.
 										</div>
-										<!--end::Details-->
+										<!--end::Text-->
 									</div>
-									<!--end::Title-->
-									<!--begin::Text-->
-									<div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-start">
-										홍길동님과의 대화가 시작되었습니다.
-									</div>
-									<!--end::Text-->
+									<!--end::Wrapper-->
 								</div>
-								<!--end::Wrapper-->
+								<!--end::Message(bot)-->
 							</div>
-							<!--end::Message(bot)-->
-
-							<!--begin::Message(user)-->
-							<div class="d-flex justify-content-end mt-8">
-								<!--begin::Wrapper-->
-								<div class="d-flex flex-column align-items-end">
-									<!--begin::User-->
-									<div class="d-flex align-items-center mb-2">
-										<!--begin::Details-->
-										<div class="me-3">
-											<span class="text-gray-400 fs-8 fw-normal mb-1">5 mins</span>
-											<a href="javascript:void(0);" class="fs-5 fw-bold text-gray-900 text-hover-primary ms-3">관리자1</a>
-										</div>
-										<!--end::Details-->
-										<!--begin::Avatar-->
-										<div class="symbol symbol-50px">
-											<span class="svg-icon svg-icon-primary svg-icon-1">
-												<!--begin::Svg Icon | path: icons/General/User.svg-->
-												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-													<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-														<polygon points="0 0 24 0 24 24 0 24"/>
-														<path d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
-														<path d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z" fill="currentColor" fill-rule="nonzero"/>
-													</g>
-												</svg>
-												<!--end::Svg Icon-->
-											</span>
-										</div>
-										<!--end::Avatar-->
-									</div>
-									<!--end::User-->
-									<!--begin::Text-->
-									<div class="p-5 rounded bg-light text-dark fw-normal mw-lg-400px text-end">
-										홍길동 주임, 어디 많이 아파..?
-									</div>
-									<!--end::Text-->
-								</div>
-								<!--end::Wrapper-->
-							</div>
-							<!--end::Message(user)-->
+							<!--end::Card body-->
 						</div>
-						<!--end::Card body-->
-					</div>
-					<!--end::Card-->
+						<!--end::Card-->
+	
+						<div class="fs-6 fw-semibold text-gray-700 mb-4">2. 결재자(관리자) 메시지 전달</div>
+						<!--begin::Card-->
+						<div class="card mb-8">
+							<!--begin::Topbar-->
+							<div class="d-flex justify-content-between bg-primary rounded-3 rounded-bottom-0 px-2 py-2">
+								<div class="ms-3">
+									<span class="" style="color:white;">1:N 보고 BOT 시나리오</span>
+								</div>
+								<div class="me-3">
+									<!--begin::Svg Icon | icons/duotune/coding/cod004.svg-->
+									<span class="svg-icon svg-icon-white svg-icon-2 me-2">
+										<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path d="M19.0687 17.9688H11.0687C10.4687 17.9688 10.0687 18.3687 10.0687 18.9688V19.9688C10.0687 20.5687 10.4687 20.9688 11.0687 20.9688H19.0687C19.6687 20.9688 20.0687 20.5687 20.0687 19.9688V18.9688C20.0687 18.3687 19.6687 17.9688 19.0687 17.9688Z" fill="currentColor"/>
+										</svg>
+									</span>
+									<!--end::Svg Icon-->
+									<!--begin::Svg Icon | path: icons/duotune/general/gen054.svg-->
+									<span class="svg-icon svg-icon-white svg-icon-2 me-1">
+										<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path opacity="0.5" d="M18 2H9C7.34315 2 6 3.34315 6 5H8C8 4.44772 8.44772 4 9 4H18C18.5523 4 19 4.44772 19 5V16C19 16.5523 18.5523 17 18 17V19C19.6569 19 21 17.6569 21 16V5C21 3.34315 19.6569 2 18 2Z" fill="currentColor"/>
+											<path fill-rule="evenodd" clip-rule="evenodd" d="M14.7857 7.125H6.21429C5.62255 7.125 5.14286 7.6007 5.14286 8.1875V18.8125C5.14286 19.3993 5.62255 19.875 6.21429 19.875H14.7857C15.3774 19.875 15.8571 19.3993 15.8571 18.8125V8.1875C15.8571 7.6007 15.3774 7.125 14.7857 7.125ZM6.21429 5C4.43908 5 3 6.42709 3 8.1875V18.8125C3 20.5729 4.43909 22 6.21429 22H14.7857C16.5609 22 18 20.5729 18 18.8125V8.1875C18 6.42709 16.5609 5 14.7857 5H6.21429Z" fill="currentColor"/>
+										</svg>
+									</span>
+									<!--end::Svg Icon-->
+									<!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+									<span class="svg-icon svg-icon-white svg-icon-2">
+										<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="currentColor"/>
+											<rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="currentColor"/>
+										</svg>
+									</span>
+									<!--end::Svg Icon-->
+								</div>
+							</div>
+							<!--end::Topbar-->
+							<!--begin::Card body-->
+							<div class="card-body pt-0">
+	
+								<!--begin::Message(bot)-->
+								<div class="d-flex justify-content-start mt-8">
+									<!--begin::Wrapper-->
+									<div class="d-flex flex-column align-items-start">
+										<!--begin::Title-->
+										<div class="d-flex align-items-center mb-2">
+											<!--begin::Avatar-->
+											<div class="symbol symbol-50px">
+												<span class="svg-icon svg-icon-primary svg-icon-1">
+													<!--begin::Svg Icon | path: icons/Communication/Chat-smile.svg-->
+													<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+														<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+															<rect x="0" y="0" width="24" height="24"/>
+															<polygon fill="#000000" opacity="0.3" points="5 15 3 21.5 9.5 19.5"/>
+															<path d="M13,2 C18.5228475,2 23,6.4771525 23,12 C23,17.5228475 18.5228475,22 13,22 C7.4771525,22 3,17.5228475 3,12 C3,6.4771525 7.4771525,2 13,2 Z M7.16794971,13.5547002 C8.67758127,15.8191475 10.6456687,17 13,17 C15.3543313,17 17.3224187,15.8191475 18.8320503,13.5547002 C19.1384028,13.0951715 19.0142289,12.4743022 18.5547002,12.1679497 C18.0951715,11.8615972 17.4743022,11.9857711 17.1679497,12.4452998 C16.0109146,14.1808525 14.6456687,15 13,15 C11.3543313,15 9.9890854,14.1808525 8.83205029,12.4452998 C8.52569784,11.9857711 7.90482849,11.8615972 7.4452998,12.1679497 C6.98577112,12.4743022 6.86159725,13.0951715 7.16794971,13.5547002 Z" fill="currentColor"/>
+														</g>
+													</svg>
+													<!--end::Svg Icon-->
+												</span>
+											</div>
+											<!--end::Avatar-->
+											<!--begin::Details-->
+											<div class="ms-3">
+												<a href="javascript:void(0);" class="fs-5 fw-bold text-gray-900 text-hover-primary me-3">보고 Bot</a>
+												<span class="text-gray-400 fs-8 fw-normal mb-1">2 mins</span>
+											</div>
+											<!--end::Details-->
+										</div>
+										<!--end::Title-->
+										<!--begin::Text-->
+										<div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-start">
+											홍길동님으로부터 메시지가 도착하였습니다.<br />선택해주세요.<br/>요청일자:2023-01-01 08:00:00
+											<!--begin::URL Area-->
+											<div class="mt-5">
+												<a href="javascript:void(0);" class="btn btn-primary btn-sm rounded-1">메시지 연결</a>
+											</div>
+											<!--end::URL Area-->
+										</div>
+										<!--end::Text-->
+									</div>
+									<!--end::Wrapper-->
+								</div>
+								<!--end::Message(bot)-->
+							</div>
+							<!--end::Card body-->
+						</div>
+						<!--end::Card-->
+					</span>
+					<span class="scen_modal_tab" data-scen_teb="2" style="display: none;">
+						<div class="fs-6 fw-semibold text-gray-700 mb-4">1. 상황 인지 및 답변 안내</div>
+						<!--begin::Card-->
+						<div class="card mb-8">
+							<!--begin::Topbar-->
+							<div class="d-flex justify-content-between bg-primary rounded-3 rounded-bottom-0 px-2 py-2">
+								<div class="ms-3">
+									<span class="" style="color:white;">보고 Bot</span>
+									<!--begin::Svg Icon | icons/duotune/general/gen052.svg-->
+									<!-- <span class="svg-icon svg-icon-white svg-icon-2">
+										<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<rect x="10" y="10" width="4" height="4" rx="2" fill="currentColor"/>
+											<rect x="17" y="10" width="4" height="4" rx="2" fill="currentColor"/>
+											<rect x="3" y="10" width="4" height="4" rx="2" fill="currentColor"/>
+										</svg>
+									</span> -->
+									<!--end::Svg Icon-->
+								</div>
+								<div class="me-3">
+									<!--begin::Svg Icon | icons/duotune/coding/cod004.svg-->
+									<span class="svg-icon svg-icon-white svg-icon-2 me-2">
+										<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path d="M19.0687 17.9688H11.0687C10.4687 17.9688 10.0687 18.3687 10.0687 18.9688V19.9688C10.0687 20.5687 10.4687 20.9688 11.0687 20.9688H19.0687C19.6687 20.9688 20.0687 20.5687 20.0687 19.9688V18.9688C20.0687 18.3687 19.6687 17.9688 19.0687 17.9688Z" fill="currentColor"/>
+										</svg>
+									</span>
+									<!--end::Svg Icon-->
+									<!--begin::Svg Icon | path: icons/duotune/general/gen054.svg-->
+									<span class="svg-icon svg-icon-white svg-icon-2 me-1">
+										<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path opacity="0.5" d="M18 2H9C7.34315 2 6 3.34315 6 5H8C8 4.44772 8.44772 4 9 4H18C18.5523 4 19 4.44772 19 5V16C19 16.5523 18.5523 17 18 17V19C19.6569 19 21 17.6569 21 16V5C21 3.34315 19.6569 2 18 2Z" fill="currentColor"/>
+											<path fill-rule="evenodd" clip-rule="evenodd" d="M14.7857 7.125H6.21429C5.62255 7.125 5.14286 7.6007 5.14286 8.1875V18.8125C5.14286 19.3993 5.62255 19.875 6.21429 19.875H14.7857C15.3774 19.875 15.8571 19.3993 15.8571 18.8125V8.1875C15.8571 7.6007 15.3774 7.125 14.7857 7.125ZM6.21429 5C4.43908 5 3 6.42709 3 8.1875V18.8125C3 20.5729 4.43909 22 6.21429 22H14.7857C16.5609 22 18 20.5729 18 18.8125V8.1875C18 6.42709 16.5609 5 14.7857 5H6.21429Z" fill="currentColor"/>
+										</svg>
+									</span>
+									<!--end::Svg Icon-->
+									<!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+									<span class="svg-icon svg-icon-white svg-icon-2">
+										<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="currentColor"/>
+											<rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="currentColor"/>
+										</svg>
+									</span>
+									<!--end::Svg Icon-->
+								</div>
+							</div>
+							<!--end::Topbar-->
+							<!--begin::Card body-->
+							<div class="card-body pt-0">
+	
+								<!--begin::Message(user)-->
+								<div class="d-flex justify-content-end mt-8">
+									<!--begin::Wrapper-->
+									<div class="d-flex flex-column align-items-end">
+										<!--begin::User-->
+										<div class="d-flex align-items-center mb-2">
+											<!--begin::Details-->
+											<div class="me-3">
+												<span class="text-gray-400 fs-8 fw-normal mb-1">5 mins</span>
+												<a href="javascript:void(0);" class="fs-5 fw-bold text-gray-900 text-hover-primary ms-3">홍길동</a>
+											</div>
+											<!--end::Details-->
+											<!--begin::Avatar-->
+											<div class="symbol symbol-50px">
+												<span class="svg-icon svg-icon-primary svg-icon-1">
+													<!--begin::Svg Icon | path: icons/General/User.svg-->
+													<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+														<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+															<polygon points="0 0 24 0 24 24 0 24"/>
+															<path d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
+															<path d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z" fill="currentColor" fill-rule="nonzero"/>
+														</g>
+													</svg>
+													<!--end::Svg Icon-->
+												</span>
+											</div>
+											<!--end::Avatar-->
+										</div>
+										<!--end::User-->
+										<!--begin::Text-->
+										<div class="p-5 rounded bg-light text-dark fw-normal mw-lg-400px text-end">
+											병원 좀 다녀오겠습니다.
+										</div>
+										<!--end::Text-->
+									</div>
+									<!--end::Wrapper-->
+								</div>
+								<!--end::Message(user)-->
+	
+								<!--begin::Message(bot)-->
+								<div class="d-flex justify-content-start mt-8">
+									<!--begin::Wrapper-->
+									<div class="d-flex flex-column align-items-start">
+										<!--begin::Title-->
+										<div class="d-flex align-items-center mb-2">
+											<!--begin::Avatar-->
+											<div class="symbol symbol-50px">
+												<span class="svg-icon svg-icon-primary svg-icon-1">
+													<!--begin::Svg Icon | path: icons/Communication/Chat-smile.svg-->
+													<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+														<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+															<rect x="0" y="0" width="24" height="24"/>
+															<polygon fill="#000000" opacity="0.3" points="5 15 3 21.5 9.5 19.5"/>
+															<path d="M13,2 C18.5228475,2 23,6.4771525 23,12 C23,17.5228475 18.5228475,22 13,22 C7.4771525,22 3,17.5228475 3,12 C3,6.4771525 7.4771525,2 13,2 Z M7.16794971,13.5547002 C8.67758127,15.8191475 10.6456687,17 13,17 C15.3543313,17 17.3224187,15.8191475 18.8320503,13.5547002 C19.1384028,13.0951715 19.0142289,12.4743022 18.5547002,12.1679497 C18.0951715,11.8615972 17.4743022,11.9857711 17.1679497,12.4452998 C16.0109146,14.1808525 14.6456687,15 13,15 C11.3543313,15 9.9890854,14.1808525 8.83205029,12.4452998 C8.52569784,11.9857711 7.90482849,11.8615972 7.4452998,12.1679497 C6.98577112,12.4743022 6.86159725,13.0951715 7.16794971,13.5547002 Z" fill="currentColor"/>
+														</g>
+													</svg>
+													<!--end::Svg Icon-->
+												</span>
+											</div>
+											<!--end::Avatar-->
+											<!--begin::Details-->
+											<div class="ms-3">
+												<a href="javascript:void(0);" class="fs-5 fw-bold text-gray-900 text-hover-primary me-3">보고 Bot</a>
+												<span class="text-gray-400 fs-8 fw-normal mb-1">2 mins</span>
+											</div>
+											<!--end::Details-->
+										</div>
+										<!--end::Title-->
+										<!--begin::Text-->
+										<div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-start">
+											담당자에게 메시지를 전달 하였습니다.<br/>잠시만 기다려 주세요.
+										</div>
+										<!--end::Text-->
+									</div>
+									<!--end::Wrapper-->
+								</div>
+								<!--end::Message(bot)-->
+							</div>
+							<!--end::Card body-->
+						</div>
+						<!--end::Card-->
+	
+						<div class="fs-6 fw-semibold text-gray-700 mb-4">2. 결재자(관리자) 메시지 전달</div>
+						<!--begin::Card-->
+						<div class="card mb-8">
+							<!--begin::Topbar-->
+							<div class="d-flex justify-content-between bg-primary rounded-3 rounded-bottom-0 px-2 py-2">
+								<div class="ms-3">
+									<span class="" style="color:white;">1:N 보고 BOT 시나리오</span>
+								</div>
+								<div class="me-3">
+									<!--begin::Svg Icon | icons/duotune/coding/cod004.svg-->
+									<span class="svg-icon svg-icon-white svg-icon-2 me-2">
+										<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path d="M19.0687 17.9688H11.0687C10.4687 17.9688 10.0687 18.3687 10.0687 18.9688V19.9688C10.0687 20.5687 10.4687 20.9688 11.0687 20.9688H19.0687C19.6687 20.9688 20.0687 20.5687 20.0687 19.9688V18.9688C20.0687 18.3687 19.6687 17.9688 19.0687 17.9688Z" fill="currentColor"/>
+										</svg>
+									</span>
+									<!--end::Svg Icon-->
+									<!--begin::Svg Icon | path: icons/duotune/general/gen054.svg-->
+									<span class="svg-icon svg-icon-white svg-icon-2 me-1">
+										<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path opacity="0.5" d="M18 2H9C7.34315 2 6 3.34315 6 5H8C8 4.44772 8.44772 4 9 4H18C18.5523 4 19 4.44772 19 5V16C19 16.5523 18.5523 17 18 17V19C19.6569 19 21 17.6569 21 16V5C21 3.34315 19.6569 2 18 2Z" fill="currentColor"/>
+											<path fill-rule="evenodd" clip-rule="evenodd" d="M14.7857 7.125H6.21429C5.62255 7.125 5.14286 7.6007 5.14286 8.1875V18.8125C5.14286 19.3993 5.62255 19.875 6.21429 19.875H14.7857C15.3774 19.875 15.8571 19.3993 15.8571 18.8125V8.1875C15.8571 7.6007 15.3774 7.125 14.7857 7.125ZM6.21429 5C4.43908 5 3 6.42709 3 8.1875V18.8125C3 20.5729 4.43909 22 6.21429 22H14.7857C16.5609 22 18 20.5729 18 18.8125V8.1875C18 6.42709 16.5609 5 14.7857 5H6.21429Z" fill="currentColor"/>
+										</svg>
+									</span>
+									<!--end::Svg Icon-->
+									<!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+									<span class="svg-icon svg-icon-white svg-icon-2">
+										<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="currentColor"/>
+											<rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="currentColor"/>
+										</svg>
+									</span>
+									<!--end::Svg Icon-->
+								</div>
+							</div>
+							<!--end::Topbar-->
+							<!--begin::Card body-->
+							<div class="card-body pt-0">
+	
+								<!--begin::Message(bot)-->
+								<div class="d-flex justify-content-start mt-8">
+									<!--begin::Wrapper-->
+									<div class="d-flex flex-column align-items-start">
+										<!--begin::Title-->
+										<div class="d-flex align-items-center mb-2">
+											<!--begin::Avatar-->
+											<div class="symbol symbol-50px">
+												<span class="svg-icon svg-icon-primary svg-icon-1">
+													<!--begin::Svg Icon | path: icons/Communication/Chat-smile.svg-->
+													<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+														<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+															<rect x="0" y="0" width="24" height="24"/>
+															<polygon fill="#000000" opacity="0.3" points="5 15 3 21.5 9.5 19.5"/>
+															<path d="M13,2 C18.5228475,2 23,6.4771525 23,12 C23,17.5228475 18.5228475,22 13,22 C7.4771525,22 3,17.5228475 3,12 C3,6.4771525 7.4771525,2 13,2 Z M7.16794971,13.5547002 C8.67758127,15.8191475 10.6456687,17 13,17 C15.3543313,17 17.3224187,15.8191475 18.8320503,13.5547002 C19.1384028,13.0951715 19.0142289,12.4743022 18.5547002,12.1679497 C18.0951715,11.8615972 17.4743022,11.9857711 17.1679497,12.4452998 C16.0109146,14.1808525 14.6456687,15 13,15 C11.3543313,15 9.9890854,14.1808525 8.83205029,12.4452998 C8.52569784,11.9857711 7.90482849,11.8615972 7.4452998,12.1679497 C6.98577112,12.4743022 6.86159725,13.0951715 7.16794971,13.5547002 Z" fill="currentColor"/>
+														</g>
+													</svg>
+													<!--end::Svg Icon-->
+												</span>
+											</div>
+											<!--end::Avatar-->
+											<!--begin::Details-->
+											<div class="ms-3">
+												<a href="javascript:void(0);" class="fs-5 fw-bold text-gray-900 text-hover-primary me-3">보고 Bot</a>
+												<span class="text-gray-400 fs-8 fw-normal mb-1">2 mins</span>
+											</div>
+											<!--end::Details-->
+										</div>
+										<!--end::Title-->
+										<!--begin::Text-->
+										<div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-start">
+											홍길동님으로부터 메시지가 도착하였습니다.<br />선택해주세요.<br/>요청일자:2023-01-01 08:00:00
+											<!--begin::URL Area-->
+											<div class="mt-5">
+												<a href="javascript:void(0);" class="btn btn-primary btn-sm rounded-1">메시지 연결</a>
+											</div>
+											<!--end::URL Area-->
+										</div>
+										<!--end::Text-->
+									</div>
+									<!--end::Wrapper-->
+								</div>
+								<!--end::Message(bot)-->
+							</div>
+							<!--end::Card body-->
+						</div>
+						<!--end::Card-->
+					</span>
 				</div>
 			</div>
 			<!--begin::Modal footer-->
@@ -713,8 +805,10 @@
 	</div>
 </div>
 <!--end::Modal - Scenario Preview-->
+{% include './Example/naverworks-modal.html' %}
 <!--end::Modals-->
 {% endblock %}
+
 
 {% block scripts %}
 <!--begin::Alert | Simpler-->
@@ -872,8 +966,8 @@
 	btnMemberAdd.addEventListener('click',e => {
 		let divMembers = activeForm.querySelector('#divMembers');
 		let inputMember = activeForm.querySelector("input[name=member_add]");
-		if(inputMember.value.trim() == "") return false;
-		settingMmebers(divMembers, inputMember.value);
+		if(inputMember.value.replace(/ /g,'') == "") return false;
+		settingMmebers(divMembers, inputMember.value.replace(/ /g,''));
 		inputMember.value = "";
 		setInputMembers();
 	});
@@ -957,7 +1051,7 @@ var FormScenAdd_1 = function () {
 					'members': {
 						validators: {
 							notEmpty: {
-								message: 'Member는 필수값입니다.'
+								message: 'Member Id는 필수값입니다.'
 							}
 						}
 					}
@@ -996,46 +1090,61 @@ var FormScenAdd_1 = function () {
 						formData.append("csrfmiddlewaretoken", Cookies("csrftoken"));
 						formData.append("type", "regScen");
 				
-				
-						fetch(url, {
-							method: "POST",
-							cache: 'no-cache',
-							body: formData,
-						}).then((response) => {
-							if (!response.ok || response.status != '200') {
-								throw new Error('연결 실패. 다시 요청하세요.\n' + response.statusText + "(" + response.status + ")");
+						Swal.fire({
+							html: '<strong class="fs-4">Scenario를 저장 하시겠습니까?</span><br/><span class="fw-normal fs-7 mt-2 ms-2 text-gray-600">시나리오 저장과 동시에 새로운 그룹채팅방이 생성되며<br/>"1:N 보고 BOT 시나리오 방이 생성되었습니다."<br/>라는 메시지가 발송됩니다.</span>',
+							icon: "warning",
+							buttonsStyling: false,
+							showCancelButton: true,
+							confirmButtonText: '<a class="text-white">삭제</a>',
+							cancelButtonText: '<a class="text-gray-500">취소</a>',
+							customClass: {
+								confirmButton: "btn btn-danger px-5 py-2",
+								cancelButton: "btn btn-light px-5 py-2"
 							}
-							return response.json();
-						}).then((res) => {
-							submitButton.removeAttribute('data-kt-indicator');
-							// Enable button
-							submitButton.disabled = false;
-							if(res.flag == 0){
-								Swal.fire({
-									html: `<strong class="fs-4">Scenario 저장 확인</strong><br /><span class="fs-6">Scenario 저장이 정상적으로 완료되었습니다.</span>`,
-									icon: "success",
-									buttonsStyling: false,
-									confirmButtonText: "확인",
-									customClass: {
-										confirmButton: "btn btn-primary px-5 py-2",
+						}).then(ev => {
+							if(ev.isConfirmed){
+								fetch(url, {
+									method: "POST",
+									cache: 'no-cache',
+									body: formData,
+								}).then((response) => {
+									if (!response.ok || response.status != '200') {
+										throw new Error('연결 실패. 다시 요청하세요.\n' + response.statusText + "(" + response.status + ")");
 									}
-								}).then(e=>{
-									location.href='./scenarioList'
+									return response.json();
+								}).then((res) => {
+									submitButton.removeAttribute('data-kt-indicator');
+									// Enable button
+									submitButton.disabled = false;
+									if(res.flag == 0){
+										Swal.fire({
+											html: `<strong class="fs-4">Scenario 저장 확인</strong><br /><span class="fs-6">Scenario 생성이 정상적으로 완료되었습니다.</span>`,
+											icon: "success",
+											buttonsStyling: false,
+											confirmButtonText: "확인",
+											customClass: {
+												confirmButton: "btn btn-primary px-5 py-2",
+											}
+										}).then(e=>{
+											location.href='./scenarioList'
+										});
+									}else{
+										throw new Error(res.result_msg);
+									}
+								}).catch((err) => {
+									Swal.fire({
+										text: err,
+										icon: "error",
+										buttonsStyling: false,
+										confirmButtonText: "확인",
+										customClass: {
+											confirmButton: "btn btn-primary"
+										}
+									});
 								});
-							}else{
-								throw new Error(res.result_msg);
 							}
-						}).catch((err) => {
-							Swal.fire({
-								text: err,
-								icon: "error",
-								buttonsStyling: false,
-								confirmButtonText: "확인",
-								customClass: {
-									confirmButton: "btn btn-primary"
-								}
-							});
 						});
+				
 					} else {
 						// Show error popuo. For more info check the plugin's official documentation: https://sweetalert2.github.io/
 						Swal.fire({
@@ -1082,6 +1191,18 @@ KTUtil.onDOMContentLoaded(function () {
 ;
 //# sourceMappingURL=create-api-key.js.map
 
+
+// select2 변경 이벤트
+KTUtil.onDOMContentLoaded(function () {
+	select2ChangeEventListener = function(e){
+		if(e.value != ''){
+			let feedback = e.parentElement.querySelector('.invalid-feedback');
+			if(feedback != null){
+				feedback.innerHTML = '';
+			}
+		}
+	}
+});
 </script>
 <!--end::Alert | Simpler-->
 {% endblock %}

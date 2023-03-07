@@ -117,6 +117,28 @@ function decodeByAES256(data){
 var modalClose = function() {
     let modal = document.querySelectorAll('div.modal.show')
     for (let i = 0; i < modal.length; i++){
+        modalFeedbackReset(modal[i]);
         (bootstrap.Modal.getInstance(modal[i])).hide();
     }
 }
+
+
+//===========================================================================================
+//Modal feedback reset
+//===========================================================================================
+var modalFeedbackReset = function(modal) {
+    let feedback = modal.querySelectorAll('div.invalid-feedback');
+    for (let i = 0; i < feedback.length; i++){
+        feedback[i].innerHTML = '';
+    }
+}
+
+
+
+//===========================================================================================
+// 이미지 확대
+//===========================================================================================
+window.addEventListener("load", function() {
+    var images = document.querySelector('data-image-zoom')
+
+});

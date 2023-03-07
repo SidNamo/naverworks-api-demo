@@ -2,16 +2,19 @@ import requests
 import base64
 import json
 import re
-# import hashlib
 # import time
 import datetime
 from urllib import parse
 from NWAD.models import *
 from AUTH.authApi import *
 from django.conf import settings
+from django.contrib.auth.hashers import make_password
+from Crypto.Cipher import AES
+from hashlib import sha512
 
 host = settings.DEFAULT_DOMAIN
-
+aes256key = b'didim365didim365'
+aes256iv = b'563midid563midid'
 
 """
 공용으로 사용되는 Util 함수 모음
@@ -20,13 +23,43 @@ host = settings.DEFAULT_DOMAIN
 """
 각종 string 인코딩
 """
-def base64encode(jsonString):
-    jsonString = json.dumps(jsonString, separators=(",", ":"))
-    jsonString = base64.b64encode(jsonString.encode('utf-8'))
-    result = jsonString.decode('utf-8')
-    return result
+def aes256encrypt(plaintext):
+    # 패딩을 적용
+    padding_length = AES.block_size - len(plaintext) % AES.block_size
+    padding = chr(padding_length) * padding_length
+    padded_text = plaintext + padding
 
-def sha256encode(jsonString):
+    # 암호화
+    cipher = AES.new(aes256key, AES.MODE_CBC, aes256iv)
+    encrypted_text = cipher.encrypt(padded_text.encode('utf-8'))
+
+    # 암호화된 값을 base64로 인코딩하여 반환
+    encoded_encrypted_text = base64.b64encode(encrypted_text).decode('utf-8')
+    return encoded_encrypted_text
+
+def aes256decrypt(encoded_encrypted_text):
+    # 저장된 값을 디코딩하고, 복호화
+    decoded_encrypted_text = base64.b64decode(encoded_encrypted_text)
+    cipher = AES.new(aes256key, AES.MODE_CBC, aes256iv)
+    decrypted_text = cipher.decrypt(decoded_encrypted_text).decode('utf-8')
+
+    # 복호화된 값에서 패딩 제거 후 반환
+    padding_length = ord(decrypted_text[-1])
+    decrypted_text = decrypted_text[:-padding_length]
+    return decrypted_text
+
+def sha512encrypt(string):
+    # 문자열을 byte 형태로 인코딩
+    string_bytes = string.encode('utf-8')
+    
+    # SHA-512 암호화 수행
+    sha512_hash = sha512(string_bytes)
+    hashed_string = sha512_hash.hexdigest()
+    
+    # 암호화된 문자열 리턴
+    return hashed_string
+
+def base64encode(jsonString):
     jsonString = json.dumps(jsonString, separators=(",", ":"))
     jsonString = base64.b64encode(jsonString.encode('utf-8'))
     result = jsonString.decode('utf-8')
@@ -94,6 +127,7 @@ def getClientIp(request):
 def insertLog(request, msg):
     msg = request.path + "    " + msg
     msg += "    IP(" + getClientIp(request) + ")"
+    
     log.objects.create(
         msg=msg,
         reg_user="system"
@@ -155,7 +189,7 @@ def tokenReg(tokenData):
             )
             if item.first() is not None:
                 item.update(
-                    token=tokenData[type["type"]],
+                    token=aes256encrypt(tokenData[type["type"]]),
                     exp_date=getTime(type["exp"])
                 )
             else:
@@ -164,7 +198,7 @@ def tokenReg(tokenData):
                     type=type["type"],
                     scope=tokenData["scope"],
                     reg_date=getTime(),
-                    token=tokenData[type["type"]],
+                    token=aes256encrypt(tokenData[type["type"]]),
                     exp_date=getTime(type["exp"])
                 )
     
@@ -215,7 +249,7 @@ def getAccessToken(apiNo, type="access_token"):
             exp_date__gt=getTime()
         ).first()
         if tokenData is not None:
-            accessToken = tokenData.token
+            accessToken = aes256decrypt(tokenData.token)
     elif type == "refresh_token":
         # RefreshToken 조회
         tokenData = token.objects.filter(
@@ -225,12 +259,12 @@ def getAccessToken(apiNo, type="access_token"):
         exp_date__gt=getTime()
         ).first()
         if tokenData is not None:
-            apidata["refresh_token"] = tokenData.token
+            apidata["refresh_token"] = aes256decrypt(tokenData.token)
 
             res = authRefreshToken(
                 client_id=apiData.client_id,
                 client_secret=apiData.client_secret,
-                refresh_token=tokenData.token
+                refresh_token=aes256decrypt(tokenData.token)
             )
             result = strToJson(res.text) # 인증 완료 후 응답 값
             if res.status_code == 200 or res.status_code == 201:
@@ -243,9 +277,9 @@ def getAccessToken(apiNo, type="access_token"):
 
         res = authJwt(
             client_id=apiData.client_id,
-            client_secret=apiData.client_secret,
-            service_account=apiData.service_account,
-            private_key=apiData.private_key,
+            client_secret=aes256decrypt(apiData.client_secret),
+            service_account=aes256decrypt(apiData.service_account),
+            private_key=aes256decrypt(apiData.private_key),
             scope=apiData.scope
         )
         result = strToJson(res.text) # 인증 완료 후 응답 값

@@ -36,6 +36,9 @@ urlpatterns = [
     path('Message/textMessage', nwad.textMessage, name="Message/textMessage"),
 
     path('Scenario/scenarioReg', nwad.scenarioReg, name="Scenario/scenarioReg"),
-    path('botResponse', nwad.botResponse, name="botResponse"),
     path('callback', nwad.callback, name="callback"),
+    # path('testCallback', nwad.testCallback, name="testCallback"),
+
+
+    path('testPage', nwad.testPage, name="testPage"),
 ]

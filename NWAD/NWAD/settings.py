@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 import os
 import pymysql
+import hashlib
 from pathlib import Path
 
 pymysql.install_as_MySQLdb()
@@ -142,3 +143,21 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 DEFAULT_DOMAIN = ''
 
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA512PasswordHasher',
+    'django.contrib.auth.hashers.Argon2PasswordHasher',
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+    'django.contrib.auth.hashers.BCryptPasswordHasher',
+    'django.contrib.auth.hashers.SHA1PasswordHasher',
+    'django.contrib.auth.hashers.MD5PasswordHasher',
+    'django.contrib.auth.hashers.UnsaltedMD5PasswordHasher',
+    'django.contrib.auth.hashers.CryptPasswordHasher',
+]
+
+# PBKDF2 알고리즘의 설정값을 아래와 같이 지정할 수 있습니다.
+# 이 경우, 해시 알고리즘은 SHA512가 됩니다.
+PASSWORD_HASHERS_PBKDF2 = 'django.contrib.auth.hashers.PBKDF2PasswordHasher'
+PASSWORD_HASHERS_PBKDF2_ROUNDS = 180000
+PASSWORD_HASHERS_PBKDF2_DIGEST = hashlib.sha512

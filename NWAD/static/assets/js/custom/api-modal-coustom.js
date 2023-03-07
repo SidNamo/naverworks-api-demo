@@ -136,6 +136,7 @@ var ModalApiListAdd = function () {
 									if (result.isConfirmed) {
 										modal.hide();
 										form.reset(); // Reset form	
+										modalFeedbackReset(modalEl);
 									}
 								});
 							}else{
@@ -165,6 +166,8 @@ var ModalApiListAdd = function () {
 							customClass: {
 								confirmButton: "btn btn-primary"
 							}
+						}).then(e=>{
+							modalTabSet();
 						});
 					}
 				});
@@ -189,7 +192,8 @@ var ModalApiListAdd = function () {
 			}).then(function (result) {
 				if (result.value) {
 					form.reset(); // Reset form	
-					modal.hide(); // Hide modal				
+					modal.hide(); // Hide modal		
+					modalFeedbackReset(modalEl);		
 				} else if (result.dismiss === 'cancel') {
 				}
 			});
@@ -608,6 +612,8 @@ var ModalBotListAdd = function () {
 							customClass: {
 								confirmButton: "btn btn-primary"
 							}
+						}).then(e=>{
+							modalTabSet();
 						});
 					}
 				});
@@ -982,7 +988,6 @@ var __webpack_exports__ = {};
 // Class definition
 var DivBotMessageSend = function () {
 	var submitButton;
-	var cancelButton;
 	var validator;
 	var form;
 
@@ -1118,46 +1123,6 @@ var DivBotMessageSend = function () {
 				});
 			}
 		});
-
-		cancelButton.addEventListener('click', function (e) {
-			e.preventDefault();
-
-			// Validate form before submit
-			if (validator) {
-				validator.validate().then(function (status) {
-					//console.log('validated!');
-
-					if (status == 'Valid') {
-						let sampleBox = document.getElementById('divSampleMessage');
-						let message = document.querySelector('textarea[name=message]').value.replace(/(?:\r\n|\r|\n)/g, '<br/>');
-						if (document.querySelector('input[name=message_type]:checked').value == "textUrl") {
-							message += `
-								<!--begin::URL Area-->
-								<div class="mt-5">
-									<a href="#" class="btn btn-sm rounded-1 w-100 h-35px" style="color:white; background-color:` + document.querySelector('input[name=btn_color]').value + `">` + document.querySelector('input[name=btn_text]').value.substr(0,20) + `</a>
-								</div>
-								<!--end::URL Area-->
-							`;
-						}
-						sampleBox.innerHTML = message;
-						
-						document.querySelector('span.sample-message-default').style="display:none;";
-						document.querySelector('span.sample-message-chat').style="";
-					} else {
-						// Show error popuo. For more info check the plugin's official documentation: https://sweetalert2.github.io/
-						Swal.fire({
-							text: "필드값을 다시 확인해주세요",
-							icon: "error",
-							buttonsStyling: false,
-							confirmButtonText: "다시 확인하기",
-							customClass: {
-								confirmButton: "btn btn-primary"
-							}
-						});
-					}
-				});
-			}
-		});
 	}
 
 	return {
@@ -1169,7 +1134,6 @@ var DivBotMessageSend = function () {
 			}
 
 			submitButton = form.querySelector('#sm_bot_msg_send');
-			cancelButton = form.querySelector('#sm_bot_msg_sample');
 
 			handleForm();
 		}

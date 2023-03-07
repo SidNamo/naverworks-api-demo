@@ -46,22 +46,27 @@ def login(request):
 
         if (context["flag"] == "0"):
             context["id"] = request.POST["id"]
-            context["pw"] = util.sha256encode(request.POST["password"])
+            context["pw"] = util.sha512encrypt(request.POST["password"])
             memberSearchData = member.objects.filter(
                 id=context["id"], password=context["pw"], status="1").first()
             if memberSearchData is None:
+                context["flag"] = "2"
                 memberSearchData = member.objects.filter(
                     id=context["id"], password=context["pw"]).first()
-                context["flag"] = "2"
-                if memberSearchData is None:
-                    context["result_msg"] = "일치하는 회원이 없습니다."
-                else:
+                if memberSearchData is not None:
                     context["result_msg"] = "가입 승인 후 사용 가능합니다."
+                else:
+                    memberSearchData = member.objects.filter(
+                        id=context["id"]).first()
+                    if memberSearchData is not None:
+                        context["result_msg"] = "비밀번호가 일치하지 않습니다."
+                    else:
+                        context["result_msg"] = "일치하는 회원이 없습니다."
             else:
                 memberInfo = {}
                 memberInfo["member_no"] = memberSearchData.member_no
                 memberInfo["name"] = memberSearchData.name
-                memberInfo["email"] = memberSearchData.email
+                memberInfo["email"] = util.aes256decrypt(memberSearchData.email)
                 memberInfo["id"] = memberSearchData.id
                 memberInfo["corp_name"] = memberSearchData.corp_name
                 request.session["memberInfo"] = memberInfo
@@ -109,9 +114,9 @@ def join(request):
             try:
                 member.objects.create(
                     id=request.POST["id"],
-                    password=util.sha256encode(request.POST["password"]),
+                    password=util.sha512encrypt(request.POST["password"]),
                     name=request.POST["name"],
-                    email=request.POST["email"],
+                    email=util.aes256encrypt(request.POST["email"]),
                     status=1
                 )
             except Exception as err:
@@ -140,14 +145,14 @@ def loginFind(request):
         if (context["flag"] == "0"):
             if (request.POST["type"] == "id"):
                 memberSearchData = member.objects.filter(
-                    name=request.POST["name"], email=request.POST["email"], status="1").first()
+                    name=request.POST["name"], email=util.aes256encrypt(request.POST["email"]), status="1").first()
             elif (request.POST["type"] == "pw"):
                 memberSearchData = member.objects.filter(
-                    name=request.POST["name"], email=request.POST["email"], id=request.POST["id"], status="1").first()
+                    name=request.POST["name"], email=util.aes256encrypt(request.POST["email"]), id=request.POST["id"], status="1").first()
 
             if memberSearchData is None:
                 memberSearchData = member.objects.filter(
-                    name=request.POST["name"], email=request.POST["email"]).first()
+                    name=request.POST["name"], email=util.aes256encrypt(request.POST["email"])).first()
                 context["flag"] = "2"
                 if memberSearchData is None:
                     context["result_msg"] = "일치하는 회원이 없습니다."
@@ -157,7 +162,7 @@ def loginFind(request):
                 memberInfo = {}
                 memberInfo["member_no"] = memberSearchData.member_no
                 memberInfo["name"] = memberSearchData.name
-                memberInfo["email"] = memberSearchData.email
+                memberInfo["email"] = util.aes256decrypt(memberSearchData.email)
                 request.session["memberInfo"] = memberInfo
                 msg = ""
                 msg += "아이디/비밀번호 찾기 (" + str(memberSearchData.member_no) + ")"
@@ -213,14 +218,14 @@ def mypage(request):
                     memberSearchData.id = request.POST["id"]
                     memberSearchData.corp_name = request.POST["corp_name"]
                     memberSearchData.name = request.POST["name"]
-                    memberSearchData.email = request.POST["email"]
+                    memberSearchData.email = util.aes256encrypt(request.POST["email"])
                     memberSearchData.save()
 
                     memberInfo = request.session["memberInfo"]
                     memberInfo["id"] = memberSearchData.id
                     memberInfo["corp_name"] = memberSearchData.corp_name
                     memberInfo["name"] = memberSearchData.name
-                    memberInfo["email"] = memberSearchData.email
+                    memberInfo["email"] = util.aes256decrypt(memberSearchData.email)
                     request.session["memberInfo"] = memberInfo
                     msg = ""
                     msg += "유저 정보수정( 회원번호 : " + str(request.session["memberInfo"]["member_no"]) + " )"
@@ -233,7 +238,7 @@ def mypage(request):
             context["result_msg"] = "success"
             memberSearchData = member.objects.filter(
                 member_no=request.session["memberInfo"]["member_no"],
-                password=util.sha256encode(request.POST["password"])
+                password=util.sha512encrypt(request.POST["password"])
             ).all()
             context["count"] = str(len(memberSearchData))
             return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
@@ -252,7 +257,7 @@ def mypage(request):
             if (context["flag"] == "0"):
                 memberSearchData = member.objects.filter(
                     member_no=request.session["memberInfo"]["member_no"],
-                    password=util.sha256encode(request.POST["current_password"])
+                    password=util.sha512encrypt(request.POST["current_password"])
                 ).all()
                 if len(memberSearchData) == 0:
                     context["flag"] = "2"
@@ -268,7 +273,7 @@ def mypage(request):
                     member_no=request.session["memberInfo"]["member_no"]
                 ).first()
                 if memberSearchData is not None:
-                    memberSearchData.password = util.sha256encode(request.POST["new_password"])
+                    memberSearchData.password = util.sha512encrypt(request.POST["new_password"])
                     memberSearchData.save()
                     msg = ""
                     msg += "유저 비밀번호 수정( 회원번호 : " + str(request.session["memberInfo"]["member_no"]) + " )"
@@ -337,13 +342,21 @@ def botMessage(request):
                 try:
                     # 멤버 확인 모든 멤버가 정상적인 멤버인지
                     members = request.POST["member"].replace(" " , "").split(',')
+                    sTo = []
                     for member in members:
                         res = getUserInfo(apiData.api_no, botData.bot_no, member)
                         result = util.strToJson(res.text)  # 인증 완료 후 응답 값
                         if res.status_code != 200 and res.status_code != 201:
-                            context["flag"] = "2"
-                            context["result_msg"] = "Member Id 가 존재하지 않습니다."
-                            break
+                            res = getChannelMembers(apiData.api_no, botData.bot_no, member)
+                            result = util.strToJson(res.text)  # 인증 완료 후 응답 값
+                            if res.status_code != 200 and res.status_code != 201:
+                                context["flag"] = "2"
+                                context["result_msg"] = "Member Id 가 존재하지 않습니다."
+                                break
+                            else:
+                                sTo.append({"id":member, "type":"channel"})
+                        else:
+                            sTo.append({"id":member, "type":"member"})
                     if context["flag"] == "0":
                         # 컨텐츠 제작
                         btn = []
@@ -351,14 +364,22 @@ def botMessage(request):
                             btn.append({"type":"boxButtonLinkCustom","color":request.POST["btn_color"],"text":request.POST["btn_text"],"uri":request.POST["url"],"padding":"10px"})
                         content = util.simpleTemplate(request.POST["message"], button=btn)
 
-                        for member in members:
+                        for member in sTo:
                             # 메시지 전송
-                            res = sendMessage(
-                                api_no=apiData.api_no, 
-                                bot_no=botData.bot_no, 
-                                content=content, 
-                                user_id=member
-                            )
+                            if member["type"] == "member":
+                                res = sendMessage(
+                                    api_no=apiData.api_no, 
+                                    bot_no=botData.bot_no, 
+                                    content=content, 
+                                    user_id=member["id"]
+                                )
+                            else:
+                                res = sendMessage(
+                                    api_no=apiData.api_no, 
+                                    bot_no=botData.bot_no, 
+                                    content=content, 
+                                    channel_id=member["id"]
+                                )
                             result = util.strToJson(res.text)  # 인증 완료 후 응답 값
                             if res.status_code != 200 and res.status_code != 201:
                                 context["flag"] = "2"
@@ -595,7 +616,6 @@ def scenarioAdd(request):
                 # 중복 데이터 조회
                 if context["flag"] == "0":
                     scenData = scen.objects.filter(
-                        member_no=request.session["memberInfo"]["member_no"],
                         domain=request.POST["domain"],
                         status=1
                     ).first()
@@ -695,9 +715,13 @@ def getApi(request):
             apiData = api.objects.filter(
                 member_no=request.session["memberInfo"]["member_no"],
                 api_no=request.POST["api_no"]
-            ).all()
-            res = util.objectToPaging(apiData, 1, 0)
-            context["data"] = res
+            ).first()
+
+            apiData.client_secret = util.aes256decrypt(apiData.client_secret)
+            apiData.service_account = util.aes256decrypt(apiData.service_account)
+            apiData.private_key = util.aes256decrypt(apiData.private_key)
+
+            context["data"] = util.objectToDict(apiData)
         except Exception as err:
             context["flag"] = "2"
             context["result_msg"] = err.args[0]
@@ -752,9 +776,9 @@ def apiReg(request):
                     result["api"] = api.objects.create(
                         api_name=request.POST["api_name"],
                         client_id=request.POST["client_id"],
-                        client_secret=request.POST["client_secret"],
-                        service_account=request.POST["service_account"],
-                        private_key=request.POST["private_key"],
+                        client_secret=util.aes256encrypt(request.POST["client_secret"]),
+                        service_account=util.aes256encrypt(request.POST["service_account"]),
+                        private_key=util.aes256encrypt(request.POST["private_key"]),
                         scope=request.POST["scope"],
                         rmk="",
                         member_no=member.objects.get(
@@ -831,9 +855,9 @@ def apiUpd(request):
                     # API 테이블에 값 저장
                     apiData.api_name=request.POST["api_name"]
                     apiData.client_id=request.POST["client_id"]
-                    apiData.client_secret=request.POST["client_secret"]
-                    apiData.service_account=request.POST["service_account"]
-                    apiData.private_key=request.POST["private_key"]
+                    apiData.client_secret=util.aes256encrypt(request.POST["client_secret"])
+                    apiData.service_account=util.aes256encrypt(request.POST["service_account"])
+                    apiData.private_key=util.aes256encrypt(request.POST["private_key"])
                     apiData.scope=request.POST["scope"]
                     apiData.rmk=""
                     apiData.save()
@@ -899,8 +923,9 @@ def getBot(request):
             botData = bot.objects.filter(
                 member_no=request.session["memberInfo"]["member_no"],
                 bot_no=request.POST["bot_no"]
-            ).all()
-            res = util.objectToPaging(botData, 1, 0)
+            ).first()
+            botData.bot_secret = util.aes256decrypt(botData.bot_secret)
+            res = util.objectToDict(botData)
             context["data"] = res
             
             apiData = api.objects.filter(
@@ -967,7 +992,7 @@ def botReg(request):
                     # BOT 테이블에 값 저장
                     bot.objects.create(
                         bot_id=request.POST["bot_id"],
-                        bot_secret=request.POST["bot_secret"],
+                        bot_secret=util.aes256encrypt(request.POST["bot_secret"]),
                         bot_name=result["botName"],
                         rmk="",
                         member_no=member.objects.get(
@@ -1042,7 +1067,7 @@ def botUpd(request):
                     ).first()
                     
                     botData.bot_id=request.POST["bot_id"]
-                    botData.bot_secret=request.POST["bot_secret"]
+                    botData.bot_secret=util.aes256encrypt(request.POST["bot_secret"])
                     botData.bot_name=request.POST["bot_name"]
                     botData.rmk=""
                     botData.save()
@@ -1183,7 +1208,7 @@ def scenarioReg(request):
                     api_no=apiData.api_no, 
                     bot_no=botData.bot_no,
                     members=re.sub(r"\s", "", request.POST["members"]),
-                    title="익명 보고 시나리오 결재자",
+                    title="1:N 보고 BOT 시나리오",
                 )
                 result = util.strToJson(res.text)  # 인증 완료 후 응답 값
                 if res.status_code != 200 and res.status_code != 201:
@@ -1211,7 +1236,7 @@ def scenarioReg(request):
                         members = members,
                         member_no = member.objects.filter(member_no=request.session["memberInfo"]["member_no"]).first()
                     )
-                    text = "익명 보고 시나리오 결재자 단톡방입니다."
+                    text = "1:N 보고 BOT 시나리오 방이 생성되었습니다."
                     # 메시지 전송
                     res = sendMessage(
                         api_no=scenData.api_no.api_no, 
@@ -1230,7 +1255,7 @@ def scenarioReg(request):
 
 
 @csrf_exempt
-def botResponse(request):
+def callback(request):
     try:
         if request.method == "POST":
             req = util.strToJson(request.body.decode('utf-8'))
@@ -1360,7 +1385,7 @@ def botResponse(request):
                                         )
 
                                         #보고자에게 메시지 전송
-                                        text = "담당자에게 메시지 전달 하였습니다.\n수락 할 때까지 기다려 주세요."
+                                        text = "담당자에게 메시지를 전달 하였습니다.\n잠시만 기다려 주세요."
                                         btn = []
                                         btn.append({"type":"button","text":"대화 취소", "data":"{'action':'cancleChat','conn':'"+str(scenConnData.conn_no)+"','scen':'"+str(scenConnData.scen_no.scen_no)+"'}","separator":""})
 
@@ -1616,45 +1641,64 @@ def botResponse(request):
     return
 
 
-@csrf_exempt
-def callback(request):
-    jsonString = log.objects.filter(reg_user='callback').last().msg
-    jsonObj = util.strToJson(jsonString)
-    requests.post(request._current_scheme_host +
-        "/botResponse", headers={"Content-Type":"application/json"}, json=jsonObj)
-    return ""
+# @csrf_exempt
+# def testCallback(request):
+#     jsonString = log.objects.filter(reg_user='callback').last().msg
+#     jsonObj = util.strToJson(jsonString)
+#     requests.post(request._current_scheme_host +
+#         "/botResponse", headers={"Content-Type":"application/json"}, json=jsonObj)
+#     return ""
     
-    # apiData = api.objects.filter(api_no = 18).first()
-    # botData = bot.objects.filter(bot_no = 20).first()
-    # reqData = {}
-    # reqData["channel_id"] = "021a677c-b709-3a6a-9a9f-a43094420ea9"
-    # reqData["api_no"] = apiData.api_no
-    # reqData["bot_no"] = botData.bot_no
-    # client = requests.session()
-    # csrftoken = client.get(
-    #     request._current_scheme_host + "/login").cookies['csrftoken']
-    # headers = {'X-CSRFToken': csrftoken}
-    # res = client.post(request._current_scheme_host +
-    #                 "/api/getChannelMembers", headers=headers, data=reqData)
-    # response = util.strToJson(res.text)
-    # if res.status_code != 200 and res.status_code != 201:
-    #     raise Exception(response["description"])
-    # return JsonResponse(response, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=res.status_code) 
+#     # apiData = api.objects.filter(api_no = 18).first()
+#     # botData = bot.objects.filter(bot_no = 20).first()
+#     # reqData = {}
+#     # reqData["channel_id"] = "021a677c-b709-3a6a-9a9f-a43094420ea9"
+#     # reqData["api_no"] = apiData.api_no
+#     # reqData["bot_no"] = botData.bot_no
+#     # client = requests.session()
+#     # csrftoken = client.get(
+#     #     request._current_scheme_host + "/login").cookies['csrftoken']
+#     # headers = {'X-CSRFToken': csrftoken}
+#     # res = client.post(request._current_scheme_host +
+#     #                 "/api/getChannelMembers", headers=headers, data=reqData)
+#     # response = util.strToJson(res.text)
+#     # if res.status_code != 200 and res.status_code != 201:
+#     #     raise Exception(response["description"])
+#     # return JsonResponse(response, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=res.status_code) 
 
-    # connData = scen_conn.objects.order_by('-conn_no').all()
+#     # connData = scen_conn.objects.order_by('-conn_no').all()
 
-    # # for conn in connData:
-    # contents = util.templateText(text="테스트")
-    # apiData = api.objects.filter(api_no = 18).first()
-    # botData = bot.objects.filter(bot_no = 20).first()
-    # reqData = {}
-    # reqData["user_id"] = "821c4e72-f022-44f3-1767-039a66c98a20"
-    # reqData["api_no"] = apiData.api_no
-    # reqData["bot_no"] = botData.bot_no
-    # reqData["content"] = util.jsonToStr(contents)
-    # res = sendMessage(request, reqData)
-    # response = util.strToJson(res.text)
-    # if res.status_code != 200 and res.status_code != 201:
-    #     raise Exception(response["description"])
-    # return JsonResponse(response, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=res.status_code) 
+#     # # for conn in connData:
+#     # contents = util.templateText(text="테스트")
+#     # apiData = api.objects.filter(api_no = 18).first()
+#     # botData = bot.objects.filter(bot_no = 20).first()
+#     # reqData = {}
+#     # reqData["user_id"] = "821c4e72-f022-44f3-1767-039a66c98a20"
+#     # reqData["api_no"] = apiData.api_no
+#     # reqData["bot_no"] = botData.bot_no
+#     # reqData["content"] = util.jsonToStr(contents)
+#     # res = sendMessage(request, reqData)
+#     # response = util.strToJson(res.text)
+#     # if res.status_code != 200 and res.status_code != 201:
+#     #     raise Exception(response["description"])
+#     # return JsonResponse(response, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=res.status_code) 
+
+
+
+def testPage(request):
+    if request.method == "GET":
+        return render(request, 'NWAD/testPage.html')
+    elif request.method == "POST":
+        reqData = {}
+        reqData["text1"] = request.POST["text"]
+        try:
+            if(request.POST["type"]=="enc"):
+                reqData["text2"] = util.aes256encrypt(request.POST["text"])
+            elif(request.POST["type"]=="dec"):
+                reqData["text2"] = util.aes256decrypt(request.POST["text"])
+            elif(request.POST["type"]=="sha"):
+                reqData["text2"] = util.sha512encrypt(request.POST["text"])
+        except Exception as err:
+            reqData["text2"] = err.args[0]
+        return JsonResponse(reqData, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200) 
 

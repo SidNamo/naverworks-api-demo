@@ -125,12 +125,6 @@ def getChannelMembersProc(api_no, bot_id, channel_id, token_type="access_token",
             re = True
         else:
             re = False
-            response = util.strToJson(res.text)
-            if response["responseMetaData"]["nextCursor"] is not None:
-                resp = getChannelMembersProc(api_no, bot_id, channel_id, cursor=response["responseMetaData"]["nextCursor"])
-                response["members"].extend(util.strToJson(resp.text)["members"])
-                response["responseMetaData"]["nextCursor"] = None
-                type(res).text = util.jsonToStr(response)
     else:       
         re = True
     if re:

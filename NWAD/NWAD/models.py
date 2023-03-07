@@ -3,12 +3,6 @@ from django.db import models
 # Create your models here.
 
 
-# class NWADMember(models.Model):
-#     member_no = models.AutoField(db_column='member_no', primary_key=True)
-#     id = models.CharField(db_column='id', unique=True, max_length=20)
-#     password = models.CharField(db_column='password')
-
-
 class log(models.Model):
     no = models.AutoField(db_column='no', primary_key=True)
     msg = models.TextField(db_column='msg', null=False)
@@ -45,8 +39,8 @@ class api(models.Model):
     member_no = models.ForeignKey(member, related_name="fk_member_api", on_delete=models.CASCADE, db_column="member_no")
     api_name = models.CharField(db_column="api_name", null=False, max_length=20)
     client_id = models.CharField(db_column="client_id", null=False, max_length=20)
-    client_secret = models.CharField(db_column="client_secret", null=False, max_length=10)
-    service_account = models.CharField(db_column="service_account", null=False, max_length=50)
+    client_secret = models.CharField(db_column="client_secret", null=False, max_length=24)
+    service_account = models.TextField(db_column="service_account", null=False)
     private_key = models.TextField(db_column="private_key", null=False)
     scope = models.TextField(db_column="scope", null=False)
     reg_date = models.DateTimeField(db_column='reg_date', auto_now=True)
@@ -64,7 +58,7 @@ class bot(models.Model):
     bot_no = models.AutoField(db_column='bot_no', primary_key=True)
     member_no = models.ForeignKey(member, related_name="fk_member_bot", on_delete=models.CASCADE, db_column="member_no")
     bot_id = models.CharField(db_column="bot_id", null=False, max_length=10)
-    bot_secret = models.CharField(db_column="bot_secret", null=False, max_length=30)
+    bot_secret = models.TextField(db_column="bot_secret", null=False)
     bot_name = models.CharField(db_column="bot_name", null=False, max_length=10)
     reg_date = models.DateTimeField(db_column='reg_date', auto_now=True)
     rmk = models.TextField(db_column='rmk', null=True)

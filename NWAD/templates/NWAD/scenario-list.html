@@ -99,7 +99,7 @@
 	<div class="footer py-4 d-flex flex-column flex-md-row flex-stack" id="kt_footer">
 		<!--begin::Copyright-->
 		<div class="text-gray-600 order-2 order-md-1">
-			<span class="text-muted fw-semibold me-1">2022&copy;</span>
+			<span class="text-muted fw-semibold me-1">2023&copy;</span>
 			<a href="https://didim365.com" target="_blank" class="text-gray-800 text-hover-primary">Didim365</a>
 		</div>
 		<!--end::Copyright-->
@@ -689,7 +689,7 @@
 					let min = Math.floor((now-1)/pageCount) * pageCount + 1;
 					let max = min + 9 > total ? total : min + 9;
 
-					if(res.data.data.length == 0){
+					if(res.data.data.length == 0 && now > 1){
 						getScenarioList(now-1);
 						return;
 					}

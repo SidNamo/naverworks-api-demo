@@ -62,12 +62,12 @@
 			<!--begin::Wrapper-->
 			<div class="d-flex flex-column pe-0 pe-sm-10">
 				<!--begin::Title-->
-				<h4 class="fs-5 mb-2 text-gray-800">Bot Message 전송 사용 시 유의사항</h4>
+				<h4 class="fs-5 mb-2 text-gray-800">Bot Message 이용 시 유의사항</h4>
 				<!--end::Title-->
 				<!--begin::Content-->
 				<p class="list-unstyled text-gray-600 fw-normal fs-6 p-0 m-0">
-					Bot Message 전송을 위해서는 API와 Bot 등록이 필수입니다! API와 Bot 선택 이후 전송 메시지 유형별로 정보를 입력해주세요.<br />
-					입력된 정보는 아래 미리보기 화면으로 확인 가능하며, 내용 확인 후에 전송 버튼을 클릭하면 Bot Message가 전송됩니다.
+					Bot Message 이용을 위해서는 API와 Bot 등록이 필수입니다! API와 Bot 선택 이후 전송 메시지 유형별로 정보를 입력해주세요.<br />
+					입력된 정보는 아래 미리보기 화면으로 확인 가능하며, 내용 확인 후에 전송 버튼을 클릭하면 입력한 Message 가 전송됩니다.
 				</p>
 				<!--end::Content-->
 			</div>
@@ -131,13 +131,13 @@
 								<div class="nav-group nav-group-fluid w-sm-50">
 									<!--begin::Option-->
 									<label>
-										<input type="radio" class="btn-check" name="message_type" value="text" checked="checked" />
+										<input type="radio" class="btn-check" name="message_type" value="text" checked="checked" onchange="viewSampleMessage();"/>
 										<span class="btn btn-sm btn-color-muted btn-active btn-active-primary fw-semibold text-nowrap px-4 py-2">TEXT</span>
 									</label>
 									<!--end::Option-->
 									<!--begin::Option-->
 									<label>
-										<input type="radio" class="btn-check" name="message_type" value="textUrl" />
+										<input type="radio" class="btn-check" name="message_type" value="textUrl" onchange="viewSampleMessage();" />
 										<span class="btn btn-sm btn-color-muted btn-active btn-active-primary fw-semibold text-nowrap px-4 py-2">TEXT + URL</span>
 									</label>
 									<!--end::Option-->
@@ -156,11 +156,13 @@
 							<!--begin::Input group-->
 							<div class="fv-row mb-7">
 								<!--begin::Label-->
-								<label class="required fs-6 fw-semibold form-label">Memeber Id 입력</label>
+								<label class="required fs-6 fw-semibold form-label">Member Id 입력</label>
 								<!--end::Label-->
 								<!--begin::Input-->
-								<input type="text" class="form-control form-control-solid fs-6 fw-normal" name="member" placeholder="Member Id 입력" value="" />
+								<input type="text" class="form-control form-control-solid fs-6 fw-normal" name="member" placeholder="example@example.com" value="" />
 								<!--end::Input-->
+								<div class="fw-normal fs-7 mt-2 ms-2 text-gray-600" >※ 수신하고자 하는 회원의 Naver Works Id, Channel Id 를 입력해주세요.</div>
+								<div class="fw-normal fs-7 ms-2 text-gray-600" >※ 여러 회원에게 메시지를 보낼 경우, 쉼표로 구분하여 입력해주세요.</div>
 							</div>
 							<!--end::Input group-->
 							
@@ -175,7 +177,7 @@
 									<label class="required fs-6 fw-semibold form-label">Message 입력</label>
 									<!--end::Label-->
 									<!--begin::Input-->
-									<textarea class="form-control form-control-solid fs-6 fw-normal" name="message" rows="4" placeholder="텍스트 입력">안녕하세요. 테스트 봇입니다. &#10;해당 메시지는 테스트 내용 입니다.</textarea>
+									<textarea class="form-control form-control-solid fs-6 fw-normal" name="message" rows="4" placeholder="텍스트 입력" oninput="viewSampleMessage();">안녕하세요. 테스트 봇입니다. &#10;해당 메시지는 테스트 내용 입니다.</textarea>
 									<!--end::Input-->
 								</div>
 								<!--end::Input group-->
@@ -187,7 +189,7 @@
 									<label class="fs-6 fw-semibold form-label">URL 입력</label>
 									<!--end::Label-->
 									<!--begin::Input-->
-									<input type="text" class="form-control form-control-solid fs-6 fw-normal" name="url" placeholder="URL 입력" value="http://www.didim365.com" />
+									<input type="text" class="form-control form-control-solid fs-6 fw-normal" name="url" placeholder="URL 입력" value="http://www.didim365.com" oninput="viewSampleMessage();"/>
 									<!--end::Input-->
 								</div>
 								<!--end::Input group-->
@@ -199,7 +201,7 @@
 										<label class="fs-6 fw-semibold form-label">버튼 텍스트 입력</label>
 										<!--end::Label-->
 										<!--begin::Input-->
-										<input type="text" class="form-control form-control-solid fs-6 fw-normal" name="btn_text" placeholder="버튼 텍스트 입력" value="바로가기" />
+										<input type="text" class="form-control form-control-solid fs-6 fw-normal" name="btn_text" placeholder="버튼 텍스트 입력" value="바로가기" oninput="viewSampleMessage();"/>
 										<!--end::Input-->
 										<div class="text-muted fw-normal fs-7 mt-2 ms-2">
 											URL이 적용된 버튼 내 표시되는 텍스트 입니다.
@@ -210,7 +212,7 @@
 										<label class="fs-6 fw-semibold form-label">버튼 색상 선택</label>
 										<!--end::Label-->
 										<!--begin::Input-->
-										<input type="color" class="form-select form-select-solid fs-6 fw-semibold" name="btn_color" style="height: 40px !important;" value="#009ef7">
+										<input type="color" class="form-select form-select-solid fs-6 fw-semibold" name="btn_color" style="height: 40px !important;" value="#009ef7" oninput="viewSampleMessage();">
 										<!--end::Input-->
 									</div>
 								</div>
@@ -220,14 +222,7 @@
 						<!--end::Card body-->
 						<!--begin::Actions-->
 						<div class="card-footer d-flex justify-content-between py-6 px-9">
-							<button type="reset" class="btn btn-light btn-active-light-primary me-2" id="sm_bot_msg_sample">미리보기</button>
-							<div class="d-flex align-items-center">
-								<div class="fs-7 fw-semibold text-gray-500 text-end ls-sm me-4">
-									<!-- 마지막 전송<br />
-									2022-12-20 17:48:20 -->
-								</div>
-								<button type="submit" class="btn btn-primary" id="sm_bot_msg_send">전송</button>
-							</div>
+							<button type="submit" class="btn btn-primary" id="sm_bot_msg_send">전송</button>
 						</div>
 						<!--end::Actions-->
 					</div>
@@ -291,7 +286,7 @@
 					<!--end::Card header-->
 					<!--begin::Card body-->
 					<div class="card-body pt-0">
-						<span class="sample-message-default">
+						<span class="sample-message-default" style="display:none;">
 							<!--begin::bin Message-->
 							<div class="d-flex flex-column justify-content-center align-items-center border border-dashed border-gray-300 rounded px-8 py-14 my-8" >
 								<!--begin::Icon-->
@@ -318,6 +313,88 @@
 						</span>
 						<!--end::bin Message-->
 						<span class="sample-message-chat" style="display: none;">
+							<span style="display:none;">
+								<!--begin::Message(bot)-->
+								<div class="d-flex justify-content-start mt-8">
+									<!--begin::Wrapper-->
+									<div class="d-flex flex-column align-items-start">
+										<!--begin::Title-->
+										<div class="d-flex align-items-center mb-2">
+											<!--begin::Avatar-->
+											<div class="symbol symbol-50px">
+												<span class="svg-icon svg-icon-primary svg-icon-1">
+													<!--begin::Svg Icon | path: icons/Communication/Chat-smile.svg-->
+													<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+														<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+															<rect x="0" y="0" width="24" height="24"/>
+															<polygon fill="#000000" opacity="0.3" points="5 15 3 21.5 9.5 19.5"/>
+															<path d="M13,2 C18.5228475,2 23,6.4771525 23,12 C23,17.5228475 18.5228475,22 13,22 C7.4771525,22 3,17.5228475 3,12 C3,6.4771525 7.4771525,2 13,2 Z M7.16794971,13.5547002 C8.67758127,15.8191475 10.6456687,17 13,17 C15.3543313,17 17.3224187,15.8191475 18.8320503,13.5547002 C19.1384028,13.0951715 19.0142289,12.4743022 18.5547002,12.1679497 C18.0951715,11.8615972 17.4743022,11.9857711 17.1679497,12.4452998 C16.0109146,14.1808525 14.6456687,15 13,15 C11.3543313,15 9.9890854,14.1808525 8.83205029,12.4452998 C8.52569784,11.9857711 7.90482849,11.8615972 7.4452998,12.1679497 C6.98577112,12.4743022 6.86159725,13.0951715 7.16794971,13.5547002 Z" fill="currentColor"/>
+														</g>
+													</svg>
+													<!--end::Svg Icon-->
+												</span>
+											</div>
+											<!--end::Avatar-->
+											<!--begin::Details-->
+											<div class="ms-3">
+												<a href="javascript:void(0);" class="fs-5 fw-bold text-gray-900 text-hover-primary me-3">Bot</a>
+												<span class="text-gray-400 fs-8 fw-normal mb-1">5 mins</span>
+											</div>
+											<!--end::Details-->
+										</div>
+										<!--end::Title-->
+										<!--begin::Text-->
+										<div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-start">
+											안녕하세요.<br />
+											봇이 작성한 메세지입니다.<br />
+										</div>
+										<!--end::Text-->
+									</div>
+									<!--end::Wrapper-->
+								</div>
+								<!--end::Message(bot)-->
+		
+								<!--begin::Message(user)-->
+								<div class="d-flex justify-content-end mt-8">
+									<!--begin::Wrapper-->
+									<div class="d-flex flex-column align-items-end">
+										<!--begin::User-->
+										<div class="d-flex align-items-center mb-2">
+											<!--begin::Details-->
+											<div class="me-3">
+												<span class="text-gray-400 fs-8 fw-normal mb-1">3 mins</span>
+												<a href="javascript:void(0);" class="fs-5 fw-bold text-gray-900 text-hover-primary ms-3">사용자</a>
+											</div>
+											<!--end::Details-->
+											<!--begin::Avatar-->
+											<div class="symbol symbol-50px">
+												<span class="svg-icon svg-icon-primary svg-icon-1">
+													<!--begin::Svg Icon | path: icons/General/User.svg-->
+													<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+														<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+															<polygon points="0 0 24 0 24 24 0 24"/>
+															<path d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
+															<path d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z" fill="currentColor" fill-rule="nonzero"/>
+														</g>
+													</svg>
+													<!--end::Svg Icon-->
+												</span>
+											</div>
+											<!--end::Avatar-->
+										</div>
+										<!--end::User-->
+										<!--begin::Text-->
+										<div class="p-5 rounded bg-light text-dark fw-normal mw-lg-400px text-end">
+											안녕하세요.<br />
+											사용자가 작성한 메세지입니다.
+										</div>
+										<!--end::Text-->
+									</div>
+									<!--end::Wrapper-->
+								</div>
+								<!--end::Message(user)-->
+							</span>
+	
 							<!--begin::Message(bot)-->
 							<div class="d-flex justify-content-start mt-8">
 								<!--begin::Wrapper-->
@@ -341,87 +418,7 @@
 										<!--end::Avatar-->
 										<!--begin::Details-->
 										<div class="ms-3">
-											<a href="javascript:void(0);" class="fs-5 fw-bold text-gray-900 text-hover-primary me-3">Bot</a>
-											<span class="text-gray-400 fs-8 fw-normal mb-1">5 mins</span>
-										</div>
-										<!--end::Details-->
-									</div>
-									<!--end::Title-->
-									<!--begin::Text-->
-									<div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-start">
-										안녕하세요.<br />
-										봇이 작성한 메세지입니다.<br />
-									</div>
-									<!--end::Text-->
-								</div>
-								<!--end::Wrapper-->
-							</div>
-							<!--end::Message(bot)-->
-	
-							<!--begin::Message(user)-->
-							<div class="d-flex justify-content-end mt-8">
-								<!--begin::Wrapper-->
-								<div class="d-flex flex-column align-items-end">
-									<!--begin::User-->
-									<div class="d-flex align-items-center mb-2">
-										<!--begin::Details-->
-										<div class="me-3">
-											<span class="text-gray-400 fs-8 fw-normal mb-1">3 mins</span>
-											<a href="javascript:void(0);" class="fs-5 fw-bold text-gray-900 text-hover-primary ms-3">사용자</a>
-										</div>
-										<!--end::Details-->
-										<!--begin::Avatar-->
-										<div class="symbol symbol-50px">
-											<span class="svg-icon svg-icon-primary svg-icon-1">
-												<!--begin::Svg Icon | path: icons/General/User.svg-->
-												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-													<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-														<polygon points="0 0 24 0 24 24 0 24"/>
-														<path d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
-														<path d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z" fill="currentColor" fill-rule="nonzero"/>
-													</g>
-												</svg>
-												<!--end::Svg Icon-->
-											</span>
-										</div>
-										<!--end::Avatar-->
-									</div>
-									<!--end::User-->
-									<!--begin::Text-->
-									<div class="p-5 rounded bg-light text-dark fw-normal mw-lg-400px text-end">
-										안녕하세요.<br />
-										사용자가 작성한 메세지입니다.
-									</div>
-									<!--end::Text-->
-								</div>
-								<!--end::Wrapper-->
-							</div>
-							<!--end::Message(user)-->
-	
-							<!--begin::Message(bot)-->
-							<div class="d-flex justify-content-start mt-8">
-								<!--begin::Wrapper-->
-								<div class="d-flex flex-column align-items-start">
-									<!--begin::Title-->
-									<div class="d-flex align-items-center mb-2">
-										<!--begin::Avatar-->
-										<div class="symbol symbol-50px">
-											<span class="svg-icon svg-icon-primary svg-icon-1">
-												<!--begin::Svg Icon | path: icons/Communication/Chat-smile.svg-->
-												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-													<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-														<rect x="0" y="0" width="24" height="24"/>
-														<polygon fill="#000000" opacity="0.3" points="5 15 3 21.5 9.5 19.5"/>
-														<path d="M13,2 C18.5228475,2 23,6.4771525 23,12 C23,17.5228475 18.5228475,22 13,22 C7.4771525,22 3,17.5228475 3,12 C3,6.4771525 7.4771525,2 13,2 Z M7.16794971,13.5547002 C8.67758127,15.8191475 10.6456687,17 13,17 C15.3543313,17 17.3224187,15.8191475 18.8320503,13.5547002 C19.1384028,13.0951715 19.0142289,12.4743022 18.5547002,12.1679497 C18.0951715,11.8615972 17.4743022,11.9857711 17.1679497,12.4452998 C16.0109146,14.1808525 14.6456687,15 13,15 C11.3543313,15 9.9890854,14.1808525 8.83205029,12.4452998 C8.52569784,11.9857711 7.90482849,11.8615972 7.4452998,12.1679497 C6.98577112,12.4743022 6.86159725,13.0951715 7.16794971,13.5547002 Z" fill="currentColor"/>
-													</g>
-												</svg>
-												<!--end::Svg Icon-->
-											</span>
-										</div>
-										<!--end::Avatar-->
-										<!--begin::Details-->
-										<div class="ms-3">
-											<a href="javascript:void(0);" class="fs-5 fw-bold text-gray-900 text-hover-primary me-3">Bot</a>
+											<a href="javascript:void(0);" class="fs-5 fw-bold text-gray-900 text-hover-primary me-3" id="sampleMessageBotName">Bot</a>
 											<span class="text-gray-400 fs-8 fw-normal mb-1">2 mins</span>
 										</div>
 										<!--end::Details-->
@@ -460,7 +457,7 @@
 	<div class="footer py-4 d-flex flex-column flex-md-row flex-stack" id="kt_footer">
 		<!--begin::Copyright-->
 		<div class="text-gray-600 order-2 order-md-1">
-			<span class="text-muted fw-semibold me-1">2022&copy;</span>
+			<span class="text-muted fw-semibold me-1">2023&copy;</span>
 			<a href="https://didim365.com" target="_blank" class="text-gray-800 text-hover-primary">Didim365</a>
 		</div>
 		<!--end::Copyright-->
@@ -504,7 +501,22 @@
 				}
 			});
 		}
+	});
 
+	// select2 변경 이벤트
+	KTUtil.onDOMContentLoaded(function () {
+		select2ChangeEventListener = function(e){
+			if(e.name == 'bot_no'){
+				viewSampleMessage();
+			}
+
+			if(e.value != ''){
+				let feedback = e.parentElement.querySelector('.invalid-feedback');
+				if(feedback != null){
+					feedback.innerHTML = '';
+				}
+			}
+		}
 	});
 
 	var setDefaultData = function(){
@@ -536,7 +548,7 @@
 				}
 
 				let selectBot = document.querySelector('select[name=bot_no]');
-				selectBot.innerHTML = "<option value='' selected>API Select</option>";
+				selectBot.innerHTML = "<option value='' selected>Bot Select</option>";
 				for(let i = 0; i < res.bot_data.data.length; i++) {
 					let selected = "";
 					if("{{bot_no}}" != "None" && "{{bot_no}}" == res.bot_data.data[i].bot_no){
@@ -544,6 +556,7 @@
 					}
 					selectBot.innerHTML += `<option value='` + res.bot_data.data[i].bot_no + `'` + selected + `>` + res.bot_data.data[i].bot_name + `</option>`;
 				}
+				viewSampleMessage();
 			}else{
 				throw new Error(res.result_msg);
 			}
@@ -563,6 +576,33 @@
 			});
 		});
 	}
+
+	// 미리보기 설정
+	var viewSampleMessage = function() {
+		// 봇 이름 설정
+		let selectBot = document.querySelector('select[name=bot_no] option:checked');
+		selectBot = selectBot.value=="" ? "Bot" : selectBot.innerHTML;
+		let sampleBotName = document.getElementById('sampleMessageBotName');
+		sampleBotName.innerHTML = selectBot;
+
+		// 봇 내용 설정
+		let sampleBox = document.getElementById('divSampleMessage');
+		let message = document.querySelector('textarea[name=message]').value.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/ /g,'&nbsp;').replace(/(?:\r\n|\r|\n)/g, '<br/>');
+		if (document.querySelector('input[name=message_type]:checked').value == "textUrl") {
+			message += `
+				<!--begin::URL Area-->
+				<div class="mt-5">
+					<a href="` + document.querySelector('input[name=url]').value + `" target="_blank" class="btn btn-sm rounded-1 w-100 h-35px" style="color:white; background-color:` + document.querySelector('input[name=btn_color]').value + `">` + document.querySelector('input[name=btn_text]').value.substr(0,20) + `</a>
+				</div>
+				<!--end::URL Area-->
+			`;
+		}
+		sampleBox.innerHTML = message;
+		
+		document.querySelector('span.sample-message-default').style="display:none;";
+		document.querySelector('span.sample-message-chat').style="";
+	}
+
 </script>
 <!--end::Alert | Simpler-->
 {% endblock %}

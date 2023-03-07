@@ -302,7 +302,10 @@ var KTApp = function () {
                 options.minimumResultsForSearch = Infinity;
             }
 
-            $(element).select2(options);
+            $(element).select2(options).on('select2:select', function(e){
+                if(typeof(select2ChangeEventListener) != 'function') return;
+                select2ChangeEventListener(element);
+            });
 
             element.setAttribute("data-kt-initialized", "1");
         });
