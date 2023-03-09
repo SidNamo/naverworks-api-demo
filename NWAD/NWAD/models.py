@@ -59,7 +59,7 @@ class bot(models.Model):
     member_no = models.ForeignKey(member, related_name="fk_member_bot", on_delete=models.CASCADE, db_column="member_no")
     bot_id = models.CharField(db_column="bot_id", null=False, max_length=10)
     bot_secret = models.TextField(db_column="bot_secret", null=False)
-    bot_name = models.CharField(db_column="bot_name", null=False, max_length=10)
+    bot_name = models.CharField(db_column="bot_name", null=False, max_length=50)
     reg_date = models.DateTimeField(db_column='reg_date', auto_now=True)
     rmk = models.TextField(db_column='rmk', null=True)
 

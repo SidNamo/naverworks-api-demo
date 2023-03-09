@@ -1254,6 +1254,14 @@ def scenarioReg(request):
         return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
 
 
+def termsService(request):
+    return render(request, 'NWAD/terms-service.html')
+
+def privacyPoilcy(request):
+    return render(request, 'NWAD/privacy-poilcy.html')
+
+
+
 @csrf_exempt
 def callback(request):
     try:

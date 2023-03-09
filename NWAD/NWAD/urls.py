@@ -19,6 +19,9 @@ urlpatterns = [
     path('scenarioList', nwad.scenarioList, name="scenarioList"),
     path('scenarioAdd', nwad.scenarioAdd, name="scenarioAdd"),
 
+    path('termsService', nwad.termsService, name="termsService"),
+    path('privacyPoilcy', nwad.privacyPoilcy, name="privacyPoilcy"),
+
     path('apiList', nwad.apiList, name="apiList"),
     path('api/apiReg', nwad.apiReg, name="api/apiReg"),
     path('api/apiRm', nwad.apiRm, name="api/apiRm"),
