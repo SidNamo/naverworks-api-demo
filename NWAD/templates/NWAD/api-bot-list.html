@@ -195,6 +195,8 @@
                 <div class="modal-body bg-light py-10 px-lg-17">
                     <!--begin::Scroll-->
                     <div class="scroll-y me-n7 pe-7" id="modal_list_add_scroll" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#modal_api_list_add_header" data-kt-scroll-wrappers="#modal_api_list_add_scroll" data-kt-scroll-offset="300px">
+                        <ul class="pagination mb-3 justify-content-end" style="display:none;">
+                        </ul>
                         <span class="modal-tab" data-modal-tab="1">
                             <span data-modal-tab-type="image" style="display:none;">
                                 <!--begin::Title-->
@@ -479,7 +481,7 @@
                         <span class="modal-tab" data-modal-tab="5">
                             <span data-modal-tab-type="image" style="display:none;">
                                 <div class="fs-6 fw-semibold text-gray-700 mb-4">9. Scope 설정
-                                    <div class="fw-normal fs-7 text-gray-600" >※ 이미지와 동일하게 bot.read, user.read는 필수로 적용하세요.</div>
+                                    <div class="fw-normal fs-7 text-gray-600" >※ 이미지와 동일하게 bot, user.read는 필수로 적용하세요.</div>
                                 </div>
                                 <!--begin::Card-->
                                 <div class="card">
@@ -711,7 +713,8 @@
                 <div class="modal-body bg-light py-10 px-lg-17">
                     <!--begin::Scroll-->
                     <div class="scroll-y me-n7 pe-7" id="modal_list_add_scroll" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#modal_bot_list_add_header" data-kt-scroll-wrappers="#modal_bot_list_add_scroll" data-kt-scroll-offset="300px">
-                        
+                        <ul class="pagination mb-3 justify-content-end" style="display:none;">
+                        </ul>
                         <span class="modal-tab" data-modal-tab="1">
                             <span data-modal-tab-type="image" style="display:none;">
                                 <!--begin::Title-->
@@ -1758,39 +1761,57 @@
         let nextBtn = modal.querySelector('div.modal-footer button[data-modal-tab-btn-type="next"]');
         let submitBtn = modal.querySelector('div.modal-footer button[data-modal-tab-btn-type="submit"]');
         let cancelBtn = modal.querySelector('div.modal-footer button[data-modal-tab-btn-type="cancel"]');
-        for(let i = 0; i < tabs.length; i++){
-            if(index == undefined || index == 0){
+        let pagination = modal.querySelector('ul.pagination');
+        let paginationhtml = "";
+
+        if(index == undefined || index == 0){
+            for(let i = 0; i < tabs.length; i++){
                 tabs[i].querySelector('span[data-modal-tab-type="image"]').style="display:none;";
                 tabs[i].querySelector('span[data-modal-tab-type="input"]').style="";
-                helpBtn.style="";
-                submitBtn.style="";
-                cancelBtn.style="";
-                prevBtn.style="display:none;";
-                nextBtn.style="display:none;";
-            }else{
-                scroll.scrollTop = 0;
+            }
+            helpBtn.style="";
+            submitBtn.style="";
+            cancelBtn.style="";
+            prevBtn.style="display:none;";
+            nextBtn.style="display:none;";
+
+            pagination.style="display:none;";
+
+            $(modal.querySelector('div.modal-body')).addClass('py-10');
+            $(modal.querySelector('div.modal-body')).removeClass('pt-5');
+            $(modal.querySelector('div.modal-body')).removeClass('pb-10');
+        }else{
+            scroll.scrollTop = 0;
+            for(let i = 0; i < tabs.length; i++){
                 if(tabs[i].dataset.modalTab == index){
                     tabs[i].querySelector('span[data-modal-tab-type="image"]').style="";
                     tabs[i].querySelector('span[data-modal-tab-type="input"]').style="";
+                    paginationhtml += `<li class="page-item active m-1"><a href="javascript:void(0);" class="page-link" onclick="modalTabSet('` + ( i + 1 ) + `'');">` + (i+1) + `</a></li>`;
                 }else{
                     tabs[i].querySelector('span[data-modal-tab-type="image"]').style="display:none;";
                     tabs[i].querySelector('span[data-modal-tab-type="input"]').style="display:none;";
+                    paginationhtml += `<li class="page-item m-1"><a href="javascript:void(0);" class="page-link" onclick="modalTabSet('` + ( i + 1 ) + `');">` + (i+1) + `</a></li>`;
                 }
-                helpBtn.style="display:none;";
-                cancelBtn.style="display:none;";
-                prevBtn.style="";
-                if(index != tabs.length){
-                    nextBtn.style="";
-                    submitBtn.style="display:none;";
-                }else{
-                    nextBtn.style="display:none;";
-                    submitBtn.style="";
-                }
-
-                prevBtn.dataset.modalTab = Number(index) - 1;
-                nextBtn.dataset.modalTab = Number(index) + 1;
-
             }
+            pagination.innerHTML = paginationhtml;
+            helpBtn.style="display:none;";
+            cancelBtn.style="display:none;";
+            prevBtn.style="";
+            if(index != tabs.length){
+                nextBtn.style="";
+                submitBtn.style="display:none;";
+            }else{
+                nextBtn.style="display:none;";
+                submitBtn.style="";
+            }
+
+            $(modal.querySelector('div.modal-body')).removeClass('py-10');
+            $(modal.querySelector('div.modal-body')).addClass('pt-5');
+            $(modal.querySelector('div.modal-body')).addClass('pb-10');
+            pagination.style="";
+
+            prevBtn.dataset.modalTab = Number(index) - 1;
+            nextBtn.dataset.modalTab = Number(index) + 1;
         }
     }
 </script>
