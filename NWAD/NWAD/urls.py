@@ -44,4 +44,5 @@ urlpatterns = [
 
 
     path('testPage', nwad.testPage, name="testPage"),
+    path('testIp', nwad.testIp, name="testIp"),
 ]

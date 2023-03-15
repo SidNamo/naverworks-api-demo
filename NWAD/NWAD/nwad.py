@@ -1710,3 +1710,7 @@ def testPage(request):
             reqData["text2"] = err.args[0]
         return JsonResponse(reqData, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200) 
 
+
+
+def testIp(request):
+    return HttpResponse("192.168.60.9")
