@@ -1713,4 +1713,4 @@ def testPage(request):
 
 
 def testIp(request):
-    return HttpResponse("192.168.60.9")
+    return HttpResponse("192.168.60.9\n192.168.60.6")
