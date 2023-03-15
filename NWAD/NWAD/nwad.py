@@ -1713,4 +1713,7 @@ def testPage(request):
 
 
 def testIp(request):
+    msg = ""
+    msg += "테스트 IP"
+    util.insertLog(request, msg + "    " + util.jsonToStr(request.POST.dict()))
     return HttpResponse("192.168.60.9\n192.168.60.6", content_type="text/plain")
