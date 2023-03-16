@@ -411,17 +411,11 @@
 					formData.append('type', 'id');
 					formData.append('name', document.getElementById("id-find-name").value);
 					formData.append('email', document.getElementById("id-find-email").value);
-					html = `<strong class="fs-4">아이디 정보 발송 완료</strong><br />
-						<span class="fs-6">입력하신 이메일로 아이디 정보를 발송하였습니다.<br />
-						이메일에서 아이디를 확인해주세요.</span>`;
 				}else{
 					formData.append('type', 'pw');
 					formData.append('name', document.getElementById("pw-find-name").value);
 					formData.append('email', document.getElementById("pw-find-email").value);
 					formData.append('id', document.getElementById("pw-find-id").value);
-					html = `<strong class="fs-4">임시 비밀번호 발송 완료</strong><br />
-						<span class="fs-6">입력하신 이메일로 임시 비밀번호가 발송되었습니다. <br />
-						수신된 이메일을 확인해주세요.</span>`;
 				}
 
 				fetch(url, {
@@ -435,15 +429,34 @@
 					return response.json();
 				}).then((res) => {
 					if(res.flag == '0'){
-						Swal.fire({
-							html: html,
-							icon: "success",
-							buttonsStyling: false,
-							confirmButtonText: "확인",
-							customClass: {
-								confirmButton: "btn btn-primary px-5 py-2",
-							}
-						});
+
+						if(btn.attributes.href.value == "#kt_tab_id_find"){
+							html = `<strong class="fs-4">아이디 찾기 성공</strong><br />
+								<span class="fs-6">회원의 ID : ` + res.id + `</span>`;
+							Swal.fire({
+								html: html,
+								icon: "success",
+								buttonsStyling: false,
+								confirmButtonText: "확인",
+								customClass: {
+									confirmButton: "btn btn-primary px-5 py-2",
+								}
+							});
+						}else{
+							html = `<strong class="fs-4">비밀번호 초기화</strong><br />
+								<span class="fs-6">새로운 비밀번호를 입력하세요.</span>
+								
+								`;
+							Swal.fire({
+								html: html,
+								icon: "success",
+								buttonsStyling: false,
+								confirmButtonText: "확인",
+								customClass: {
+									confirmButton: "btn btn-primary px-5 py-2",
+								}
+							});
+						}
 					}else{
 						e.preventDefault();
 						Swal.fire({

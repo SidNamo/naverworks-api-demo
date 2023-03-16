@@ -159,11 +159,9 @@ def loginFind(request):
                 else:
                     context["result_msg"] = "가입 승인 후 사용 가능합니다."
             else:
-                memberInfo = {}
-                memberInfo["member_no"] = memberSearchData.member_no
-                memberInfo["name"] = memberSearchData.name
-                memberInfo["email"] = util.aes256decrypt(memberSearchData.email)
-                request.session["memberInfo"] = memberInfo
+                context["val"] = ""
+                if (request.POST["type"] == "id"):
+                    context["id"] = memberSearchData.id[0:(len(memberSearchData.id) - len(memberSearchData.id)//2)] + ('*' * (len(memberSearchData.id)//2))
                 msg = ""
                 msg += "아이디/비밀번호 찾기 (" + str(memberSearchData.member_no) + ")"
                 util.insertLog(request, msg + "    " +

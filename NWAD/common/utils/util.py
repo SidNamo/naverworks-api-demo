@@ -219,8 +219,7 @@ def getAccessTokenRe(api_no, token_type="access_token"):
                 token.objects.filter(api_no=api_no).delete()
                 token_type = "jwt"
             res = getAccessTokenRe(api_no, token_type)
-    else:
-        return res
+    return res
 
 
 """
