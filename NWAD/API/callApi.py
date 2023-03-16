@@ -55,8 +55,7 @@ def sendMessageProc(api_no, bot_no, type, channel, content, token_type="access_t
                 token.objects.filter(api_no=apiData.api_no).delete()
                 token_type = "jwt"
             res = sendMessageProc(api_no, bot_no, type, channel, content, token_type)
-    else:
-        return res
+    return res
 
 
 
@@ -96,8 +95,7 @@ def createChannelProc(api_no, bot_no, members, title, token_type="access_token")
                 token.objects.filter(api_no=apiData.api_no).delete()
                 token_type = "jwt"
             res = createChannelProc(api_no, bot_no, members, title, token_type)
-    else:
-        return res
+    return res
 
 
 def getChannelMembers(api_no, bot_no, channel_id):
@@ -136,8 +134,7 @@ def getChannelMembersProc(api_no, bot_id, channel_id, token_type="access_token",
                 token.objects.filter(api_no=api_no).delete()
                 token_type = "jwt"
             res = getChannelMembersProc(api_no, bot_id, channel_id, token_type, cursor)
-    else:
-        return res
+    return res
 
 
 def getUserInfo(api_no, bot_no, user_id):
@@ -170,8 +167,7 @@ def getUserInfoProc(api_no, bot_no, user_id, token_type="access_token"):
                 token.objects.filter(api_no=api_no).delete()
                 token_type = "jwt"
             res = getUserInfoProc(api_no, bot_no, user_id, token_type)
-    else:
-        return res
+    return res
 
 
 
