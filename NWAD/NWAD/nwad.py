@@ -280,7 +280,7 @@ def mypage(request):
             return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
 # endregion
 
-
+@csrf_exempt
 def botMessage(request):
     if 'memberInfo' not in request.session:
         return redirect('login')

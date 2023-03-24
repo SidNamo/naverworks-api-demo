@@ -489,3 +489,12 @@ def simpleTemplate(text, header="", button=[]):
         content["contents"][0]["footer"].append(btn)
     
     return makeMessageBtnTemplate(content)
+
+"""
+JSON SERIALIZE 대신 사용할 수 있는 Object
+https://stackoverflow.com/questions/3768895/how-to-make-a-class-json-serializable
+"""
+class Object():
+    def toJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__, 
+            sort_keys=True, indent=4)

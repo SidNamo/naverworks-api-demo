@@ -42,6 +42,8 @@ urlpatterns = [
     path('callback', nwad.callback, name="callback"),
     # path('testCallback', nwad.testCallback, name="testCallback"),
 
+    path('callApi/sendMessage', nwad.sendMessage, name="callApi/sendMessage"),
+    path('callApi/send_message', nwad.send_message, name="callApi/send_message"),
 
     path('testPage', nwad.testPage, name="testPage"),
     path('testIp', nwad.testIp, name="testIp"),

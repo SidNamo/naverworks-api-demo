@@ -5,6 +5,7 @@ from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from urllib import parse
 from common.utils import util
 from NWAD.models import *
+from django.views.decorators.csrf import csrf_exempt
 
 
 def getBotInfo(bot_id, access_token):
@@ -12,7 +13,8 @@ def getBotInfo(bot_id, access_token):
     nwa_header = {'content-Type':'application/x-www-form-urlencoded; charset=UTF-8', 'Authorization':authorization(access_token)}
     res = requests.get(url=nwa_url, headers=nwa_header)
     return res
-    
+
+@csrf_exempt
 def sendMessage(api_no, bot_no, content, user_id="", channel_id=""):
     type = "users"
     channel = ""
@@ -22,7 +24,9 @@ def sendMessage(api_no, bot_no, content, user_id="", channel_id=""):
         type = "channels"
         channel = channel_id
 
-    content = util.strToJson(content)
+    if isinstance(content, str):
+        content = util.strToJson(content)
+
     res = sendMessageProc(api_no, bot_no, type, channel, content)
     return res
 
@@ -37,8 +41,14 @@ def sendMessageProc(api_no, bot_no, type, channel, content, token_type="access_t
         nwa_url = 'https://www.worksapis.com/v1.0/bots/' + botData.bot_id + "/" + type + "/" + channel + "/messages"
         nwa_header = {'content-Type':'application/json', 'Authorization':Authorization}
         nwa_data = {}
-        nwa_data["content"] = content
+
+        if hasattr(content, "content"):
+            nwa_data["content"] = content
+        else:
+            nwa_data = content
+
         res = requests.post(url=nwa_url, headers=nwa_header, json=nwa_data)
+
         status = res.status_code
         if status != 201 and status != 200 and util.strToJson(res.text)["code"] == "UNAUTHORIZED":
             re = True
@@ -170,7 +180,67 @@ def getUserInfoProc(api_no, bot_no, user_id, token_type="access_token"):
     return res
 
 
-
-
 def authorization(accessToken):
     return "Bearer " + accessToken
+
+
+# region 외부에서 호출 가능한 API
+
+"""
+인트라넷에서 사용하는 네이버웍스 봇 알람 기능
+"""
+@csrf_exempt
+def send_message(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        api_no = data['api_no']
+        bot_no = data['bot_no']
+        target = data['target']
+        content = data['content']
+
+        json_content = setup_message_content(content)
+
+        # For response - return
+        res = False
+
+        #Decide whether its channel Id or email(Account Id)
+        if '@' in target:
+            res = sendMessage(api_no, bot_no, json_content, user_id = target)
+        else:
+            res = sendMessage(api_no, bot_no, json_content, channel_id = target)
+
+        response_data = {}
+
+        if res:
+            response_data['result'] = 'OK'
+            response_data['message'] = 'Message Successfully Sent'
+        else:
+            response_data['result'] = 'Failed'
+            response_data['message'] = res.text
+
+        # Write Log
+        util.insertLog(request, response_data['message'])
+
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
+def setup_message_content(content):
+    nw = util.Object()
+    nw.content = util.Object()
+    nw.content.type = content["type"]
+    message_type = content["type"]
+
+    if message_type == "text":
+        nw.content.text = content["text"][:2000] # Naverworks Bot Message 는 2000자까지 지원
+    elif message_type == "link":
+        nw.content.contentText = content["contentText"][:1000] # 1000자까지 지원
+        nw.content.linkText = content["linkText"][:1000]
+        nw.content.link = content["link"][:1000]
+    else:
+        raise Exception("unsupported message type")
+
+    json_content = nw.toJSON()
+
+    return json_content
+
+# endregion
