@@ -94,7 +94,7 @@
 									<!--end::Check-->
 
 									<!--begin::Link-->
-									<!-- <a href="javascript:;" class="link-primary fs-6 fw-bolder text-gray-600 text-hover-primary" data-bs-toggle="modal" data-bs-target="#sm_login_forgot" onclick="fn_cleanFindData();">아이디<span class="fw-bold">&#47;</span>비밀번호 찾기</a> -->
+									<a href="javascript:;" class="link-primary fs-6 fw-bolder text-gray-600 text-hover-primary" data-bs-toggle="modal" data-bs-target="#sm_login_forgot" onclick="fn_cleanFindData();">아이디<span class="fw-bold">&#47;</span>비밀번호 찾기</a>
 									<!--end::Link-->
 								</div>
 							</div>
@@ -161,7 +161,7 @@
 							<div class="tab-pane px-5 py-3 fade show active" id="kt_tab_id_find" role="tabpanel">
 								<div class="d-flex flex-column mb-3 fv-row">
 									<div class="fs-6 text-gray-700">
-										회원시 가입하신 이메일로 아이디 정보를 발송해드립니다.
+										가입시 입력한 정보로 확인하여 아이디를 찾아드립니다.
 									</div>
 								
 									<!--begin::Input group-->
@@ -185,7 +185,7 @@
 							<div class="tab-pane px-5 py-3 fade" id="kt_tab_pw_find" role="tabpanel">
 								<div class="d-flex flex-column mb-3 fv-row">
 									<div class="fs-6 text-gray-700">
-										회원시 가입하신 이메일로 임시 비밀번호를 발송해드립니다.
+										가입시 입력한 정보로 확인하여 임시 비밀번호를 발급해드립니다.
 									</div>
 								
 									<!--begin::Input group-->
@@ -431,8 +431,12 @@
 					if(res.flag == '0'){
 
 						if(btn.attributes.href.value == "#kt_tab_id_find"){
-							html = `<strong class="fs-4">아이디 찾기 성공</strong><br />
-								<span class="fs-6">회원의 ID : ` + res.id + `</span>`;
+							html = `
+								<strong class="fs-4">아이디 찾기 성공</strong><br><div class="pe-auto mt-3 fs-6 d-flex flex-center">
+								<span class="badge badge-light fs-7">회원 ID</span>
+								<span class="mx-2">` + res.id + `</span>
+								</div>
+							`;
 							Swal.fire({
 								html: html,
 								icon: "success",
@@ -443,10 +447,13 @@
 								}
 							});
 						}else{
-							html = `<strong class="fs-4">비밀번호 초기화</strong><br />
-								<span class="fs-6">새로운 비밀번호를 입력하세요.</span>
-								
-								`;
+							html = `
+								<strong class="fs-4">임시 비밀번호 발급 성공</strong><br><div class="pe-auto mt-3 fs-6 d-flex flex-center">
+								<span class="badge badge-light fs-7">임시 비밀번호</span>
+								<span class="mx-2">` + res.pw + `</span>
+								<a href="javascript:void(0)" class="m-0 d-flex flex-center btn btn-active-light-dark p-2" onclick="copy_to_clipboard(this.dataset.copyToClipboard);" data-copy-to-clipboard="` + res.pw + `"><i class="bi bi-files p-0"></i></a>
+								</div>
+							`;
 							Swal.fire({
 								html: html,
 								icon: "success",

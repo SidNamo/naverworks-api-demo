@@ -1,4 +1,6 @@
 from itertools import chain
+import random
+import string
 import requests
 import json
 import re
@@ -52,7 +54,7 @@ def login(request):
             if memberSearchData is None:
                 context["flag"] = "2"
                 memberSearchData = member.objects.filter(
-                    id=context["id"], password=context["pw"]).first()
+                    id=context["id"], password=context["pw"], status="2").first()
                 if memberSearchData is not None:
                     context["result_msg"] = "가입 승인 후 사용 가능합니다."
                 else:
@@ -117,7 +119,7 @@ def join(request):
                     password=util.sha512encrypt(request.POST["password"]),
                     name=request.POST["name"],
                     email=util.aes256encrypt(request.POST["email"]),
-                    status=1
+                    status="1"
                 )
             except Exception as err:
                 context["flag"] = "9"
@@ -151,9 +153,13 @@ def loginFind(request):
                     name=request.POST["name"], email=util.aes256encrypt(request.POST["email"]), id=request.POST["id"], status="1").first()
 
             if memberSearchData is None:
-                memberSearchData = member.objects.filter(
-                    name=request.POST["name"], email=util.aes256encrypt(request.POST["email"])).first()
                 context["flag"] = "2"
+                if (request.POST["type"] == "id"):
+                    memberSearchData = member.objects.filter(
+                        name=request.POST["name"], email=util.aes256encrypt(request.POST["email"]), status="2").first()
+                elif (request.POST["type"] == "pw"):
+                    memberSearchData = member.objects.filter(
+                        name=request.POST["name"], email=util.aes256encrypt(request.POST["email"]), id=request.POST["id"], status="2").first()
                 if memberSearchData is None:
                     context["result_msg"] = "일치하는 회원이 없습니다."
                 else:
@@ -161,7 +167,15 @@ def loginFind(request):
             else:
                 context["val"] = ""
                 if (request.POST["type"] == "id"):
-                    context["id"] = memberSearchData.id[0:(len(memberSearchData.id) - len(memberSearchData.id)//2)] + ('*' * (len(memberSearchData.id)//2))
+                    # context["id"] = memberSearchData.id[0:(len(memberSearchData.id) - len(memberSearchData.id)//2)] + ('*' * (len(memberSearchData.id)//2))
+                    context["id"] = memberSearchData.id[0:3] + ('*' * 6)
+                if (request.POST["type"] == "pw"):
+                    new_pw = ""
+                    for i in range(20):
+                        new_pw += str(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits + "!@#$%^&*()"))
+                    memberSearchData.password = util.sha512encrypt(new_pw)
+                    memberSearchData.save()
+                    context["pw"] = new_pw
                 msg = ""
                 msg += "아이디/비밀번호 찾기 (" + str(memberSearchData.member_no) + ")"
                 util.insertLog(request, msg + "    " +
@@ -210,7 +224,8 @@ def mypage(request):
 
             if (context["flag"] == "0"):
                 memberSearchData = member.objects.filter(
-                    member_no=request.session["memberInfo"]["member_no"]
+                    member_no=request.session["memberInfo"]["member_no"],
+                    status="1"
                 ).first()
                 if memberSearchData is not None:
                     memberSearchData.id = request.POST["id"]
@@ -236,7 +251,8 @@ def mypage(request):
             context["result_msg"] = "success"
             memberSearchData = member.objects.filter(
                 member_no=request.session["memberInfo"]["member_no"],
-                password=util.sha512encrypt(request.POST["password"])
+                password=util.sha512encrypt(request.POST["password"]),
+                status="1"
             ).all()
             context["count"] = str(len(memberSearchData))
             return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
@@ -255,7 +271,8 @@ def mypage(request):
             if (context["flag"] == "0"):
                 memberSearchData = member.objects.filter(
                     member_no=request.session["memberInfo"]["member_no"],
-                    password=util.sha512encrypt(request.POST["current_password"])
+                    password=util.sha512encrypt(request.POST["current_password"]),
+                    status="1"
                 ).all()
                 if len(memberSearchData) == 0:
                     context["flag"] = "2"
@@ -268,7 +285,8 @@ def mypage(request):
 
             if (context["flag"] == "0"):
                 memberSearchData = member.objects.filter(
-                    member_no=request.session["memberInfo"]["member_no"]
+                    member_no=request.session["memberInfo"]["member_no"],
+                    status="1"
                 ).first()
                 if memberSearchData is not None:
                     memberSearchData.password = util.sha512encrypt(request.POST["new_password"])
@@ -654,7 +672,7 @@ def scenarioAdd(request):
                             domain = request.POST["domain"],
                             channel = channelId,
                             members = members,
-                            member_no = member.objects.filter(member_no=request.session["memberInfo"]["member_no"]).first()
+                            member_no = member.objects.filter(member_no=request.session["memberInfo"]["member_no"],status="1").first()
                         )
                         text = "익명 보고 시나리오 결재자 단톡방입니다."
                         # 메시지 전송
@@ -780,7 +798,8 @@ def apiReg(request):
                         scope=request.POST["scope"],
                         rmk="",
                         member_no=member.objects.get(
-                            member_no=request.session["memberInfo"]["member_no"])
+                            member_no=request.session["memberInfo"]["member_no"]),
+                            status="1"
                     )
                     util.tokenReg(result)
 
@@ -994,7 +1013,8 @@ def botReg(request):
                         bot_name=result["botName"],
                         rmk="",
                         member_no=member.objects.get(
-                            member_no=request.session["memberInfo"]["member_no"])
+                            member_no=request.session["memberInfo"]["member_no"]),
+                            status="1"
                     )
 
                 else:
@@ -1232,7 +1252,7 @@ def scenarioReg(request):
                         domain = request.POST["domain_id"],
                         channel = channelId,
                         members = members,
-                        member_no = member.objects.filter(member_no=request.session["memberInfo"]["member_no"]).first()
+                        member_no = member.objects.filter(member_no=request.session["memberInfo"]["member_no"], status="1").first()
                     )
                     text = "1:N 보고 BOT 시나리오 방이 생성되었습니다."
                     # 메시지 전송

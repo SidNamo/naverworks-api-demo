@@ -142,3 +142,31 @@ window.addEventListener("load", function() {
     var images = document.querySelector('data-image-zoom')
 
 });
+
+
+
+
+//===========================================================================================
+// 클립보드로 복사
+//===========================================================================================
+var copy_to_clipboard = function(str){
+    window.navigator.clipboard.writeText(str);
+}
+
+
+
+//===========================================================================================
+// 특수문자 decode
+//===========================================================================================
+function decodeHTMLEntities (str) {
+    if(str !== undefined && str !== null && str !== '') {
+        str = String(str);
+        str = str.replace(/<script[^>]*>([\S\s]*?)<\/script>/gmi, '');
+        str = str.replace(/<\/?\w(?:[^"'>]|"[^"]*"|'[^']*')*>/gmi, '');
+        var element = document.createElement('div');
+        element.innerHTML = str;
+        str = element.textContent;
+        element.textContent = '';
+    }
+    return str
+}
