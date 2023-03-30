@@ -116,7 +116,7 @@
 				<!--end::Card body-->
 				<!--begin::Actions-->
 				<div class="card-footer d-flex justify-content-between py-6 px-9">
-					<a href="./" class="btn btn-light btn-active-light-primary me-2" id="sm_myinfo_save_cancle">취소</a>
+					<button type="button" class="btn btn-light btn-active-light-primary me-2" data-bs-toggle="modal" data-bs-target="#sm_withdrawal">회원탈퇴</button>
 					<a href="javascript:void(0);" class="btn btn-primary" id="sm_myinfo_save_completed">저장</a>
 				</div>
 				<!--end::Actions-->
@@ -263,6 +263,107 @@
 	</div>
 </div>
 <!--end::Modal (Password Edit)-->
+<!--begin::Modal (Withdrawal)-->
+<div class="modal fade" tabindex="-1" id="sm_withdrawal">
+	<div class="modal-dialog modal-dialog-centered mw-800px">
+		<div class="modal-content">
+			<form id="formUserInfoWithdrawal">
+				<div class="modal-header py-4">
+					<h3 class="modal-title fw-bolder fs-noto">회원탈퇴</h3>
+					<!--begin::Close-->
+					<button type="button" class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+						<!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+						<span class="svg-icon svg-icon-2x">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+								<rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="currentColor" />
+								<rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="currentColor" />
+							</svg>
+						</span>
+						<!--end::Svg Icon-->
+					</button>
+					<!--end::Close-->
+				</div>
+				<div class="modal-body py-7">
+					<!--begin: Notice-->
+					<div class="notice d-flex bg-light-danger rounded border-danger border border-dashed mb-9 p-6">
+
+						<!--begin::Wrapper-->
+						<div class="d-flex flex-column flex-start flex-grow-1 ">
+							<!--begin::Content-->
+							<div class="d-flex flex-row flex-center mb-2">
+								<!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/kt-products/docs/metronic/html/releases/2023-01-30-131017/core/html/src/media/icons/duotune/general/gen045.svg-->
+								<span class="svg-icon svg-icon-2 svg-icon-danger me-2">
+									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10" fill="currentColor"/>
+										<rect x="11" y="14" width="7" height="2" rx="1" transform="rotate(-90 11 14)" fill="currentColor"/>
+										<rect x="11" y="17" width="2" height="2" rx="1" transform="rotate(-90 11 17)" fill="currentColor"/>
+									</svg>
+								</span>
+									<!--end::Svg Icon-->
+								<span class="text-danger fs-6 fw-bold">회원탈퇴 시 개인정보 및 API Simpler에서 작성한 모든 데이터가 삭제됩니다.</span>
+							</div>
+							
+							<div class=" fw-semibold">
+								<div class="fs-6 text-gray-700 ">
+									회원탈퇴 이후 정보가 모두 즉시 파기되기 때문에 복원이 불가능하며, 사용중인 기능이 모두 중단됩니다.
+								</div>
+							</div>
+							<!--end::Content-->
+						</div>
+						<!--end::Wrapper-->  
+					</div>
+					<!--end: Notice-->
+	
+					<!--begin::Input group--->
+					<div class="mb-7 fv-row" data-kt-password-meter="true">
+						<!--begin::Label-->
+						<label class="form-label fs-6 fw-semibold mb-2 ms-2">비밀번호</label>
+						<!--end::Label-->
+						<!--begin::Input wrapper-->
+						<div class="position-relative">
+							<input class="form-control form-control-lg form-control-solid" type="password" placeholder="" name="current_password" autocomplete="off" />
+	
+							<span class="btn btn-sm btn-icon position-absolute translate-middle top-50 end-0 me-n2" data-kt-password-meter-control="visibility">
+								<i class="bi bi-eye-slash fs-2"></i>
+	
+								<i class="bi bi-eye fs-2 d-none"></i>
+							</span>
+						</div>
+						<!--end::Input wrapper-->
+						<!--begin::Check Message-->
+						<div class="text-success fw-normal fs-7 mt-2 ms-2" id="pw_fail" style="display:none;">
+							비밀번호가 일치합니다.
+						</div>
+						<!--end::Check Message-->
+					</div>
+					<!--end::Input group--->
+					<!--begin::Input group--->
+					<div class="mb-7 fv-row" data-kt-password-meter="true">
+						<!--begin::Label-->
+						<label class="form-label fs-6 fw-semibold mb-2 ms-2">회원탈퇴 확인</label>
+						<!--end::Label-->
+						<!--begin::Input wrapper-->
+						<div class="position-relative">
+							<input class="form-control form-control-lg form-control-solid" type="text" placeholder='"회원탈퇴"를 입력해주세요' name="withdrawal_check" autocomplete="off" />
+						</div>
+						<!--end::Input wrapper-->
+						<!--begin::Check Message-->
+						<div class="text-danger fw-normal fs-7 mt-2 ms-2" id="withdrawal_check_fail" style="display:none;">
+							"회원탈퇴"를 입력해주세요.
+						</div>
+						<!--end::Check Message-->
+					</div>
+					<!--end::Input group--->
+				</div>
+				<div class="modal-footer d-flex justify-content-center py-4">
+					<button type="button" class="btn btn-light btn-sm fw-semibold" data-bs-dismiss="modal">취소</button>
+					<button type="button" class="btn btn-danger btn-sm fw-semibold" id="sm_withdrawal_completed">탈퇴</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!--end::Modal (Withdrawal)-->
 <!--end::Modals-->
 {% endblock %}
 
@@ -320,6 +421,57 @@
 					document.getElementById("pw_re_fail").style = "";
 			}
 		});
+
+		const InputWithdrawalCurrentPw = document.querySelector('#sm_withdrawal input[name=current_password]');
+		InputWithdrawalCurrentPw.addEventListener('input', e => {
+			let url = "./mypage";
+			let formData = new FormData();
+			formData.append("csrfmiddlewaretoken",Cookies("csrftoken"));
+			formData.append("type", "checkPw");
+			formData.append("password", e.target.value)
+
+			fetch(url, {
+				method: "POST",
+				cache: 'no-cache',
+				body: formData,
+			}).then((response) => {
+				if (!response.ok || response.status != '200') {
+					throw new Error('연결 실패. 다시 요청하세요.\n' + response.statusText + "(" + response.status + ")");
+				}
+				return response.json();
+			}).then((res) => {
+				if(res.count != '0'){
+					e.target.closest("div.modal").querySelector("#pw_fail").style = "";
+				}else{
+					e.target.closest("div.modal").querySelector("#pw_fail").style = "display:none;";
+				}
+			}).catch((err) => {
+				Swal.fire({
+					text: err,
+					icon: "error",
+					buttonsStyling: false,
+					confirmButtonText: "확인",
+					customClass: {
+						confirmButton: "btn btn-primary"
+					}
+				}).then(function (result) {
+					if (result.isConfirmed) {
+						modalClose();
+					}
+				});
+			});
+		});
+
+		const InputWithdrawalCheck = document.querySelector('#sm_withdrawal input[name=withdrawal_check]');
+		InputWithdrawalCheck.addEventListener('input', e => {
+			let checkFail = e.target.closest('div.modal').querySelector("#withdrawal_check_fail");
+			if(e.target.value == "회원탈퇴"){
+				checkFail.style="display:none";
+			}else{
+				checkFail.style="";
+			}
+		});
+
 	});
 </script>
 <!--end::Alert | Simpler-->

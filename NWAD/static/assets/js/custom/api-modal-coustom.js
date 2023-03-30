@@ -1499,6 +1499,155 @@ KTUtil.onDOMContentLoaded(function () {
 //# sourceMappingURL=new-card.js.map
 
 
+
+//////////////////////////////////////
+////////////My Page Withdrawal////////////
+//////////////////////////////////////
+
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!******************************************************************!*\
+  !*** ../demo14/src/js/custom/utilities/modals/create-api-key.js ***!
+  \******************************************************************/
+
+
+// Class definition
+var DivMyWithdrawal = function () {
+	var submitButton;
+	var validator;
+	var form;
+
+	// Handle form validation and submittion
+	var handleForm = function() {
+		// Stepper custom navigation
+
+		// Init form validation rules. For more info check the FormValidation plugin's official documentation:https://formvalidation.io/
+		validator = FormValidation.formValidation(
+			form,
+			{
+				fields: {
+					'current_password': {
+						validators: {
+							notEmpty: {
+								message: '비밀번호는 필수입니다.'
+							}
+						}
+					},
+				},
+				plugins: {
+					trigger: new FormValidation.plugins.Trigger(),
+					bootstrap: new FormValidation.plugins.Bootstrap5({
+						rowSelector: '.fv-row',
+						eleInvalidClass: '',
+						eleValidClass: ''
+					})
+				}
+			}
+		);
+
+		// Action buttons
+		submitButton.addEventListener('click', function (e) {
+			e.preventDefault();
+
+			// Validate form before submit
+			if (validator) {
+				validator.validate().then(function (status) {
+					//console.log('validated!');
+
+					if (status == 'Valid') {
+						submitButton.setAttribute('data-kt-indicator', 'on');
+
+						// Disable button to avoid multiple click 
+						submitButton.disabled = true;
+
+						let url = "./withdrawal";
+						let formData = new FormData(form);
+						formData.append("csrfmiddlewaretoken",Cookies("csrftoken"));
+			
+						fetch(url, {
+							method: "POST",
+							cache: 'no-cache',
+							body: formData,
+						}).then((response) => {
+							if (!response.ok || response.status != '200') {
+								throw new Error('연결 실패. 다시 요청하세요.\n' + response.statusText + "(" + response.status + ")");
+							}
+							return response.json();
+						}).then((res) => {
+							submitButton.removeAttribute('data-kt-indicator');
+							// Enable button
+							submitButton.disabled = false;
+							if(res.flag == '0'){
+								Swal.fire({
+									html: '<strong class="fs-4">회원 탈퇴가 완료되었습니다.</strong>',
+									icon: "success",
+									buttonsStyling: false,
+									showCancelButton: false,
+									confirmButtonText: '확인',
+									customClass: {
+										confirmButton: "btn btn-primary px-5 py-2"
+									}
+								}).then(e=>{
+									location.href = "/";
+								});
+							}else{
+								throw new Error(res.result_msg);
+							}
+						}).catch((err) => {
+							Swal.fire({
+								text: err,
+								icon: "error",
+								buttonsStyling: false,
+								confirmButtonText: "확인",
+								customClass: {
+									confirmButton: "btn btn-primary"
+								}
+							});
+						});
+
+					} else {
+						// Show error popuo. For more info check the plugin's official documentation: https://sweetalert2.github.io/
+						Swal.fire({
+							text: "필드값을 다시 확인해주세요",
+							icon: "error",
+							buttonsStyling: false,
+							confirmButtonText: "다시 확인하기",
+							customClass: {
+								confirmButton: "btn btn-primary"
+							}
+						});
+					}
+				});
+			}
+		});
+	}
+
+	return {
+		// Public functions
+		init: function () {
+			form = document.querySelector('#formUserInfoWithdrawal');
+			if (!form) {
+				return;
+			}
+
+			submitButton = form.querySelector('#sm_withdrawal_completed');
+
+			handleForm();
+		}
+	};
+}();
+
+// On document ready
+KTUtil.onDOMContentLoaded(function () {
+	DivMyWithdrawal.init();
+});
+/******/ })()
+;
+//# sourceMappingURL=create-api-key.js.map
+
+
+
 //////////////////////////////////////
 ////////////Scenario Edit Modal////////////
 //////////////////////////////////////

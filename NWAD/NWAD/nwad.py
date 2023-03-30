@@ -119,6 +119,7 @@ def join(request):
                     password=util.sha512encrypt(request.POST["password"]),
                     name=request.POST["name"],
                     email=util.aes256encrypt(request.POST["email"]),
+                    corp_name=request.POST["corp_name"],
                     status="1"
                 )
             except Exception as err:
@@ -127,6 +128,37 @@ def join(request):
         util.insertLog(
             request, context["result_msg"] + "    " + util.jsonToStr(request.POST.dict()))
         return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
+
+
+def withdrawal(request):
+    if request.method == "POST":
+        context = {}
+        context["flag"] = "0"
+        context["result_msg"] = "success"
+
+        # 파라미터 검사
+        if (request.POST["current_password"] == None or request.POST["current_password"] == ""):
+            context["flag"] = "2"
+            context["result_msg"] = "비밀번호를 입력하세요"
+        else:
+            memberSearchData = member.objects.filter(
+                member_no=request.session["memberInfo"]["member_no"],
+                password=util.sha512encrypt(request.POST["current_password"])
+            ).first()
+            if memberSearchData is None:
+                context["flag"] = "3"
+                context["result_msg"] = "비밀번호가 잘못되었습니다."
+            else:
+                memberSearchData.delete()
+                request.session.clear()
+        util.insertLog(
+            request, context["result_msg"] + "    " + util.jsonToStr(request.POST.dict()))
+        return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
+
+        
+        
+        # request.session.clear()
+        
 
 
 def loginFind(request):

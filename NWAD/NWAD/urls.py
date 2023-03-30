@@ -15,6 +15,7 @@ urlpatterns = [
     path('join', nwad.join, name="join"),
     path('joinIdCheck', nwad.joinIdCheck, name="joinIdCheck"),
     path('mypage', nwad.mypage, name="mypage"),
+    path('withdrawal', nwad.withdrawal, name="withdrawal"),
     path('botMessage', nwad.botMessage, name="botMessage"),
     path('scenarioList', nwad.scenarioList, name="scenarioList"),
     path('scenarioAdd', nwad.scenarioAdd, name="scenarioAdd"),
