@@ -6,6 +6,24 @@ from urllib import parse
 from common.utils import util
 from NWAD.models import *
 from django.views.decorators.csrf import csrf_exempt
+from datetime import datetime
+
+# Revaliate Token
+def revalidate_token(api_no, token_type="access_token"):
+    apiData = api.objects.filter(api_no=api_no).first()
+    access_token = util.getAccessToken(apiData.api_no, token_type)
+
+    if token_type != "jwt":
+        if token_type == "access_token":
+            token.objects.filter(api_no=apiData.api_no, type="access_token").delete()
+            token_type="refresh_token"
+        elif token_type == "refresh_token":
+            token.objects.filter(api_no=apiData.api_no).delete()
+            token_type = "jwt"
+
+        return revalidate_token(api_no, token_type)
+    else:
+        return access_token
 
 
 def getBotInfo(bot_id, access_token):
@@ -243,4 +261,87 @@ def setup_message_content(content):
 
     return json_content
 
+@csrf_exempt
+def get_events_list(request, token_type="access_token"):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        api_no = data['api_no']
+        user_id = data['user_id']
+        calendar_id = data['calendar_id']
+        # event_id = data['event_id'] if 'event_id' in data else ''
+        
+        start_date = data['start_date'].replace('.', '-') + "T00:00:00" + "%2B09:00"
+        until_date = data['until_date'].replace('.', '-') + "T23:59:59" + "%2B09:00"
+    else:
+        raise Exception("unsupported request method")
+
+    # d = datetime.strptime(start_date, "%Y-%m-%dT%H:%M:%SZ")
+    response_data = {}
+    access_token = revalidate_token(api_no)
+
+    if access_token != "":
+        Authorization = authorization(access_token)
+
+        url = 'https://www.worksapis.com/v1.0/users/{0}/calendars/{1}/events'.format(user_id, calendar_id)
+        nwa_header = {'content-Type':'application/json', 'Authorization':Authorization}
+        params = { "fromDateTime" : start_date, "untilDateTime" : until_date}
+        res = requests.get(url=url, headers=nwa_header, params=params)
+
+        if res.status_code == 200:
+            response_data['result'] = 'OK'
+            response_data['content'] = res.text
+        else:
+            response_data['result'] = 'Failed'
+            response_data['message'] = res.text
+    else:
+        response_data['result'] = 'Failed'
+        response_data['message'] = 'Failed validating access token'
+
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+@csrf_exempt
+def create_event(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        api_no = data['api_no']
+        user_id = data['user_id']
+        calendar_id = data['calendar_id']
+        event_components = data['event_components']
+    else:
+        raise Exception("unsupported request method")
+        
+    response_data = {}
+    access_token = revalidate_token(api_no)
+
+    if access_token != "":
+        Authorization = authorization(access_token)
+
+        url = 'https://www.worksapis.com/v1.0/users/{0}/calendars/{1}/events'.format(user_id, calendar_id)
+        nwa_header = {'content-Type':'application/json', 'Authorization':Authorization}
+        res = requests.post(url=url, headers=nwa_header, json='')
+
+        if res.status_code == 200:
+            response_data['result'] = 'OK'
+            response_data['content'] = res.text
+        else:
+            response_data['result'] = 'Failed'
+            response_data['message'] = res.text
+    else:
+        response_data['result'] = 'Failed'
+        response_data['message'] = 'Failed validating access token'
+
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+def getTargetIds(jsonData):
+    data = json.loads(jsonData)
+    if 'to' not in data:
+        raise ValueError("No target in given data")
+    if 'data' not in data['to']:
+        raise ValueError("No data for target")
+
+    for dest in data['to']['data']:
+        if 'id' not in dest:
+            continue
+        targetId = dest['id']
+        print("to_id:", targetId)
 # endregion
