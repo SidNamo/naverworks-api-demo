@@ -449,9 +449,7 @@
 						}else{
 							html = `
 								<strong class="fs-4">임시 비밀번호 발급 성공</strong><br><div class="pe-auto mt-3 fs-6 d-flex flex-center">
-								<span class="badge badge-light fs-7">임시 비밀번호</span>
-								<span class="mx-2">` + res.pw + `</span>
-								<a href="javascript:void(0)" class="m-0 d-flex flex-center btn btn-active-light-dark p-2" onclick="copy_to_clipboard(this.dataset.copyToClipboard);" data-copy-to-clipboard="` + res.pw + `"><i class="bi bi-files p-0"></i></a>
+								<span class="fs-7">메일을 확인해 주세요. 마이페이지에서 비밀번호 변경 가능합니다.</span>
 								</div>
 							`;
 							Swal.fire({

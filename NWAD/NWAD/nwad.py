@@ -6,12 +6,17 @@ import json
 import re
 from common.utils import util
 from django.shortcuts import render, redirect
+from django.template.loader import render_to_string
 from django.views.generic import TemplateView
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.urls import reverse
 from urllib import parse
 from django.template import loader
 from django.core import serializers
+from django.core.mail import send_mail
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 from django.views.decorators.csrf import csrf_exempt
 
@@ -212,6 +217,8 @@ def loginFind(request):
                 msg += "아이디/비밀번호 찾기 (" + str(memberSearchData.member_no) + ")"
                 util.insertLog(request, msg + "    " +
                                util.jsonToStr(request.POST.dict()))
+
+                send_simple_mail(request.POST["email"], '임시 비밀번호 발급 안내', '임시비밀번호', new_pw)
         return JsonResponse(context, content_type="application/json", json_dumps_params={'ensure_ascii': False}, status=200)
 
 
@@ -1767,3 +1774,29 @@ def testIp(request):
     msg += "테스트 IP"
     util.insertLog(request, msg + "    " + util.jsonToStr(request.POST.dict()))
     return HttpResponse("192.168.60.9\n192.168.60.6", content_type="text/plain")
+
+
+def load_mail_template(template_name, password):
+    return render_to_string('NWAD/DidimAPI Simpler mail/' + template_name + '.html').format(password)
+
+def send_simple_mail(mail_to, subject, template_name, password):
+    mail_from = 'noreply@didim365.com'
+
+    msg = MIMEMultipart()
+    msg['From'] = mail_from
+    msg['To'] = mail_to
+    msg['Subject'] = subject
+    mail_body = load_mail_template(template_name, password)
+    msg.attach(MIMEText(mail_body, 'html'))
+
+    try:
+        server = smtplib.SMTP('smtp.sendgrid.net', 587)
+        server.ehlo()
+        server.login('apikey', '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')
+        server.sendmail(mail_from, mail_to, msg.as_string())
+        server.close()
+        return "OK"
+    except Exception as err:
+        return "Failed : " + err
+
+    

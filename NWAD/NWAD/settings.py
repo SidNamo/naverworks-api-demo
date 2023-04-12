@@ -161,3 +161,12 @@ PASSWORD_HASHERS = [
 PASSWORD_HASHERS_PBKDF2 = 'django.contrib.auth.hashers.PBKDF2PasswordHasher'
 PASSWORD_HASHERS_PBKDF2_ROUNDS = 180000
 PASSWORD_HASHERS_PBKDF2_DIGEST = hashlib.sha512
+
+# SENDGRID, 메일 발송 기능
+SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
+
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = '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' # this is exactly the value 'apikey'
+EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True

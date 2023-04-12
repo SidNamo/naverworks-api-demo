@@ -300,6 +300,40 @@ def get_events_list(request, token_type="access_token"):
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 @csrf_exempt
+def get_event(request, token_type="access_token"):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        api_no = data['api_no']
+        user_id = data['user_id']
+        calendar_id = data['calendar_id']
+        event_id = data['event_id']
+    else:
+        raise Exception("unsupported request method")
+
+    # d = datetime.strptime(start_date, "%Y-%m-%dT%H:%M:%SZ")
+    response_data = {}
+    access_token = revalidate_token(api_no)
+
+    if access_token != "":
+        Authorization = authorization(access_token)
+
+        url = 'https://www.worksapis.com/v1.0/users/{0}/calendars/{1}/events/{2}'.format(user_id, calendar_id, event_id)
+        nwa_header = {'content-Type':'application/json', 'Authorization':Authorization}
+        res = requests.get(url=url, headers=nwa_header)
+
+        if res.status_code == 200:
+            response_data['result'] = 'OK'
+            response_data['content'] = res.text
+        else:
+            response_data['result'] = 'Failed'
+            response_data['message'] = res.text
+    else:
+        response_data['result'] = 'Failed'
+        response_data['message'] = 'Failed validating access token'
+
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+@csrf_exempt
 def create_event(request):
     if request.method == "POST":
         data = json.loads(request.body)
@@ -319,6 +353,74 @@ def create_event(request):
         url = 'https://www.worksapis.com/v1.0/users/{0}/calendars/{1}/events'.format(user_id, calendar_id)
         nwa_header = {'content-Type':'application/json', 'Authorization':Authorization}
         res = requests.post(url=url, headers=nwa_header, json='')
+
+        if res.status_code == 200:
+            response_data['result'] = 'OK'
+            response_data['content'] = res.text
+        else:
+            response_data['result'] = 'Failed'
+            response_data['message'] = res.text
+    else:
+        response_data['result'] = 'Failed'
+        response_data['message'] = 'Failed validating access token'
+
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+@csrf_exempt
+def update_event(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        api_no = data['api_no']
+        user_id = data['user_id']
+        calendar_id = data['calendar_id']
+        event_id = data['event_id']
+        event_components = data['event_components']
+    else:
+        raise Exception("unsupported request method")
+        
+    response_data = {}
+    access_token = revalidate_token(api_no)
+
+    if access_token != "":
+        Authorization = authorization(access_token)
+
+        url = 'https://www.worksapis.com/v1.0/users/{userId}/calendars/{calendarId}/events/{eventId}'.format(user_id, calendar_id, event_id)
+        nwa_header = {'content-Type':'application/json', 'Authorization':Authorization}
+        res = requests.put(url=url, headers=nwa_header, json='')
+
+        if res.status_code == 200:
+            response_data['result'] = 'OK'
+            response_data['content'] = res.text
+        else:
+            response_data['result'] = 'Failed'
+            response_data['message'] = res.text
+    else:
+        response_data['result'] = 'Failed'
+        response_data['message'] = 'Failed validating access token'
+
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+@csrf_exempt
+def delete_event(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        api_no = data['api_no']
+        user_id = data['user_id']
+        calendar_id = data['calendar_id']
+        event_id = data['event_id']
+        event_components = data['event_components']
+    else:
+        raise Exception("unsupported request method")
+        
+    response_data = {}
+    access_token = revalidate_token(api_no)
+
+    if access_token != "":
+        Authorization = authorization(access_token)
+
+        url = 'https://www.worksapis.com/v1.0/users/{userId}/calendars/{calendarId}/events/{eventId}'.format(user_id, calendar_id, event_id)
+        nwa_header = {'content-Type':'application/json', 'Authorization':Authorization}
+        res = requests.delete(url=url, headers=nwa_header, json='')
 
         if res.status_code == 200:
             response_data['result'] = 'OK'
