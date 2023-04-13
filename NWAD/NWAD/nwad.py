@@ -1053,7 +1053,7 @@ def botReg(request):
                         rmk="",
                         member_no=member.objects.get(
                             member_no=request.session["memberInfo"]["member_no"]),
-                            status="1"
+                            status=1
                     )
 
                 else:

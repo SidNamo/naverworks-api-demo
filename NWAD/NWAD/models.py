@@ -23,7 +23,7 @@ class member(models.Model):
     name = models.CharField(db_column='name', max_length=5)
     email = models.CharField(db_column='email', max_length=50)
     reg_date = models.DateTimeField(db_column='reg_date', auto_now=True)
-    status = models.CharField(db_column='status', max_length=1, default='2') # 1:정상 ,2:가입대기, 3:가입취소, 4:가입반려, 9:탈퇴
+    status = models.CharField(db_column='status', max_length=1, default='1')
     rmk = models.TextField(db_column='rmk', null=True)
     corp_name = models.TextField(db_column='corp_name', max_length=50)
 
@@ -43,6 +43,7 @@ class api(models.Model):
     service_account = models.TextField(db_column="service_account", null=False)
     private_key = models.TextField(db_column="private_key", null=False)
     scope = models.TextField(db_column="scope", null=False)
+    status = models.CharField(db_column='status', max_length=1, default='1')
     reg_date = models.DateTimeField(db_column='reg_date', auto_now=True)
     rmk = models.TextField(db_column='rmk', null=True)
 
@@ -60,6 +61,7 @@ class bot(models.Model):
     bot_id = models.CharField(db_column="bot_id", null=False, max_length=10)
     bot_secret = models.TextField(db_column="bot_secret", null=False)
     bot_name = models.CharField(db_column="bot_name", null=False, max_length=50)
+    status = models.CharField(db_column='status', max_length=1, default='1')
     reg_date = models.DateTimeField(db_column='reg_date', auto_now=True)
     rmk = models.TextField(db_column='rmk', null=True)
 
