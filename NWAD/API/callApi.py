@@ -60,7 +60,7 @@ def sendMessageProc(api_no, bot_no, type, channel, content, token_type="access_t
         nwa_header = {'content-Type':'application/json', 'Authorization':Authorization}
         nwa_data = {}
 
-        if hasattr(content, "content"):
+        if (("content" in content) or ("contents" in content)):
             nwa_data["content"] = content
         else:
             nwa_data = content
