@@ -337,13 +337,15 @@ def get_event(request, token_type="access_token"):
 def create_event(request):
     if request.method == "POST":
         data = json.loads(request.body)
-        api_no = data['api_no']
-        user_id = data['user_id']
-        calendar_id = data['calendar_id']
-        event_components = data['event_components']
+        api_no = data['authComponents']['api_no']
+        user_id = data['authComponents']['user_id']
+        calendar_id = data['authComponents']['calendar_id']
+        event_components = data['eventComponents']
     else:
         raise Exception("unsupported request method")
         
+    nwa_data = {}
+    nwa_data['eventComponents'] = event_components
     response_data = {}
     access_token = revalidate_token(api_no)
 
@@ -352,9 +354,10 @@ def create_event(request):
 
         url = 'https://www.worksapis.com/v1.0/users/{0}/calendars/{1}/events'.format(user_id, calendar_id)
         nwa_header = {'content-Type':'application/json', 'Authorization':Authorization}
-        res = requests.post(url=url, headers=nwa_header, json='')
+        json_data = json.dumps(nwa_data, ensure_ascii=False)
+        res = requests.post(url=url, headers=nwa_header, data=json_data.encode('utf-8'))
 
-        if res.status_code == 200:
+        if res.status_code in (200, 201):
             response_data['result'] = 'OK'
             response_data['content'] = res.text
         else:
@@ -368,25 +371,28 @@ def create_event(request):
 
 @csrf_exempt
 def update_event(request):
-    if request.method == "POST":
+    if request.method == "PUT":
         data = json.loads(request.body)
-        api_no = data['api_no']
-        user_id = data['user_id']
-        calendar_id = data['calendar_id']
-        event_id = data['event_id']
-        event_components = data['event_components']
+        api_no = data['authComponents']['api_no']
+        user_id = data['authComponents']['user_id']
+        calendar_id = data['authComponents']['calendar_id']
+        event_id = data['eventComponents'][0]['event_id']
+        event_components = data['eventComponents']
     else:
         raise Exception("unsupported request method")
         
+    nwa_data = {}
+    nwa_data['eventComponents'] = event_components
     response_data = {}
     access_token = revalidate_token(api_no)
 
     if access_token != "":
         Authorization = authorization(access_token)
 
-        url = 'https://www.worksapis.com/v1.0/users/{userId}/calendars/{calendarId}/events/{eventId}'.format(user_id, calendar_id, event_id)
+        url = 'https://www.worksapis.com/v1.0/users/{0}/calendars/{1}/events/{2}'.format(user_id, calendar_id, event_id)
         nwa_header = {'content-Type':'application/json', 'Authorization':Authorization}
-        res = requests.put(url=url, headers=nwa_header, json='')
+        json_data = json.dumps(nwa_data, ensure_ascii=False)
+        res = requests.put(url=url, headers=nwa_header, data=json_data.encode('utf-8'))
 
         if res.status_code == 200:
             response_data['result'] = 'OK'
@@ -402,13 +408,12 @@ def update_event(request):
 
 @csrf_exempt
 def delete_event(request):
-    if request.method == "POST":
+    if request.method == "DELETE":
         data = json.loads(request.body)
-        api_no = data['api_no']
-        user_id = data['user_id']
-        calendar_id = data['calendar_id']
-        event_id = data['event_id']
-        event_components = data['event_components']
+        api_no = data['authComponents']['api_no']
+        user_id = data['authComponents']['user_id']
+        calendar_id = data['authComponents']['calendar_id']
+        event_id = data['eventComponents'][0]['event_id']
     else:
         raise Exception("unsupported request method")
         
@@ -418,9 +423,9 @@ def delete_event(request):
     if access_token != "":
         Authorization = authorization(access_token)
 
-        url = 'https://www.worksapis.com/v1.0/users/{userId}/calendars/{calendarId}/events/{eventId}'.format(user_id, calendar_id, event_id)
+        url = 'https://www.worksapis.com/v1.0/users/{0}/calendars/{1}/events/{2}'.format(user_id, calendar_id, event_id)
         nwa_header = {'content-Type':'application/json', 'Authorization':Authorization}
-        res = requests.delete(url=url, headers=nwa_header, json='')
+        res = requests.delete(url=url, headers=nwa_header)
 
         if res.status_code == 200:
             response_data['result'] = 'OK'
