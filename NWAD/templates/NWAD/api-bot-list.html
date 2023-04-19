@@ -671,7 +671,7 @@
                 <div class="modal-body bg-light px-lg-17 pt-5 pb-10">
                     <!--begin::Scroll-->
                     <div class="scroll-y me-n7 pe-7" id="modal_list_add_scroll" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#modal_bot_list_add_header" data-kt-scroll-wrappers="#modal_bot_list_add_scroll" data-kt-scroll-offset="300px" style="max-height: 716px;">
-                        <ul class="pagination mb-3 justify-content-end" style=""><li class="page-item active m-1"><a href="javascript:void(0);" class="page-link" onclick="modalTabSet('1'');">1</a></li><li class="page-item m-1"><a href="javascript:void(0);" class="page-link" onclick="modalTabSet('2');">2</a></li><li class="page-item m-1"><a href="javascript:void(0);" class="page-link" onclick="modalTabSet('3');">3</a></li></ul>
+                        <ul class="pagination mb-3 justify-content-end" style=""><li class="page-item active m-1"><a href="javascript:void(0);" class="page-link" onclick="modalTabSet(1);">1</a></li><li class="page-item m-1"><a href="javascript:void(0);" class="page-link" onclick="modalTabSet(2);">2</a></li><li class="page-item m-1"><a href="javascript:void(0);" class="page-link" onclick="modalTabSet(3);">3</a></li></ul>
                         <span class="modal-tab" data-modal-tab="1">
                             <span data-modal-tab-type="image" style="">
                                     <!--begin:: Notice-->
@@ -796,7 +796,7 @@
                                     <div class="fw-normal fs-7 text-gray-600 ">※ 생성된 Bot 정보를 하단 입력칸에 입력하세요.</div>
                                 </div>
                             </span>
-                            <span data-modal-tab-type="input" style="">
+                            <span data-modal-tab-type="input">
                                 <!--begin::Input group-->
                                 <div class="mb-5 fv-row fv-plugins-icon-container">
                                     <!--begin::Label-->
@@ -1148,6 +1148,7 @@
             fn_getApiList();
         });
         document.getElementById('modal_bot_list_add').addEventListener('show.bs.modal',(e)=>{
+            modalTabSet(0, e.target);
             fn_getBotApiList();
         });
         document.getElementById('modal_bot_list_add').addEventListener('hide.bs.modal',(e)=>{
@@ -1218,8 +1219,7 @@
             form.querySelector('input[name=client_secret]').value = res.data.client_secret;
             form.querySelector('input[name=service_account]').value = res.data.service_account;
             form.querySelector('textarea[name=private_key]').value = res.data.private_key;
-            form.querySelector('input[name=scope_tags]').value = res.data.scope;
-            
+            form.querySelector('input[name=scope_tags]').value = res.data.scope;            
         }).catch((err) => {
             Swal.fire({
                 text: err,

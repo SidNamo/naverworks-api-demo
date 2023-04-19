@@ -1,5 +1,5 @@
 
-const DATABASE = 'Didim356ApiSimpler';
+const DATABASE = 'Didim365ApiSampler';
 const DB_VERSION = 1;
 
 var db;

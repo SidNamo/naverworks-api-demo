@@ -60,10 +60,7 @@ def sendMessageProc(api_no, bot_no, type, channel, content, token_type="access_t
         nwa_header = {'content-Type':'application/json', 'Authorization':Authorization}
         nwa_data = {}
 
-        if (("content" in content) or ("contents" in content)):
-            nwa_data["content"] = content
-        else:
-            nwa_data = content
+        nwa_data["content"] = content
 
         res = requests.post(url=nwa_url, headers=nwa_header, json=nwa_data)
 
@@ -244,16 +241,15 @@ def send_message(request):
 
 def setup_message_content(content):
     nw = util.Object()
-    nw.content = util.Object()
-    nw.content.type = content["type"]
+    nw.type = content["type"]
     message_type = content["type"]
 
     if message_type == "text":
-        nw.content.text = content["text"][:2000] # Naverworks Bot Message 는 2000자까지 지원
+        nw.text = content["text"][:2000] # Naverworks Bot Message 는 2000자까지 지원
     elif message_type == "link":
-        nw.content.contentText = content["contentText"][:1000] # 1000자까지 지원
-        nw.content.linkText = content["linkText"][:1000]
-        nw.content.link = content["link"][:1000]
+        nw.Text = content["contentText"][:1000] # 1000자까지 지원
+        nw.linkText = content["linkText"][:1000]
+        nw.link = content["link"][:1000]
     else:
         raise Exception("unsupported message type")
 
