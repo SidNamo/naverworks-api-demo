@@ -247,7 +247,7 @@ def setup_message_content(content):
     if message_type == "text":
         nw.text = content["text"][:2000] # Naverworks Bot Message 는 2000자까지 지원
     elif message_type == "link":
-        nw.Text = content["contentText"][:1000] # 1000자까지 지원
+        nw.contentText = content["contentText"][:1000] # 1000자까지 지원
         nw.linkText = content["linkText"][:1000]
         nw.link = content["link"][:1000]
     else:
