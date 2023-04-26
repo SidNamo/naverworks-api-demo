@@ -299,10 +299,10 @@ def get_events_list(request, token_type="access_token"):
 def get_event(request, token_type="access_token"):
     if request.method == "POST":
         data = json.loads(request.body)
-        api_no = data['api_no']
-        user_id = data['user_id']
-        calendar_id = data['calendar_id']
-        event_id = data['event_id']
+        api_no = data['authComponents']['api_no']
+        user_id = data['authComponents']['user_id']
+        calendar_id = data['authComponents']['calendar_id']
+        event_id = data['eventComponents'][0]['eventId']
     else:
         raise Exception("unsupported request method")
 
@@ -372,7 +372,7 @@ def update_event(request):
         api_no = data['authComponents']['api_no']
         user_id = data['authComponents']['user_id']
         calendar_id = data['authComponents']['calendar_id']
-        event_id = data['eventComponents'][0]['event_id']
+        event_id = data['eventComponents'][0]['eventId']
         event_components = data['eventComponents']
     else:
         raise Exception("unsupported request method")

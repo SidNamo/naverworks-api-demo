@@ -48,6 +48,8 @@ urlpatterns = [
     path('callApi/get_events_list', nwad.get_events_list, name="callApi/get_events_list"),
     path('callApi/get_event', nwad.get_event, name="callApi/get_event"),
     path('callApi/create_event', nwad.create_event, name="callApi/create_event"),
+    path('callApi/update_event', nwad.update_event, name="callApi/update_event"),
+    path('callApi/delete_event', nwad.delete_event, name="callApi/delete_event"),
 
     path('testPage', nwad.testPage, name="testPage"),
     path('testIp', nwad.testIp, name="testIp"),
