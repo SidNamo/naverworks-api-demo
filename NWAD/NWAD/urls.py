@@ -2,7 +2,11 @@ from django.contrib import admin
 from django.urls import path, include
 from . import nwad
 
+from django.views.generic import TemplateView
+
 urlpatterns = [
+    path('robots.txt',  TemplateView.as_view(template_name="robots.txt", content_type='text/plain')),
+    
     # path('admin/', admin.site.urls),
     path('auth/', include('AUTH.urls')),
     path('api/', include('API.urls')),
