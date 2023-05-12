@@ -19,6 +19,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
 
 from .models import *
 from API.callApi import *
@@ -38,7 +39,17 @@ def login(request):
         if 'memberInfo' in request.session:
             return redirect('/')
         else:
-            return render(request, 'NWAD/login.html')
+            context = {}
+            user_ip = request.META.get('REMOTE_ADDR', '')  # 요청 객체의 IP 주소를 가져옵니다.
+
+            if user_ip in (settings.INTRANET_IP, '127.0.0.1'):  # IP 주소가 로컬일 경우
+                isAllowedIP = True
+            else:
+                isAllowedIP = False
+
+            context['isAllowedIP'] = isAllowedIP
+
+            return render(request, 'NWAD/login.html', context)
     elif request.method == "POST":
         context = {}
         context["flag"] = "0"
