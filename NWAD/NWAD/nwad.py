@@ -1788,7 +1788,7 @@ def testIp(request):
 
 
 def load_mail_template(template_name, password):
-    return render_to_string('NWAD/DidimAPI Sampler mail/' + template_name + '.html').format(password)
+    return render_to_string('NWAD/NAVERWORKS API 체험하기 mail/' + template_name + '.html').format(password)
 
 def send_simple_mail(mail_to, subject, template_name, password):
     mail_from = 'noreply@didim365.com'

@@ -2,6 +2,10 @@ body{
     font-family: 'Noto Sans KR', sans-serif;
 }
 
+.logo-height{
+    height: 21px;
+}
+
 .api-card,.bot-card{
     transition: all 0.3s;
     cursor: pointer;
@@ -28,4 +32,10 @@ body{
     border-radius: 0.475rem !important;
     border: 1px solid;
     background-color: #E8FFF3;
+}
+
+@media(max-width: 767px){
+    .logo-height{
+        height: 27px;
+    }
 }

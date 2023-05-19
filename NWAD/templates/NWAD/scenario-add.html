@@ -88,9 +88,9 @@
 								<div class="fv-row mb-6" data-kt-buttons="true" id="divScenType">
 
 									<!--begin::Option-->
-									<label class="btn btn-custom btn-active-light-primary border border-gray-300 border-dashed border-active-primary position-relative d-flex text-start p-6 mb-5 active">
+									<label class="btn btn-custom btn-active-light-success border border-gray-300 border-dashed border-active-success position-relative d-flex text-start p-6 mb-5 active">
 										<!--begin::Radio-->
-										<div class="position-absolute end-0 form-check form-check-custom form-check-solid form-check-primary me-6">
+										<div class="position-absolute end-0 form-check form-check-custom form-check-solid form-check-success me-6">
 											<input class="form-check-input" type="radio" name="scen_type" value="1" checked/>
 										</div>
 										<!--end::Radio-->
@@ -111,7 +111,7 @@
 												<div class="fs-2 fw-bolder text-gray-900 mb-2 pe-10">1:N 보고 BOT 시나리오</div>
 												<div class="fs-6 fw-normal text-muted mb-1">시나리오에 대한 간략한 설명입니다.</div>
 												<div class="mt-6">
-													<button type="button" class="btn btn-sm btn-primary px-4 py-2 me-2" data-bs-toggle="modal" data-bs-target="#sm_sc_1_temp_preview">자세히 보기</button>
+													<button type="button" class="btn btn-sm btn-success px-4 py-2 me-2" data-bs-toggle="modal" data-bs-target="#sm_sc_1_temp_preview">자세히 보기</button>
 												</div>
 											</div>
 											<!--end::Info-->
@@ -135,7 +135,7 @@
 			<!--begin::Actions-->
 			<div class="card-footer d-flex justify-content-between py-6 px-9">
 				<a href="./scenarioList" class="btn btn-light btn-active-light-primary me-2">취소</a>
-				<a href="javascript:void(0);" class="btn btn-primary btn-step-change" id="sm_bot_msg_send" data-step="2">다음</a>
+				<a href="javascript:void(0);" class="btn btn-dark btn-step-change" id="sm_bot_msg_send" data-step="2">다음</a>
 			</div>
 			<!--end::Actions-->
 		</div>	
@@ -304,9 +304,15 @@
 	<!--begin::Footer-->
 	<div class="footer py-4 d-flex flex-column flex-md-row flex-stack" id="kt_footer">
 		<!--begin::Copyright-->
-		<div class="text-gray-600 order-2 order-md-1">
+		<div class="text-gray-600 order-2 order-md-1 d-flex align-items-center">
 			<span class="text-muted fw-semibold me-1">2023&copy;</span>
 			<a href="https://didim365.com" target="_blank" class="text-gray-800 text-hover-primary">Didim365</a>
+			<span class="mx-5">|</span>
+			<div>
+				<span class="text-gray-600 fw-semibold me-1">디딤365 네이버웍스 고객지원센터</span>
+				<a href="tel:028580365" target="_blank" class="text-gray-600 text-hover-primary"><span class="text-gray-800">T.</span> 02-858-0365</a>
+				<a href="mailto:works@didim365.com" target="_blank" class="text-gray-600 text-hover-primary ms-2"><span class="text-gray-800">E.</span> works@didim365.com</a>
+			</div>
 		</div>
 		<!--end::Copyright-->
 		<!--begin::Menu-->
@@ -391,7 +397,7 @@
 							<!--begin::Card-->
 							<div class="card mb-8">
 								<!--begin::Topbar-->
-								<div class="d-flex justify-content-between bg-primary rounded-3 rounded-bottom-0 px-2 py-2">
+								<div class="d-flex justify-content-between bg-dark rounded-3 rounded-bottom-0 px-2 py-2">
 									<div class="ms-3">
 										<span class="" style="color:white;">보고 Bot</span>
 										<!--begin::Svg Icon | icons/duotune/general/gen052.svg-->
@@ -448,7 +454,7 @@
 												<!--end::Details-->
 												<!--begin::Avatar-->
 												<div class="symbol symbol-50px">
-													<span class="svg-icon svg-icon-primary svg-icon-1">
+													<span class="svg-icon svg-icon-success svg-icon-1">
 														<!--begin::Svg Icon | path: icons/General/User.svg-->
 														<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
 															<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -464,7 +470,7 @@
 											</div>
 											<!--end::User-->
 											<!--begin::Text-->
-											<div class="p-5 rounded bg-light text-dark fw-normal mw-lg-400px text-end">
+											<div class="p-5 rounded bg-light-primary border border-light-primary text-dark fw-normal mw-lg-400px text-end">
 												병원 좀 다녀오겠습니다.
 											</div>
 											<!--end::Text-->
@@ -481,7 +487,7 @@
 											<div class="d-flex align-items-center mb-2">
 												<!--begin::Avatar-->
 												<div class="symbol symbol-50px">
-													<span class="svg-icon svg-icon-primary svg-icon-1">
+													<span class="svg-icon svg-icon-success svg-icon-1">
 														<!--begin::Svg Icon | path: icons/Communication/Chat-smile.svg-->
 														<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
 															<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -503,7 +509,7 @@
 											</div>
 											<!--end::Title-->
 											<!--begin::Text-->
-											<div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-start">
+											<div class="p-5 rounded bg-white border border-gray-300 text-dark fw-semibold mw-lg-400px text-start">
 												담당자에게 메시지를 전달 하였습니다.<br/>잠시만 기다려 주세요.
 											</div>
 											<!--end::Text-->
@@ -520,7 +526,7 @@
 							<!--begin::Card-->
 							<div class="card mb-8">
 								<!--begin::Topbar-->
-								<div class="d-flex justify-content-between bg-primary rounded-3 rounded-bottom-0 px-2 py-2">
+								<div class="d-flex justify-content-between bg-dark rounded-3 rounded-bottom-0 px-2 py-2">
 									<div class="ms-3">
 										<span class="" style="color:white;">1:N 보고 BOT 시나리오</span>
 									</div>
@@ -562,7 +568,7 @@
 											<div class="d-flex align-items-center mb-2">
 												<!--begin::Avatar-->
 												<div class="symbol symbol-50px">
-													<span class="svg-icon svg-icon-primary svg-icon-1">
+													<span class="svg-icon svg-icon-success svg-icon-1">
 														<!--begin::Svg Icon | path: icons/Communication/Chat-smile.svg-->
 														<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
 															<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -584,7 +590,7 @@
 											</div>
 											<!--end::Title-->
 											<!--begin::Text-->
-											<div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-start">
+											<div class="p-5 rounded bg-white border border-gray-300 text-dark fw-semibold mw-lg-400px text-start">
 												익명 보고 시나리오 결재자 단톡방입니다.
 											</div>
 											<!--end::Text-->
@@ -601,7 +607,7 @@
 											<div class="d-flex align-items-center mb-2">
 												<!--begin::Avatar-->
 												<div class="symbol symbol-50px">
-													<span class="svg-icon svg-icon-primary svg-icon-1">
+													<span class="svg-icon svg-icon-success svg-icon-1">
 														<!--begin::Svg Icon | path: icons/Communication/Chat-smile.svg-->
 														<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
 															<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -623,20 +629,20 @@
 											</div>
 											<!--end::Title-->
 											<!--begin::Text-->
-											<div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-start">
+											<div class="p-5 rounded bg-white border border-gray-300 text-dark fw-semibold mw-lg-400px text-start">
 												홍길동님으로부터 메시지가 도착하였습니다.<br />선택해주세요.<br/>요청일자:2023-01-01 08:00:00
 												<!--begin::URL Area-->
 												<div class="mt-5">
-													<a href="javascript:void(0);" class="btn bg-white text-primary w-100 btn-sm rounded-1" onclick="modalTabSet(1);">대화 시작</a>
+													<a href="javascript:void(0);" class="btn bg-light-primary text-primary w-100 btn-sm rounded-1" onclick="modalTabSet(1);">대화 시작</a>
 												</div>
 												<div class="mt-1">
-													<a href="javascript:void(0);" class="btn bg-white text-primary w-100 btn-sm rounded-1" onclick="modalTabSet(2);">전달된 메시지 보기</a>
+													<a href="javascript:void(0);" class="btn bg-light-primary text-primary w-100 btn-sm rounded-1" onclick="modalTabSet(2);">전달된 메시지 보기</a>
 												</div>
 												<div class="mt-1">
-													<a href="javascript:void(0);" class="btn bg-white text-primary w-100 btn-sm rounded-1" onclick="modalTabSet(3);">대기 메시지 전송</a>
+													<a href="javascript:void(0);" class="btn bg-light-primary text-primary w-100 btn-sm rounded-1" onclick="modalTabSet(3);">대기 메시지 전송</a>
 												</div>
 												<div class="mt-1">
-													<a href="javascript:void(0);" class="btn bg-white text-primary w-100 btn-sm rounded-1" onclick="modalTabSet(4);">대화 취소</a>
+													<a href="javascript:void(0);" class="btn bg-light-primary text-primary w-100 btn-sm rounded-1" onclick="modalTabSet(4);">대화 취소</a>
 												</div>
 												<!--end::URL Area-->
 											</div>
@@ -706,7 +712,7 @@
 											<div class="d-flex align-items-center mb-2">
 												<!--begin::Avatar-->
 												<div class="symbol symbol-50px">
-													<span class="svg-icon svg-icon-primary svg-icon-1">
+													<span class="svg-icon svg-icon-success svg-icon-1">
 														<!--begin::Svg Icon | path: icons/Communication/Chat-smile.svg-->
 														<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
 															<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -728,11 +734,11 @@
 											</div>
 											<!--end::Title-->
 											<!--begin::Text-->
-											<div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-start">
+											<div class="p-5 rounded bg-white border border-gray-300 text-dark fw-semibold mw-lg-400px text-start">
 												홍길동님과 대화를 시작합니다.<br/>전달할 메시지를 입력해주세요.
 												<!--begin::URL Area-->
 												<div class="mt-5">
-													<a href="javascript:void(0);" class="btn bg-white text-primary w-100 btn-sm rounded-1">대화 종료</a>
+													<a href="javascript:void(0);" class="btn bg-light-primary text-primary w-100 btn-sm rounded-1">대화 종료</a>
 												</div>
 												<!--end::URL Area-->
 											</div>
@@ -755,7 +761,7 @@
 												<!--end::Details-->
 												<!--begin::Avatar-->
 												<div class="symbol symbol-50px">
-													<span class="svg-icon svg-icon-primary svg-icon-1">
+													<span class="svg-icon svg-icon-success svg-icon-1">
 														<!--begin::Svg Icon | path: icons/General/User.svg-->
 														<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
 															<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -771,7 +777,7 @@
 											</div>
 											<!--end::User-->
 											<!--begin::Text-->
-											<div class="p-5 rounded bg-light text-dark fw-normal mw-lg-400px text-end">
+											<div class="p-5 rounded bg-light-primary border border-light-primary text-dark fw-normal mw-lg-400px text-end">
 												무슨일이신가요?
 											</div>
 											<!--end::Text-->
@@ -787,7 +793,7 @@
 											<div class="d-flex align-items-center mb-2">
 												<!--begin::Avatar-->
 												<div class="symbol symbol-50px">
-													<span class="svg-icon svg-icon-primary svg-icon-1">
+													<span class="svg-icon svg-icon-success svg-icon-1">
 														<!--begin::Svg Icon | path: icons/Communication/Chat-smile.svg-->
 														<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
 															<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -809,11 +815,11 @@
 											</div>
 											<!--end::Title-->
 											<!--begin::Text-->
-											<div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-start">
+											<div class="p-5 rounded bg-white border border-gray-300 text-dark fw-semibold mw-lg-400px text-start">
 												홍길동님으로부터 전달된 메시지.<br/>"감기 기운이 있는 것 같아서요."
 												<!--begin::URL Area-->
 												<div class="mt-5">
-													<a href="javascript:void(0);" class="btn bg-white text-primary w-100 btn-sm rounded-1">대화 종료</a>
+													<a href="javascript:void(0);" class="btn bg-light-primary text-primary w-100 btn-sm rounded-1">대화 종료</a>
 												</div>
 												<!--end::URL Area-->
 											</div>
@@ -836,7 +842,7 @@
 												<!--end::Details-->
 												<!--begin::Avatar-->
 												<div class="symbol symbol-50px">
-													<span class="svg-icon svg-icon-primary svg-icon-1">
+													<span class="svg-icon svg-icon-success svg-icon-1">
 														<!--begin::Svg Icon | path: icons/General/User.svg-->
 														<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
 															<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -852,7 +858,7 @@
 											</div>
 											<!--end::User-->
 											<!--begin::Text-->
-											<div class="p-5 rounded bg-light text-dark fw-normal mw-lg-400px text-end">
+											<div class="p-5 rounded bg-light-primary border border-light-primary text-dark fw-normal mw-lg-400px text-end">
 												그래요. 조심히 다녀오세요.
 											</div>
 											<!--end::Text-->
@@ -868,7 +874,7 @@
 											<div class="d-flex align-items-center mb-2">
 												<!--begin::Avatar-->
 												<div class="symbol symbol-50px">
-													<span class="svg-icon svg-icon-primary svg-icon-1">
+													<span class="svg-icon svg-icon-success svg-icon-1">
 														<!--begin::Svg Icon | path: icons/Communication/Chat-smile.svg-->
 														<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
 															<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -890,7 +896,7 @@
 											</div>
 											<!--end::Title-->
 											<!--begin::Text-->
-											<div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-start">
+											<div class="p-5 rounded bg-white border border-gray-300 text-dark fw-semibold mw-lg-400px text-start">
 												홍길동님과의 대화가 종료되었습니다.
 											</div>
 											<!--end::Text-->
@@ -948,7 +954,7 @@
 											<div class="d-flex align-items-center mb-2">
 												<!--begin::Avatar-->
 												<div class="symbol symbol-50px">
-													<span class="svg-icon svg-icon-primary svg-icon-1">
+													<span class="svg-icon svg-icon-success svg-icon-1">
 														<!--begin::Svg Icon | path: icons/Communication/Chat-smile.svg-->
 														<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
 															<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -970,11 +976,11 @@
 											</div>
 											<!--end::Title-->
 											<!--begin::Text-->
-											<div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-start">
+											<div class="p-5 rounded bg-white border border-gray-300 text-dark fw-semibold mw-lg-400px text-start">
 												담당자와 대화를 시작합니다.<br/>전달할 메시지를 입력해주세요.
 												<!--begin::URL Area-->
 												<div class="mt-5">
-													<a href="javascript:void(0);" class="btn bg-white text-primary w-100 btn-sm rounded-1">대화 종료</a>
+													<a href="javascript:void(0);" class="btn bg-light-primary text-primary w-100 btn-sm rounded-1">대화 종료</a>
 												</div>
 												<!--end::URL Area-->
 											</div>
@@ -991,7 +997,7 @@
 											<div class="d-flex align-items-center mb-2">
 												<!--begin::Avatar-->
 												<div class="symbol symbol-50px">
-													<span class="svg-icon svg-icon-primary svg-icon-1">
+													<span class="svg-icon svg-icon-success svg-icon-1">
 														<!--begin::Svg Icon | path: icons/Communication/Chat-smile.svg-->
 														<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
 															<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -1013,11 +1019,11 @@
 											</div>
 											<!--end::Title-->
 											<!--begin::Text-->
-											<div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-start">
+											<div class="p-5 rounded bg-white border border-gray-300 text-dark fw-semibold mw-lg-400px text-start">
 												담당자로부터 전달된 메시지<br/>"무슨일인가요?"
 												<!--begin::URL Area-->
 												<div class="mt-5">
-													<a href="javascript:void(0);" class="btn bg-white text-primary w-100 btn-sm rounded-1">대화 종료</a>
+													<a href="javascript:void(0);" class="btn bg-light-primary text-primary w-100 btn-sm rounded-1">대화 종료</a>
 												</div>
 												<!--end::URL Area-->
 											</div>
@@ -1040,7 +1046,7 @@
 												<!--end::Details-->
 												<!--begin::Avatar-->
 												<div class="symbol symbol-50px">
-													<span class="svg-icon svg-icon-primary svg-icon-1">
+													<span class="svg-icon svg-icon-success svg-icon-1">
 														<!--begin::Svg Icon | path: icons/General/User.svg-->
 														<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
 															<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -1056,7 +1062,7 @@
 											</div>
 											<!--end::User-->
 											<!--begin::Text-->
-											<div class="p-5 rounded bg-light text-dark fw-normal mw-lg-400px text-end">
+											<div class="p-5 rounded bg-light-primary border border-light-primary text-dark fw-normal mw-lg-400px text-end">
 												감기 기운이 있는 것 같아서요.
 											</div>
 											<!--end::Text-->
@@ -1072,7 +1078,7 @@
 											<div class="d-flex align-items-center mb-2">
 												<!--begin::Avatar-->
 												<div class="symbol symbol-50px">
-													<span class="svg-icon svg-icon-primary svg-icon-1">
+													<span class="svg-icon svg-icon-success svg-icon-1">
 														<!--begin::Svg Icon | path: icons/Communication/Chat-smile.svg-->
 														<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
 															<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -1094,11 +1100,11 @@
 											</div>
 											<!--end::Title-->
 											<!--begin::Text-->
-											<div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-start">
+											<div class="p-5 rounded bg-white border border-gray-300 text-dark fw-semibold mw-lg-400px text-start">
 												담당자로부터 전달된 메시지<br/>"그래요. 조심히 다녀오세요."
 												<!--begin::URL Area-->
 												<div class="mt-5">
-													<a href="javascript:void(0);" class="btn bg-white text-primary w-100 btn-sm rounded-1">대화 종료</a>
+													<a href="javascript:void(0);" class="btn bg-light-primary text-primary w-100 btn-sm rounded-1">대화 종료</a>
 												</div>
 												<!--end::URL Area-->
 											</div>
@@ -1115,7 +1121,7 @@
 											<div class="d-flex align-items-center mb-2">
 												<!--begin::Avatar-->
 												<div class="symbol symbol-50px">
-													<span class="svg-icon svg-icon-primary svg-icon-1">
+													<span class="svg-icon svg-icon-success svg-icon-1">
 														<!--begin::Svg Icon | path: icons/Communication/Chat-smile.svg-->
 														<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
 															<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -1137,7 +1143,7 @@
 											</div>
 											<!--end::Title-->
 											<!--begin::Text-->
-											<div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-start">
+											<div class="p-5 rounded bg-white border border-gray-300 text-dark fw-semibold mw-lg-400px text-start">
 												담당자와의 대화가 종료되었습니다.
 											</div>
 											<!--end::Text-->
@@ -1197,7 +1203,7 @@
 											<div class="d-flex align-items-center mb-2">
 												<!--begin::Avatar-->
 												<div class="symbol symbol-50px">
-													<span class="svg-icon svg-icon-primary svg-icon-1">
+													<span class="svg-icon svg-icon-success svg-icon-1">
 														<!--begin::Svg Icon | path: icons/Communication/Chat-smile.svg-->
 														<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
 															<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -1219,20 +1225,20 @@
 											</div>
 											<!--end::Title-->
 											<!--begin::Text-->
-											<div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-start">
+											<div class="p-5 rounded bg-white border border-gray-300 text-dark fw-semibold mw-lg-400px text-start">
 												홍길동님으로부터 메시지가 도착하였습니다.<br />선택해주세요.<br/>요청일자:2023-01-01 08:00:00
 												<!--begin::URL Area-->
 												<div class="mt-5">
-													<a href="javascript:void(0);" class="btn bg-white text-primary w-100 btn-sm rounded-1" onclick="modalTabSet(1);">대화 시작</a>
+													<a href="javascript:void(0);" class="btn bg-light-primary text-primary w-100 btn-sm rounded-1" onclick="modalTabSet(1);">대화 시작</a>
 												</div>
 												<div class="mt-1">
-													<a href="javascript:void(0);" class="btn bg-white text-primary w-100 btn-sm rounded-1" onclick="modalTabSet(2);">전달된 메시지 보기</a>
+													<a href="javascript:void(0);" class="btn bg-light-primary text-primary w-100 btn-sm rounded-1" onclick="modalTabSet(2);">전달된 메시지 보기</a>
 												</div>
 												<div class="mt-1">
-													<a href="javascript:void(0);" class="btn bg-white text-primary w-100 btn-sm rounded-1" onclick="modalTabSet(3);">대기 메시지 전송</a>
+													<a href="javascript:void(0);" class="btn bg-light-primary text-primary w-100 btn-sm rounded-1" onclick="modalTabSet(3);">대기 메시지 전송</a>
 												</div>
 												<div class="mt-1">
-													<a href="javascript:void(0);" class="btn bg-white text-primary w-100 btn-sm rounded-1" onclick="modalTabSet(4);">대화 취소</a>
+													<a href="javascript:void(0);" class="btn bg-light-primary text-primary w-100 btn-sm rounded-1" onclick="modalTabSet(4);">대화 취소</a>
 												</div>
 												<!--end::URL Area-->
 											</div>
@@ -1249,7 +1255,7 @@
 											<div class="d-flex align-items-center mb-2">
 												<!--begin::Avatar-->
 												<div class="symbol symbol-50px">
-													<span class="svg-icon svg-icon-primary svg-icon-1">
+													<span class="svg-icon svg-icon-success svg-icon-1">
 														<!--begin::Svg Icon | path: icons/Communication/Chat-smile.svg-->
 														<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
 															<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -1271,7 +1277,7 @@
 											</div>
 											<!--end::Title-->
 											<!--begin::Text-->
-											<div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-start">
+											<div class="p-5 rounded bg-white border border-gray-300 text-dark fw-semibold mw-lg-400px text-start">
 												홍길동님으로부터 전달된 메시지<br/>"병원 좀 다녀오겠습니다."
 											</div>
 											<!--end::Text-->
@@ -1337,7 +1343,7 @@
 												<!--end::Details-->
 												<!--begin::Avatar-->
 												<div class="symbol symbol-50px">
-													<span class="svg-icon svg-icon-primary svg-icon-1">
+													<span class="svg-icon svg-icon-success svg-icon-1">
 														<!--begin::Svg Icon | path: icons/General/User.svg-->
 														<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
 															<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -1353,7 +1359,7 @@
 											</div>
 											<!--end::User-->
 											<!--begin::Text-->
-											<div class="p-5 rounded bg-light text-dark fw-normal mw-lg-400px text-end">
+											<div class="p-5 rounded bg-light-primary border border-light-primary text-dark fw-normal mw-lg-400px text-end">
 												병원 좀 다녀오겠습니다.
 											</div>
 											<!--end::Text-->
@@ -1370,7 +1376,7 @@
 											<div class="d-flex align-items-center mb-2">
 												<!--begin::Avatar-->
 												<div class="symbol symbol-50px">
-													<span class="svg-icon svg-icon-primary svg-icon-1">
+													<span class="svg-icon svg-icon-success svg-icon-1">
 														<!--begin::Svg Icon | path: icons/Communication/Chat-smile.svg-->
 														<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
 															<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -1392,7 +1398,7 @@
 											</div>
 											<!--end::Title-->
 											<!--begin::Text-->
-											<div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-start">
+											<div class="p-5 rounded bg-white border border-gray-300 text-dark fw-semibold mw-lg-400px text-start">
 												담당자에게 메시지를 전달 하였습니다.<br/>잠시만 기다려 주세요.
 											</div>
 											<!--end::Text-->
@@ -1408,7 +1414,7 @@
 											<div class="d-flex align-items-center mb-2">
 												<!--begin::Avatar-->
 												<div class="symbol symbol-50px">
-													<span class="svg-icon svg-icon-primary svg-icon-1">
+													<span class="svg-icon svg-icon-success svg-icon-1">
 														<!--begin::Svg Icon | path: icons/Communication/Chat-smile.svg-->
 														<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
 															<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -1430,7 +1436,7 @@
 											</div>
 											<!--end::Title-->
 											<!--begin::Text-->
-											<div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-start">
+											<div class="p-5 rounded bg-white border border-gray-300 text-dark fw-semibold mw-lg-400px text-start">
 												담당자로부터 전달된 메시지<br/>"잠시만 기다려 주세요."
 											</div>
 											<!--end::Text-->
@@ -1490,7 +1496,7 @@
 											<div class="d-flex align-items-center mb-2">
 												<!--begin::Avatar-->
 												<div class="symbol symbol-50px">
-													<span class="svg-icon svg-icon-primary svg-icon-1">
+													<span class="svg-icon svg-icon-success svg-icon-1">
 														<!--begin::Svg Icon | path: icons/Communication/Chat-smile.svg-->
 														<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
 															<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -1512,20 +1518,20 @@
 											</div>
 											<!--end::Title-->
 											<!--begin::Text-->
-											<div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-start">
+											<div class="p-5 rounded bg-white border border-gray-300 text-dark fw-semibold mw-lg-400px text-start">
 												홍길동님으로부터 메시지가 도착하였습니다.<br />선택해주세요.<br/>요청일자:2023-01-01 08:00:00
 												<!--begin::URL Area-->
 												<div class="mt-5">
-													<a href="javascript:void(0);" class="btn bg-white text-primary w-100 btn-sm rounded-1" onclick="modalTabSet(1);">대화 시작</a>
+													<a href="javascript:void(0);" class="btn bg-light-primary text-primary w-100 btn-sm rounded-1" onclick="modalTabSet(1);">대화 시작</a>
 												</div>
 												<div class="mt-1">
-													<a href="javascript:void(0);" class="btn bg-white text-primary w-100 btn-sm rounded-1" onclick="modalTabSet(2);">전달된 메시지 보기</a>
+													<a href="javascript:void(0);" class="btn bg-light-primary text-primary w-100 btn-sm rounded-1" onclick="modalTabSet(2);">전달된 메시지 보기</a>
 												</div>
 												<div class="mt-1">
-													<a href="javascript:void(0);" class="btn bg-white text-primary w-100 btn-sm rounded-1" onclick="modalTabSet(3);">대기 메시지 전송</a>
+													<a href="javascript:void(0);" class="btn bg-light-primary text-primary w-100 btn-sm rounded-1" onclick="modalTabSet(3);">대기 메시지 전송</a>
 												</div>
 												<div class="mt-1">
-													<a href="javascript:void(0);" class="btn bg-white text-primary w-100 btn-sm rounded-1" onclick="modalTabSet(4);">대화 취소</a>
+													<a href="javascript:void(0);" class="btn bg-light-primary text-primary w-100 btn-sm rounded-1" onclick="modalTabSet(4);">대화 취소</a>
 												</div>
 												<!--end::URL Area-->
 											</div>
@@ -1542,7 +1548,7 @@
 											<div class="d-flex align-items-center mb-2">
 												<!--begin::Avatar-->
 												<div class="symbol symbol-50px">
-													<span class="svg-icon svg-icon-primary svg-icon-1">
+													<span class="svg-icon svg-icon-success svg-icon-1">
 														<!--begin::Svg Icon | path: icons/Communication/Chat-smile.svg-->
 														<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
 															<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -1564,7 +1570,7 @@
 											</div>
 											<!--end::Title-->
 											<!--begin::Text-->
-											<div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-start">
+											<div class="p-5 rounded bg-white border border-gray-300 text-dark fw-semibold mw-lg-400px text-start">
 												담당자가 대화 요청을 취소하였습니다.
 											</div>
 											<!--end::Text-->
@@ -1626,7 +1632,7 @@
 												<!--end::Details-->
 												<!--begin::Avatar-->
 												<div class="symbol symbol-50px">
-													<span class="svg-icon svg-icon-primary svg-icon-1">
+													<span class="svg-icon svg-icon-success svg-icon-1">
 														<!--begin::Svg Icon | path: icons/General/User.svg-->
 														<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
 															<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -1642,7 +1648,7 @@
 											</div>
 											<!--end::User-->
 											<!--begin::Text-->
-											<div class="p-5 rounded bg-light text-dark fw-normal mw-lg-400px text-end">
+											<div class="p-5 rounded bg-light-primary border border-light-primary text-dark fw-normal mw-lg-400px text-end">
 												병원 좀 다녀오겠습니다.
 											</div>
 											<!--end::Text-->
@@ -1659,7 +1665,7 @@
 											<div class="d-flex align-items-center mb-2">
 												<!--begin::Avatar-->
 												<div class="symbol symbol-50px">
-													<span class="svg-icon svg-icon-primary svg-icon-1">
+													<span class="svg-icon svg-icon-success svg-icon-1">
 														<!--begin::Svg Icon | path: icons/Communication/Chat-smile.svg-->
 														<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
 															<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -1681,7 +1687,7 @@
 											</div>
 											<!--end::Title-->
 											<!--begin::Text-->
-											<div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-start">
+											<div class="p-5 rounded bg-white border border-gray-300 text-dark fw-semibold mw-lg-400px text-start">
 												담당자에게 메시지를 전달 하였습니다.<br/>잠시만 기다려 주세요.
 											</div>
 											<!--end::Text-->
@@ -1697,7 +1703,7 @@
 											<div class="d-flex align-items-center mb-2">
 												<!--begin::Avatar-->
 												<div class="symbol symbol-50px">
-													<span class="svg-icon svg-icon-primary svg-icon-1">
+													<span class="svg-icon svg-icon-success svg-icon-1">
 														<!--begin::Svg Icon | path: icons/Communication/Chat-smile.svg-->
 														<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
 															<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -1719,7 +1725,7 @@
 											</div>
 											<!--end::Title-->
 											<!--begin::Text-->
-											<div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-start">
+											<div class="p-5 rounded bg-white border border-gray-300 text-dark fw-semibold mw-lg-400px text-start">
 												담당자가 대화 요청을 취소하였습니다.
 											</div>
 											<!--end::Text-->

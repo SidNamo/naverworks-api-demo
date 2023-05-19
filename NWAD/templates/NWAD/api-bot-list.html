@@ -85,7 +85,7 @@
                 <div class="card-toolbar">
                     <a href="#" class="btn btn-primary fw-bolder d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#modal_api_list_add">
                         <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/kt-products/docs/metronic/html/releases/2022-11-29-094551/core/html/src/media/icons/duotune/arrows/arr075.svg-->
-                        <span class="svg-icon svg-icon-primary svg-icon-1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <span class="svg-icon svg-icon-success svg-icon-1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1" transform="rotate(-90 11.364 20.364)" fill="currentColor" />
                             <rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="currentColor" />
                             </svg></span>
@@ -115,7 +115,7 @@
                 <div class="card-toolbar">
                     <a href="#" class="btn btn-success fw-bolder d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#modal_bot_list_add">
                         <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/kt-products/docs/metronic/html/releases/2022-11-29-094551/core/html/src/media/icons/duotune/arrows/arr075.svg-->
-                        <span class="svg-icon svg-icon-primary svg-icon-1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <span class="svg-icon svg-icon-success svg-icon-1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1" transform="rotate(-90 11.364 20.364)" fill="currentColor" />
                             <rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="currentColor" />
                             </svg></span>
@@ -137,9 +137,15 @@
     <!--begin::Footer-->
     <div class="footer py-4 d-flex flex-column flex-md-row flex-stack" id="kt_footer">
         <!--begin::Copyright-->
-        <div class="text-gray-600 order-2 order-md-1">
+        <div class="text-gray-600 order-2 order-md-1 d-flex align-items-center">
             <span class="text-muted fw-semibold me-1">2022&copy;</span>
             <a href="https://didim365.com" target="_blank" class="text-gray-800 text-hover-primary">Didim365</a>
+            <span class="mx-5">|</span>
+            <div>
+                <span class="text-gray-600 fw-semibold me-1">디딤365 네이버웍스 고객지원센터</span>
+                <a href="tel:028580365" target="_blank" class="text-gray-600 text-hover-primary"><span class="text-gray-800">T.</span> 02-858-0365</a>
+                <a href="mailto:works@didim365.com" target="_blank" class="text-gray-600 text-hover-primary ms-2"><span class="text-gray-800">E.</span> works@didim365.com</a>
+            </div>
         </div>
         <!--end::Copyright-->
         <!--begin::Menu-->
@@ -167,12 +173,16 @@
             <!--begin::Modal header-->
             <div class="modal-header" id="modal_api_list_add_header">
                 <!--begin::Modal title-->
-                <div class="d-flex flex-row flex-center">
-                    <h2>API 연동하기</h2>
-                    <button type="button" data-modal-tab-btn-type="help" class="ms-3 btn btn-sm btn-light-dark fw-bolder hover-elevate-up"  data-bs-toggle="tooltip" data-bs-placement="bottom" title="하단의 기입 정보가 어려우신 분들은 이쪽 가이드를 따라 입력해주세요." onclick="modalTabSet(1);">
-                        <span class="indicator-label">쉽게 따라하기</span> 
-                    </button>
-                </div> 
+                <div class="w-100 d-flex flex-row justify-content-between pe-3">
+                    <div class="d-flex flex-row flex-center">
+                        <h2>API 연동하기</h2>
+                        <button type="button" data-modal-tab-btn-type="help" class="ms-4 btn btn-sm btn-outline btn-outline-success btn-active-light-success fw-bolder hover-elevate-up"  data-bs-toggle="tooltip" data-bs-placement="bottom" title="하단의 기입 정보가 어려우신 분들은 이쪽 가이드를 따라 입력해주세요." onclick="modalTabSet(1);">
+                            <span class="indicator-label">쉽게 따라하기</span> 
+                        </button>
+                    </div> 
+                    <button type="button" data-modal-tab-btn-type="help" class="ms-3 btn btn-sm btn-light-dark fw-bolder hover-elevate-up" data-bs-toggle="tooltip" data-bs-placement="bottom" title="작성 가이드 문서를 다운받아 보실 수 있습니다." data-kt-initialized="1">
+                        가이드 문서 <i class="ms-2 bi bi-download p-0"></i></button>
+                </div>
                 <!--end::Modal title-->
                 <!--begin::Close-->
                 <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
@@ -212,7 +222,7 @@
                         <span class="modal-tab" data-modal-tab="1">
                             <span data-modal-tab-type="image">
                                 <!--begin:: Notice-->
-                                <div class="notice d-flex bg-light-primary rounded border-primary border border-solid mb-9 p-6">
+                                <div class="notice d-flex bg-white rounded shadow mb-9 p-6">
                                     <!--begin::Wrapper-->
                                     <div class="d-flex flex-column flex-start flex-grow-1 ">
                                         <!--begin::Content-->
@@ -222,7 +232,7 @@
                                         <div style="word-break: keep-all;" class="fw-semibold">
                                             <div class="fs-6 text-gray-700 fw-normal">
                                                  <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/kt-products/docs/metronic/html/releases/2023-01-30-131017/core/html/src/media/icons/duotune/general/gen045.svg-->
-                                            <span class="svg-icon svg-icon-2 svg-icon-primary me-1">
+                                            <span class="svg-icon svg-icon-2 svg-icon-success me-1">
                                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="5" fill="currentColor"/>
                 <path d="M10.4343 12.4343L8.75 10.75C8.33579 10.3358 7.66421 10.3358 7.25 10.75C6.83579 11.1642 6.83579 11.8358 7.25 12.25L10.2929 15.2929C10.6834 15.6834 11.3166 15.6834 11.7071 15.2929L17.25 9.75C17.6642 9.33579 17.6642 8.66421 17.25 8.25C16.8358 7.83579 16.1642 7.83579 15.75 8.25L11.5657 12.4343C11.2533 12.7467 10.7467 12.7467 10.4343 12.4343Z" fill="currentColor"/>
@@ -643,12 +653,16 @@
             <!--begin::Modal header-->
             <div class="modal-header" id="modal_bot_list_add_header">
                 <!--begin::Modal title-->
-                <div class="d-flex flex-row flex-center">
-                    <h2>Bot 연동하기</h2>
-                    <button type="button" data-modal-tab-btn-type="help" class="ms-3 btn btn-sm btn-light-dark fw-bolder hover-elevate-up"  data-bs-toggle="tooltip" data-bs-placement="bottom" title="하단의 기입 정보가 어려우신 분들은 이쪽 가이드를 따라 입력해주세요." onclick="modalTabSet(1);">
-                        <span class="indicator-label">쉽게 따라하기</span> 
-                    </button>
-                </div> 
+                <div class="w-100 d-flex flex-row justify-content-between pe-3">
+                    <div class="d-flex flex-row flex-center">
+                        <h2>Bot 연동하기</h2>
+                        <button type="button" data-modal-tab-btn-type="help" class="ms-4 btn btn-sm btn-outline btn-outline-success btn-active-light-success fw-bolder hover-elevate-up" data-bs-toggle="tooltip" data-bs-placement="bottom" onclick="modalTabSet(1);" title="하단의 기입 정보가 어려우신 분들은 이쪽 가이드를 따라 입력해주세요." data-kt-initialized="1">
+                            <span class="indicator-label">쉽게 따라하기</span> 
+                        </button>
+                    </div>
+                    <button type="button" data-modal-tab-btn-type="help" class="ms-3 btn btn-sm btn-light-dark fw-bolder hover-elevate-up" data-bs-toggle="tooltip" data-bs-placement="bottom" title="작성 가이드 문서를 다운받아 보실 수 있습니다." data-kt-initialized="1">
+                        가이드 문서 <i class="ms-2 bi bi-download p-0"></i></button>
+                </div>
                 <!--end::Modal title-->
                 <!--begin::Close-->
                 <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
@@ -675,7 +689,7 @@
                         <span class="modal-tab" data-modal-tab="1">
                             <span data-modal-tab-type="image" style="">
                                     <!--begin:: Notice-->
-                                    <div class="notice d-flex bg-light-primary rounded border-primary border border-solid mb-9 p-6">
+                                    <div class="notice d-flex bg-white rounded shadow mb-9 p-6">
                                     <!--begin::Wrapper-->
                                     <div class="d-flex flex-column flex-start flex-grow-1 ">
                                         <!--begin::Content-->
@@ -685,7 +699,7 @@
                                         <div style="word-break: keep-all;" class="fw-semibold">
                                             <div class="fs-6 text-gray-700 fw-normal">
                                                     <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/kt-products/docs/metronic/html/releases/2023-01-30-131017/core/html/src/media/icons/duotune/general/gen045.svg-->
-                                            <span class="svg-icon svg-icon-2 svg-icon-primary me-1">
+                                            <span class="svg-icon svg-icon-2 svg-icon-success me-1">
                                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="5" fill="currentColor"/>
                                                     <path d="M10.4343 12.4343L8.75 10.75C8.33579 10.3358 7.66421 10.3358 7.25 10.75C6.83579 11.1642 6.83579 11.8358 7.25 12.25L10.2929 15.2929C10.6834 15.6834 11.3166 15.6834 11.7071 15.2929L17.25 9.75C17.6642 9.33579 17.6642 8.66421 17.25 8.25C16.8358 7.83579 16.1642 7.83579 15.75 8.25L11.5657 12.4343C11.2533 12.7467 10.7467 12.7467 10.4343 12.4343Z" fill="currentColor"/>
@@ -823,14 +837,14 @@
                             <span data-modal-tab-type="image">
                                 <div class="fs-5 fw-semibold d-flex align-items-center gap-2 text-gray-700 mb-4"><i class="bi bi-5-circle-fill fs-3 text-primary"></i> Bot 등록 버튼 클릭</div>
                                     <!--begin:: Notice-->
-                                    <div class="notice d-flex bg-light-primary rounded border-primary border border-solid mb-9 p-6">
+                                    <div class="notice d-flex bg-white rounded shadow mb-9 p-6">
                                     <!--begin::Wrapper-->
                                     <div class="d-flex flex-column flex-start flex-grow-1 ">
                                         <!--begin::Content-->
                                         <div style="word-break: keep-all;" class="fw-semibold">
                                             <div class="fs-6 text-gray-700 fw-normal">
                                                     <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/kt-products/docs/metronic/html/releases/2023-01-30-131017/core/html/src/media/icons/duotune/general/gen045.svg-->
-                                            <span class="svg-icon svg-icon-2 svg-icon-primary me-1">
+                                            <span class="svg-icon svg-icon-2 svg-icon-success me-1">
                                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="5" fill="currentColor"/>
                                                     <path d="M10.4343 12.4343L8.75 10.75C8.33579 10.3358 7.66421 10.3358 7.25 10.75C6.83579 11.1642 6.83579 11.8358 7.25 12.25L10.2929 15.2929C10.6834 15.6834 11.3166 15.6834 11.7071 15.2929L17.25 9.75C17.6642 9.33579 17.6642 8.66421 17.25 8.25C16.8358 7.83579 16.1642 7.83579 15.75 8.25L11.5657 12.4343C11.2533 12.7467 10.7467 12.7467 10.4343 12.4343Z" fill="currentColor"/>

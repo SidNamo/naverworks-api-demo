@@ -132,13 +132,13 @@
 									<!--begin::Option-->
 									<label>
 										<input type="radio" class="btn-check" name="message_type" value="text" checked="checked" onchange="viewSampleMessage();"/>
-										<span class="btn btn-sm btn-color-muted btn-active btn-active-primary fw-semibold text-nowrap px-4 py-2">TEXT</span>
+										<span class="btn btn-sm btn-color-muted btn-active btn-active-dark fw-semibold text-nowrap px-4 py-2">TEXT</span>
 									</label>
 									<!--end::Option-->
 									<!--begin::Option-->
 									<label>
 										<input type="radio" class="btn-check" name="message_type" value="textUrl" onchange="viewSampleMessage();" />
-										<span class="btn btn-sm btn-color-muted btn-active btn-active-primary fw-semibold text-nowrap px-4 py-2">TEXT + URL</span>
+										<span class="btn btn-sm btn-color-muted btn-active btn-active-dark fw-semibold text-nowrap px-4 py-2">TEXT + URL</span>
 									</label>
 									<!--end::Option-->
 								</div>
@@ -236,7 +236,7 @@
 				<!--begin::Card-->
 				<div class="card">
 					<!--begin::Topbar-->
-					<div class="d-flex justify-content-between bg-primary rounded-3 rounded-bottom-0 px-2 py-2">
+					<div class="d-flex justify-content-between bg-dark rounded-3 rounded-bottom-0 px-2 py-2">
 						<div class="ms-3">
 							<!--begin::Svg Icon | icons/duotune/general/gen052.svg-->
 							<span class="svg-icon svg-icon-white svg-icon-2">
@@ -322,7 +322,7 @@
 										<div class="d-flex align-items-center mb-2">
 											<!--begin::Avatar-->
 											<div class="symbol symbol-50px">
-												<span class="svg-icon svg-icon-primary svg-icon-1">
+												<span class="svg-icon svg-icon-success svg-icon-1">
 													<!--begin::Svg Icon | path: icons/Communication/Chat-smile.svg-->
 													<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
 														<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -344,7 +344,7 @@
 										</div>
 										<!--end::Title-->
 										<!--begin::Text-->
-										<div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-start">
+										<div class="p-5 rounded bg-white border border-gray-300 text-dark fw-semibold mw-lg-400px text-start">
 											안녕하세요.<br />
 											봇이 작성한 메세지입니다.<br />
 										</div>
@@ -368,7 +368,7 @@
 											<!--end::Details-->
 											<!--begin::Avatar-->
 											<div class="symbol symbol-50px">
-												<span class="svg-icon svg-icon-primary svg-icon-1">
+												<span class="svg-icon svg-icon-success svg-icon-1">
 													<!--begin::Svg Icon | path: icons/General/User.svg-->
 													<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
 														<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -384,7 +384,7 @@
 										</div>
 										<!--end::User-->
 										<!--begin::Text-->
-										<div class="p-5 rounded bg-light text-dark fw-normal mw-lg-400px text-end">
+										<div class="p-5 rounded bg-light-primary border border-light-primary text-dark fw-normal mw-lg-400px text-end">
 											안녕하세요.<br />
 											사용자가 작성한 메세지입니다.
 										</div>
@@ -403,7 +403,7 @@
 									<div class="d-flex align-items-center mb-2">
 										<!--begin::Avatar-->
 										<div class="symbol symbol-50px">
-											<span class="svg-icon svg-icon-primary svg-icon-1">
+											<span class="svg-icon svg-icon-success svg-icon-1">
 												<!--begin::Svg Icon | path: icons/Communication/Chat-smile.svg-->
 												<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
 													<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -425,7 +425,7 @@
 									</div>
 									<!--end::Title-->
 									<!--begin::Text-->
-									<div class="p-5 rounded bg-light-primary text-dark fw-semibold mw-lg-400px text-start" id="divSampleMessage">
+									<div class="p-5 rounded bg-white border border-gray-300 text-dark fw-semibold mw-lg-400px text-start" id="divSampleMessage">
 										안녕하세요. 테스트 봇입니다.<br />
 										해당 메시지는 테스트 내용입니다.<br />
 										메시지 타입은 TEXT + URL 입니다.<br />
@@ -475,9 +475,15 @@
 	<!--begin::Footer-->
 	<div class="footer py-4 d-flex flex-column flex-md-row flex-stack" id="kt_footer">
 		<!--begin::Copyright-->
-		<div class="text-gray-600 order-2 order-md-1">
+		<div class="text-gray-600 order-2 order-md-1 d-flex align-items-center">
 			<span class="text-muted fw-semibold me-1">2023&copy;</span>
 			<a href="https://didim365.com" target="_blank" class="text-gray-800 text-hover-primary">Didim365</a>
+			<span class="mx-5">|</span>
+			<div>
+				<span class="text-gray-600 fw-semibold me-1">디딤365 네이버웍스 고객지원센터</span>
+				<a href="tel:028580365" target="_blank" class="text-gray-600 text-hover-primary"><span class="text-gray-800">T.</span> 02-858-0365</a>
+				<a href="mailto:works@didim365.com" target="_blank" class="text-gray-600 text-hover-primary ms-2"><span class="text-gray-800">E.</span> works@didim365.com</a>
+			</div>
 		</div>
 		<!--end::Copyright-->
 		<!--begin::Menu-->
