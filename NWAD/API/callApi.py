@@ -211,7 +211,13 @@ def send_message(request):
         api_no = data['api_no']
         bot_no = data['bot_no']
         target = data['target']
+        send_to = ''
         content = data['content']
+        
+        try:
+            send_to = data['send_to']
+        except:
+            send_to = ''
 
         json_content = setup_message_content(content)
 
@@ -219,7 +225,7 @@ def send_message(request):
         res = False
 
         #Decide whether its channel Id or email(Account Id)
-        if '@' in target:
+        if '@' in target or 'user' == send_to:
             res = sendMessage(api_no, bot_no, json_content, user_id = target)
         else:
             res = sendMessage(api_no, bot_no, json_content, channel_id = target)
